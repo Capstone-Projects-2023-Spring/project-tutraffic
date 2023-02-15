@@ -30,3 +30,5 @@ We will utilize different types of testing to assess the functionality of our pr
 
 
 ## Bug Fixing
+
+Testing & bug fixing go hand-in-hand. When doing any type of testing in software development, bugs are bound to appear and make themselves apparent. When this happens, a task should be added to the TuTraffic team's Jira board that indicates a bug fix needs to be made and where the bug lies. Different priority will be granted depending on if the bug effects other modules of the overall product or is an isolated / minor issue.
