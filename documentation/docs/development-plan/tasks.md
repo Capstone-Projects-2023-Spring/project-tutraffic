@@ -19,11 +19,12 @@ sidebar_position: 2
 | Design system installation process | | 2023-03-05 | | | Detect available parking | Add system installation tool |
 | Set up computer vision | | 2023-03-14 | | Set up Raspberry Pi | Detect available parking |
 | Set up data structures | | 2023-03-15 | | Connect Cloud and Firebase | Detect available parking |
-| Set up client interface | | 2023-03-18 | | Design client application | Add parking selection, Add system installation tool |
 | Detect available parking | | 2023-03-20 | | Send and retrieve data from Raspberry Pi and Server, Set up computer vision, Set up data structures |
-| Add parking selection | | 2023-03-25 | | Send and retrieve data from Server and Client, Detect available parking, Set up client interface | Add parking search |
+| Set up client interface | | 2023-03-25 | | Design client application | Add parking selection, Add system installation tool |
+| Add parking selection | | 2023-03-28 | | Send and retrieve data from Server and Client, Detect available parking, Set up client interface | Add parking search |
+| Add parking search | | 2023-04-08 | | Detect available parking | |
+| Detect available public parking | | 2023-04-09 | | Detect available parking | |
 | Add system installation tool | | 2023-04-10 | | | Design system installation process, Set up client interface | |
-| Add parking search | | 2023-04-11 | | Detect available parking | |
 | Add navigation | | 2023-04-15 | | Set up client interface, Add parking selection | |
 | Add user accounts | | 2023-04-18 | | | Add parking reservation |
 | Add parking reservation | | 2023-04-20 | | Add user accounts | |
