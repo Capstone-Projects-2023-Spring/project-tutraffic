@@ -6,6 +6,12 @@ sidebar_position: 1
 
 ## Requirements Gathering
 
+There are a multitide of modules that go into the functionality of this application. One major area of research required to create a working product is the computer vision that the raspberry pi's video feed will be processed through to detect parking spots. Computer vision is an application of machine learning, so there is a need to understand how TuTraffic can take advatnage of machine learning's ability to process information and make meaningful decisions to detect appropriate parking spaces. There are a plethora of resources readily available regarding artifical intelligence.
+
+A second area relevant to requirements gathering is selecting an appropriate database for TuTraffic's needs. TuTraffic requires a database to hold and update information regarding parking spots. A real-time list of parking spots will be stored on the database and regularly updated as the raspberry pi's video feed is processed - spots will be removed if they are detected to have been filled and added if they are detected to have opened up. Research is needed to find a database that can be continuously and quickly updated as users are constantly making requests to pull information from it.
+
+Finally, user needs need to be evaluated for acceptance testing in later stages of development. In order to determine whether or not the TuTraffic application functions in a usable and productive way, the needs of users that will be utilizing it should be determined. 
+
 ## Top-Level Design
 
 ## Detailed Design
