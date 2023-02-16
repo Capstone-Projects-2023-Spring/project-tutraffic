@@ -28,5 +28,6 @@ sidebar_position: 2
 | Add navigation | | 2023-04-15 | | Set up client interface, Add parking selection | |
 | Add user accounts | | 2023-04-18 | | | Add parking reservation |
 | Add parking reservation | | 2023-04-20 | | Add user accounts | |
+| Add notifications | | 2023-04-23 | | Add parking reservation, Detect available parking | |
 
 *Figure 1. TuTraffic Tasks Table*
