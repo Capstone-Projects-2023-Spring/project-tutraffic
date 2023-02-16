@@ -22,7 +22,7 @@ sidebar_position: 2
 | Detect available parking | | 2023-03-20 | | Send and retrieve data from Raspberry Pi and Server, Set up computer vision, Set up data structures |
 | Set up client interface | | 2023-03-25 | | Design client application | Add parking selection, Add system installation tool |
 | Add parking selection | | 2023-03-28 | | Send and retrieve data from Server and Client, Detect available parking, Set up client interface | Add parking search |
-| Add parking search | | 2023-04-08 | | Detect available parking | |
+| Add parking search | | 2023-04-02 | | Detect available parking | |
 | Detect available public parking | | 2023-04-09 | | Detect available parking | |
 | Add system installation tool | | 2023-04-10 | | | Design system installation process, Set up client interface | |
 | Add navigation | | 2023-04-15 | | Set up client interface, Add parking selection | |
