@@ -3,6 +3,6 @@
   "position": 5,
   "link": {
     "type": "generated-index",
-    "description": "Document Overview goes here. This is a test"
+    "description": "This document describes the tasks/activities to be completed for the development of the TuTraffic application. Sections include Activities, Tasks, Development Environment, Schedule, and Version Control."
   }
 }
