@@ -25,3 +25,34 @@ Entity-relation diagram.
 Table design.
 
 A check list for architecture design is attached here [architecture\_design\_checklist.pdf](https://templeu.instructure.com/courses/106563/files/16928870/download?wrap=1 "architecture_design_checklist.pdf")  and should be used as a guidance.
+
+
+### Components
+
+**Client**
+
+**Server**
+
+**Database**
+
+### Sequence Diagrams
+
+**Use Case #1**: User wants to find a spot in a general vicinity.
+
+**Use Case #2**: User wants displayed parking spots to reflect price preferences.
+
+**Use Case #3**: User wants spots that can fit their car to be detected.
+
+**Use Case #4**: User wants be directed to a parking spot.
+
+### Algorithms
+
+**Computer Vision**
+
+### State Diagrams
+
+### Database
+
+**Entity-Relation Diagram**
+
+**Table Design**
