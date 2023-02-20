@@ -196,6 +196,60 @@ Currently, there exists a computer vision algorithm trained to detect parking sp
 
 ### State Diagrams
 
+```mermaid
+---
+title: Client State Diagram
+---
+stateDiagram-v2
+[*] --> Searching
+Searching --> Requesting
+Requesting --> Searching
+Searching --> Viewing: Select Parking Location
+Viewing --> Navigation
+Viewing --> Requesting
+Requesting --> Viewing
+Navigation --> Viewing
+Viewing --> Searching
+```
+*Figure. Client State Diagram*
+
+The TuTraffic client application experiences multiple states throughout its usage. As depicted in the figure above, its first state is Searching: in this state, the client displays a list of nearby parking spaces, which may be initially empty. The client enters the Viewing state after the user selects a parking location; they can return to the Searching state to view the other locations, or enter the Navigation state. In either the Searching or Viewing State, the client submits requests to the server, such as parking status updates or reservations, in the Requesting state before returning to the previous state. In the Navigation state, the client connects to a third party navigation service and receives real-time driving assistance to help them reach their selected parking location. After the client reaches their destination or ceases navigation, the application returns to the Viewing state.
+
+```mermaid
+---
+title: Server State Diagram
+---
+stateDiagram-v2
+[*] --> Waiting
+Waiting --> Handling
+Handling --> Reading
+Handling --> Writing
+Reading --> Replying
+Writing --> Replying
+Reading --> Writing
+Writing --> Reading
+Replying --> Waiting
+```
+*Figure. Server State Diagram*
+
+The figure above illustrates the server states of the TuTraffic system. The server starts in the Waiting state; it is idle while there are no jobs to complete. When it receives a request from a client or node, the server proceeds to the Handling state, in which it comprehends the request. Then, the server enters a Reading or Writing state to handle the reading or writing operations, respectively, that are necessary to fulfill the request. For example, a search query is primarily a reading operation, while a parking reservation request is primarily a writing operation. Finally, the server formulates a response, delivers the message in the Replying state, and returns to the Waiting state before the next job.
+
+```mermaid
+---
+title: Node State Diagram
+---
+stateDiagram-v2
+[*] --> Waiting
+Waiting --> Capturing
+Capturing --> Processing
+Processing --> Sending
+Sending --> Waiting
+```
+*Figure. Node State Diagram*
+
+Each Raspberry Pi node in the TuTraffic system begins in the Waiting state, as shown in the above state diagram. The node exits this Waiting state on a regular schedule or upon request, then enters the Capturing state, during which it records an image. The node proceeds to the Processing state, in which computer vision is used to produce a parking location update message. This update is pushed to the server during the Sending state, then the node resumes the Waiting state.
+
+
 ### Database
 
 **Entity-Relation Diagram**
