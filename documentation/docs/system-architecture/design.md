@@ -199,5 +199,31 @@ Currently, there exists a computer vision algorithm trained to detect parking sp
 ### Database
 
 **Entity-Relation Diagram**
-
+```mermaid
+erDiagram
+    CUSTOMER }|..|{ Locations : has
+    CUSTOMER ||--o{ ParkingSpot : recieves
+    CUSTOMER {
+        int customerId
+        string email
+        string password
+        int locationID
+        int spotId
+    }
+    Locations{
+        int locationId
+        int long
+        int lat
+    }
+    ParkingSpot{
+        int spotId
+        int long
+        int lat
+        int price
+        boolean availability
+    }
+```
 **Table Design**
+- Customer Table: This table contain customer information including, email and password. The primary key is customerId. Contains 2 foreign keys locationId and spotID
+- Location Table: This table updates in realtime with users longitude and latitude. The primary key is locationId.
+- ParkingSpot Table: This table contains the parking spots location, availability and longitude and latitude. Primary key is the spotId
