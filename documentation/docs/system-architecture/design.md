@@ -38,6 +38,19 @@ A check list for architecture design is attached here [architecture\_design\_che
 ### Sequence Diagrams
 
 **Use Case #1**: User wants to find a spot in a general vicinity.
+<details>
+<summary>
+Use Case 1 Description
+</summary>
+
+1. User opens parking options.
+2. In parking options, user adjusts the range of how far they are willing to park in the area surrounding from their destination. 
+3. User clicks the search button to find spots in an area.
+4. User enters the address of their destination.
+5. The TuTraffic application displays the detected spots in that range to the user's device.
+
+</details>
+
 
 ```mermaid
 
@@ -66,15 +79,17 @@ sequenceDiagram
 
 ```
 
-**User wants to find a spot in a general vicinity.**
-1. User opens parking options.
-2. In parking options, user adjusts the range of how far they are willing to park in the area surrounding from their destination. 
-3. User clicks the search button to find spots in an area.
-4. User enters the address of their destination.
-5. The TuTraffic application displays the detected spots in that range to the user's device.
-
-
 **Use Case #2**: User wants displayed parking spots to reflect price preferences.
+<details>
+<summary>
+Use Case 1 Description
+</summary>
+
+1. User opens parking options.
+2. In parking options, user removes parking garages and paid lots from their preferences.
+3. User edits their accepted hourly price range for street parking in parking options, reflecting how much they are willing to pay per hour.
+
+</details>
 
 ```mermaid
 
@@ -102,12 +117,6 @@ sequenceDiagram
     deactivate m
 
 ```
-
-## Use Case #2
-**User wants displayed parking spots to reflect price preferences.**
-1. User opens parking options.
-2. In parking options, user removes parking garages and paid lots from their preferences.
-3. User edits their accepted hourly price range for street parking in parking options, reflecting how much they are willing to pay per hour.
 
 
 **Use Case #3**: User wants spots that can fit their car to be detected.
