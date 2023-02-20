@@ -32,9 +32,44 @@ A check list for architecture design is attached here [architecture\_design\_che
 **Client**
 
 **Server**
-
+The server will be hosted in Google Cloud with containers for the Customer database, and Parking database. 
+```mermaid
+flowchart TD
+    A[Container Manager] --> B[Customer Database]-->D[User Location]
+    A[Container Manager] --> C[Parking Database]
+```
 **Database**
+- Uses Firebase to save customer information, location and availbe parking spots. 
+- Customer table contains CustomerId as the primary key, customer's email and password, and two foreign keys LocationId and ParkingSpotId. 
+- Path from CustomerInfo to Location table has LocationId as the primary key and also the user's longitude and latitude. 
+- Path from CustomerInfo to ParkingSpot, which had spotLocationId as the primary key and also the parkings spot's longitude, latitude, price and availability. 
 
+```mermaid
+classDiagram
+    Customer -- Location
+    Customer -- ParkingSpot
+    class Customer{
+        +String userName
+        +String email
+        +string password
+        +int customerId
+        +int locationId
+        +int parkingLocationId
+        +findParkingSpot()
+    }
+    class Location{
+        +int locationId
+        -int lat
+        -int long
+    }
+    class ParkingSpot{
+        +int spotLocationId
+        -int lat
+        -int long
+        +int price
+        +boolean availability
+    }
+```
 ### Sequence Diagrams
 
 **Use Case #1**: User wants to find a spot in a general vicinity.
