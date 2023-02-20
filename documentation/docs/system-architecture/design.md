@@ -117,7 +117,7 @@ sequenceDiagram
 **Use Case #2**: User wants displayed parking spots to reflect price preferences.
 <details>
 <summary>
-Use Case 1 Description
+Use Case 2 Description
 </summary>
 
 1. User opens parking options.
