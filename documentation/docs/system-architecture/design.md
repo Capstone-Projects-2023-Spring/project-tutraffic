@@ -30,6 +30,8 @@ A check list for architecture design is attached here [architecture\_design\_che
 ### Components
 
 **Client**
+A Basic Wireframe: 
+![wireframe](https://github.com/Capstone-Projects-2023-Spring/project-tutraffic/blob/jason_writing/documentation/docs/system-architecture/Basic%20Wireframe.PNG?raw=true)
 ```mermaid
 classDiagram
 MainApp --> mapPage
