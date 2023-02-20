@@ -32,12 +32,60 @@ A check list for architecture design is attached here [architecture\_design\_che
 **Client**
 
 **Server**
-
+The server will be hosted in Google Cloud with containers for the Customer database, and Parking database. 
+```mermaid
+flowchart TD
+    A[Container Manager] --> B[Customer Database]-->D[User Location]
+    A[Container Manager] --> C[Parking Database]
+```
 **Database**
+- Uses Firebase to save customer information, location and availbe parking spots. 
+- Customer table contains CustomerId as the primary key, customer's email and password, and two foreign keys LocationId and ParkingSpotId. 
+- Path from CustomerInfo to Location table has LocationId as the primary key and also the user's longitude and latitude. 
+- Path from CustomerInfo to ParkingSpot, which had spotLocationId as the primary key and also the parkings spot's longitude, latitude, price and availability. 
 
+```mermaid
+classDiagram
+    Customer -- Location
+    Customer -- ParkingSpot
+    class Customer{
+        +String userName
+        +String email
+        +string password
+        +int customerId
+        +int locationId
+        +int parkingLocationId
+        +findParkingSpot()
+    }
+    class Location{
+        +int locationId
+        -int lat
+        -int long
+    }
+    class ParkingSpot{
+        +int spotLocationId
+        -int lat
+        -int long
+        +int price
+        +boolean availability
+    }
+```
 ### Sequence Diagrams
 
 **Use Case #1**: User wants to find a spot in a general vicinity.
+<details>
+<summary>
+Use Case 1 Description
+</summary>
+
+1. User opens parking options.
+2. In parking options, user adjusts the range of how far they are willing to park in the area surrounding from their destination. 
+3. User clicks the search button to find spots in an area.
+4. User enters the address of their destination.
+5. The TuTraffic application displays the detected spots in that range to the user's device.
+
+</details>
+
 
 ```mermaid
 
@@ -66,15 +114,17 @@ sequenceDiagram
 
 ```
 
-**User wants to find a spot in a general vicinity.**
-1. User opens parking options.
-2. In parking options, user adjusts the range of how far they are willing to park in the area surrounding from their destination. 
-3. User clicks the search button to find spots in an area.
-4. User enters the address of their destination.
-5. The TuTraffic application displays the detected spots in that range to the user's device.
-
-
 **Use Case #2**: User wants displayed parking spots to reflect price preferences.
+<details>
+<summary>
+Use Case 1 Description
+</summary>
+
+1. User opens parking options.
+2. In parking options, user removes parking garages and paid lots from their preferences.
+3. User edits their accepted hourly price range for street parking in parking options, reflecting how much they are willing to pay per hour.
+
+</details>
 
 ```mermaid
 
@@ -102,12 +152,6 @@ sequenceDiagram
     deactivate m
 
 ```
-
-## Use Case #2
-**User wants displayed parking spots to reflect price preferences.**
-1. User opens parking options.
-2. In parking options, user removes parking garages and paid lots from their preferences.
-3. User edits their accepted hourly price range for street parking in parking options, reflecting how much they are willing to pay per hour.
 
 
 **Use Case #3**: User wants spots that can fit their car to be detected.
