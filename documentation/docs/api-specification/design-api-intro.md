@@ -7,15 +7,24 @@ Design Document - Part II API
 
 ## Front-end
 
+### Class: LoginScreen
+
+**Purpose:** 
+
+The LoginScreen class renders the login screen and accepts user input for authentication of user account. It includes a submit() method that submits user credentials for authentication when the login button is clicked, and a changeState() method that updates the component's state based on a change in user input.
+
 **Data Fields:**
-- variableName: dataType - description
-
-### Class: Class Name
-
+- username: string - Stores the user's username.
+- password: string - Stores the user's password.
+- 
 **Methods:**
 
-`methodName(): void`
-- description
+`render(): void`
+- Renders the login screen.
+`submit(): void`
+- Submit user credentials including username and password data fields for authentication.
+`changeState(): void`
+- Update the state of component when user input is changed.
 
 ## Back-end
 
