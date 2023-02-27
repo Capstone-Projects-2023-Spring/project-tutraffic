@@ -39,3 +39,29 @@ An example of an auto-generated and then augmented API specification is here ([F
 This group developed their API documentation by hand ([Design Document Part 2 API-1\_MovieMatch.docx](https://templeu.instructure.com/courses/106563/files/16928899?wrap=1 "Design Document Part 2 API-1_MovieMatch.docx") )
 
 \*At the top level, or where appropriate, all exceptions should be caught and an error message that is meaningful to the user generated. It is not OK to say ("xxxx has encountered a problem and will now close (OK?)". Error messages and recovery procedures should be documented in the User’s Manual.
+
+### GET /user/{username}
+Description: Return information about the user from their username, including their account details and parking settings.  
+**{username}**: String
+
+Successful call:
+```bash 
+"user": {
+    "id": 1,
+    "username": "joe123",
+    "email": "joesmith@gmail.com"
+},
+"parking_preferences": {
+    "max_range": 1,
+    "max_hourly": 3,
+    "size": "medium"
+}
+```
+Failed call:  
+```bash
+{
+    "error": "401: Username not found"
+}
+```
+
+
