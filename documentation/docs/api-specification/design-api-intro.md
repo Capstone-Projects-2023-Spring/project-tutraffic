@@ -28,6 +28,32 @@ The LoginScreen class renders the login screen and accepts user input for authen
 `changeState(): void`
 - Update the state of component when user input is changed.
 
+### Class: HomeScreen
+
+**Purpose:** 
+
+The HomeScreen class display's a map of the user's current location which will get updated with pins appearing when search parameters are entered and the submit button is clicked. It includes a submit() method that submits user inputs that are changed in the settings class and are updated with the getSettings() method. It also accepts an address entry. displayMap() is used upon submital of data to update the map.
+
+**Data Fields:**
+- distance: float - Stores the inputted distance setting.
+- carSize: string - Stores the car size.
+- cost: float - Stores the cost input.
+- address: string - Stores the inputted address.
+ 
+**Methods:**
+
+`render(): void`
+- Renders the home screen.
+
+`submit(): void`
+- Submit the address along with selected settings to backend for manipulation.
+
+`getSettings(): void`
+- Retrieve settings from settings class to update distance, carsize, and cost variables.
+
+`displayMap(distance, carSize, cost, address): void`
+- Display new map based on updated settings and address.
+
 ## Back-end
 
 ### Class: User
