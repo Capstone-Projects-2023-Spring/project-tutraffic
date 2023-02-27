@@ -16,13 +16,15 @@ The LoginScreen class renders the login screen and accepts user input for authen
 **Data Fields:**
 - username: string - Stores the user's username.
 - password: string - Stores the user's password.
-- 
+ 
 **Methods:**
 
 `render(): void`
 - Renders the login screen.
+
 `submit(): void`
 - Submit user credentials including username and password data fields for authentication.
+
 `changeState(): void`
 - Update the state of component when user input is changed.
 
