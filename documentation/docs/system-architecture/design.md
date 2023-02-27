@@ -235,7 +235,31 @@ Use Case 3 Description
 
 </details>
 
-![Figure ](/img/usecase_3.png)
+```mermaid
+
+sequenceDiagram
+    actor u as User
+    participant t as TuTraffic App
+    participant s as Server
+    participant p as Raspberry pi
+    participant c as Camera
+    participant d as Database
+    activate u
+    u ->>+ t: Opens parking options
+    t -->> u: Displays dropdown menu of car size options
+    u ->> t: Selects size of vehicle
+    t ->>+ s: Requests parking data for "size"
+    s ->>+ p: Requests parking data for "size"
+    p ->>+ c: Adjusts computer vision processing for "size"
+    c -->>- p: Sends video to be processed
+    p -->>- s: Return parking data for "size"
+    s ->>+ d: Update parking data for "size"
+    d -->>- s: Return
+    s -->>- t: Return parking data for "size"
+    t -->>- u: Display parking data for "size"
+    deactivate u
+
+```
 
 **Use Case #4**: User wants be directed to a parking spot.
 <details>
@@ -251,7 +275,30 @@ Use Case 4 Description
 
 </details>
 
-![Figure ](/img/usecase_4.png)
+```mermaid
+
+sequenceDiagram
+    actor u as User
+    participant t as TuTraffic App
+    participant s as Server
+    participant d as Database
+    participant g as Google Maps API
+    activate u
+    u ->>+ t: Clicks search button
+    t -->> u: Prompts to enter destination address
+    u ->> t: Enter address
+    t ->>+ s: Requests parking data for "destination"
+    s ->>+ d: Requests parking data for "destination"
+    d -->>- s: Return parking data for "destination"
+    s -->>- t: Return parking data for "destination"
+    t -->> u: Display parking data for "destination"
+    u ->> t: Selects parking spot and request route
+    t ->>+ g: Requests navigation directions to the parking spot
+    g -->>- t: Sends navigation directions to the parking spot
+    t -->>- u: Direct navigation directions
+    deactivate u
+
+```
 
 ### Algorithms
 
