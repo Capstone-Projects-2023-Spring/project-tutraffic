@@ -142,4 +142,75 @@ Failed call (user doesn't exist):
 }
 ```
 
+# RASPBERRY PI API
+### POST /createNode/{location}
+Description: Create node at specific location
+**{location}**: String
+
+Successful call:
+{
+    "success": "200: updated properly",
+    "LocationID": Integer
+}
+```
+Failed call:  
+```bash
+{
+    "error": "401: invalid location"
+}
+```
+```bash
+{
+    "error": "404: connection broken"
+}
+```
+
+
+### PUT /update/{locationID, number of spots}
+Description: Rasberry pi sends information about the number of spots at a specific location
+**{locationID}**: int
+**{number of spots}**: int
+
+Successful call:
+{
+    "success": "200: updated properly"
+}
+```
+Failed call:  
+```bash
+{
+    "error": "401: invalid location"
+}
+```
+```bash
+{
+    "error": "402: invalid invalid number of spots"
+}
+```
+```bash
+{
+    "error": "404: connection broken"
+}
+```
+
+### DELETE /Location/{locationID}
+Description: Delete node with locationID
+**{locationID}**: int
+
+Successful call:
+{
+    "success", "200: deleted sucessfully"
+}
+```
+Failed call:  
+```bash
+{
+    "error": "401: invalid location"
+}
+```
+```bash
+{
+    "error": "404: connection broken"
+}
+```
 
