@@ -40,6 +40,25 @@ This group developed their API documentation by hand ([Design Document Part 2 AP
 
 \*At the top level, or where appropriate, all exceptions should be caught and an error message that is meaningful to the user generated. It is not OK to say ("xxxx has encountered a problem and will now close (OK?)". Error messages and recovery procedures should be documented in the User’s Manual.
 
+### POST /user/create
+Description: Create a user account with a JSON request.
+
+JSON request format:
+```bash
+"user": {
+    "id": Integer,
+    "username": String,
+    "email": String
+}
+```
+Failed call (username already taken):
+```bash
+{
+    "message": "409: Username taken",
+    "code" 409
+}
+```
+
 ### GET /user/{username}
 Description: Return information about the user from their username, including their account details and parking settings.  
 **{username}**: String
@@ -57,10 +76,69 @@ Successful call:
     "size": "medium"
 }
 ```
-Failed call:  
+Failed call (user doesn't exist):  
 ```bash
 {
-    "error": "401: Username not found"
+    "message": "404: Username not found",
+    "code": 404
+}
+```
+
+### POST /user/login
+Description: Send a request with user's username and password to database to authenticate user.
+
+Parameters for login are queries:
+- {username}: String
+- {password}: String
+
+Failed call (can't authenticate user):
+```bash
+{
+    "message": "401: Invalid credentials",
+    "code": 401
+}
+```
+
+### PUT /user/update/{username}
+Description: Update user's account information or parking preferences in the database.
+**{username}**: String
+
+JSON request form of parameters able to be updated:
+```bash 
+"user": {
+    "username": String,
+    "email": String
+},
+"parking_preferences": {
+    "max_range": Integer,
+    "max_hourly": Integer,
+    "size": String
+}
+```
+Failed call (username already taken):
+```bash
+{
+    "message": "409: Username taken",
+    "code" 409
+}
+```
+Failed call (user doesn't exist): 
+```bash
+{
+    "message": "404: Username not found",
+    "code": 404
+}
+```
+
+### DELETE /user/{username}
+Description: Delete user from database.  
+**{username}**: String
+
+Failed call (user doesn't exist):
+```bash
+{
+    "message": "404: Username not found",
+    "code": 404
 }
 ```
 
