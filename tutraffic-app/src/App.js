@@ -1,48 +1,28 @@
 import logo from './logo.svg';
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import io from 'socket.io-client';
 
 function App() {
   // store message
-  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState([]);
 
-  // receive server message using socket.io
+  // fetch message from backend
   useEffect(() => {
-    const socket = io('http://server-address');
-
-    socket.on('message', data => {
-      setMessages([...messages, data]);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-
-  }, [messages]);
+    fetch('http://localhost:5000/profile')
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(`Received message from server: ${data.about}`);
+        setMessage(data.about);
+      })
+      .catch((error) => {
+        console.error(`Error fetching message from server: ${error}`);
+      });
+  }, []);
 
   return (
-    <div className="App">
       <div>
-      {messages.map((message, index) => (
-        <p key={index}>{message}</p>
-      ))}
+        <p>Message received: {message}</p>
       </div>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
   );
 }
 
