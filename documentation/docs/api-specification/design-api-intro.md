@@ -84,8 +84,8 @@ Failed call (user doesn't exist):
 }
 ```
 
-### POST /user/login
-Description: Send a request with user's username and password to database to authenticate user.
+### GET /user/login/{username}/{password}
+Description: Checks user's entered username and password with information in database to authenticate user.
 
 Parameters for login are queries:
 - {username}: String
