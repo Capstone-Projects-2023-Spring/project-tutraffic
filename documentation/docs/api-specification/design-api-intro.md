@@ -1,44 +1,116 @@
 ---
 sidebar_position: 1
-description: What should be in this section.
 ---
 
 Design Document - Part II API
 =============================
 
-**Purpose**
+## Front-end
 
-This Design Document gives the complete design of the software implementation. This information should be in structured comments (e.g. Javadoc) in the source files. We encourage the use of a documentation generation tool to generate a draft of your API that you can augment to include the following details.
+### Class: LoginScreen
 
-**Requirements**
+**Purpose:** 
 
-In addition to the general documentation requirements the Design Document - Part II API will contain:
+The LoginScreen class renders the login screen and accepts user input for authentication of user account. It includes a submit() method that submits user credentials for authentication when the login button is clicked, and a changeState() method that updates the component's state based on a change in user input.
 
-General review of the software architecture for each module specified in Design Document - Part I Architecture. Please include your class diagram as an important reference.
+**Data Fields:**
+- username: string - Stores the user's username.
+- password: string - Stores the user's password.
+ 
+**Methods:**
 
-**For each class define the data fields, methods.**
+`render(): void`
+- Renders the login screen.
 
-The purpose of the class.
+`submit(): void`
+- Submit user credentials including username and password data fields for authentication.
 
-The purpose of each data field.
+`changeState(): void`
+- Update the state of component when user input is changed.
 
-The purpose of each method
+### Class: HomeScreen
 
-Pre-conditions if any.
+**Purpose:** 
 
-Post-conditions if any.
+The HomeScreen class displays a map of the user's current location which will get updated with pins appearing when search parameters are entered and the submit button is clicked. It includes a submit() method that submits user inputs that are changed in the settings class and are updated with the getSettings() method. It also accepts an address entry. displayMap() is used upon submital of data to update the map.
 
-Parameters and data types
+**Data Fields:**
+- distance: float - Stores the inputted distance setting.
+- carSize: string - Stores the car size.
+- cost: float - Stores the cost input.
+- address: string - Stores the inputted address.
+ 
+**Methods:**
 
-Return value and output variables
+`render(): void`
+- Renders the home screen.
 
-Exceptions thrown\* (PLEASE see note below for details).
+`submit(): void`
+- Submit the address along with selected settings to backend for manipulation.
 
-An example of an auto-generated and then augmented API specification is here ([Fiscal Design Document 2\_API.docx](https://templeu.instructure.com/courses/106563/files/16928898?wrap=1 "Fiscal Design Document 2_API.docx") )
+`getSettings(): void`
+- Retrieve settings from settings class to update distance, carsize, and cost variables.
 
-This group developed their API documentation by hand ([Design Document Part 2 API-1\_MovieMatch.docx](https://templeu.instructure.com/courses/106563/files/16928899?wrap=1 "Design Document Part 2 API-1_MovieMatch.docx") )
+`displayMap(distance, carSize, cost, address): void`
+- Display new map based on updated settings and address.
 
-\*At the top level, or where appropriate, all exceptions should be caught and an error message that is meaningful to the user generated. It is not OK to say ("xxxx has encountered a problem and will now close (OK?)". Error messages and recovery procedures should be documented in the User’s Manual.
+### Class: Settings
+
+**Methods:**
+
+`render(): void`
+- Renders the settings page
+
+`changeInfo(): void`
+- Allows user to change their information such as email and password.
+
+## Back-end
+
+### Class: User
+
+**Data Fields:**
+- userName: string - The username of the user
+- email: string - The email of the user
+- password: string - The username of the user
+- userId: int - Unique ID associated with the user's account
+
+**Methods:**
+
+`getUser(): string`
+- Gets the username
+
+`setUser(): void`
+- Sets the username
+
+`getEmail(): string`
+- Gets the email
+
+`setEmail(): void`
+- Sets the email
+
+`setPassword(): void`
+- Sets the password
+
+`getUserId(): int`
+- Gets the userId
+
+### Class: ParkingSpot
+
+**Data Fields:**
+None
+
+**Methods:**
+
+`checkParking(): boolean`
+- Returns true of false after checking whether there is any available parking.
+
+`checkEmptySpots(): int`
+- Returns the number of available parking by checking for empty spots.
+
+`checkCars(): int`
+- Returns the total number of cars currently detected.
+
+# API
 
 ### POST /user/create
 Description: Create a user account with a JSON request.
@@ -213,4 +285,3 @@ Failed call:
     "error": "404: connection broken"
 }
 ```
-
