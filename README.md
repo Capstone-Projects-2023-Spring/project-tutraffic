@@ -12,7 +12,7 @@
 
 ## Keywords
 
-Section 002, TuTraffic, Mobile application, Web application, Embedded Systems, Raspberry pi, Parking Locator
+Section 002, TuTraffic, Web application, Embedded Systems, Raspberry Pi, Parking Locator
 
 ## Project Abstract
 
