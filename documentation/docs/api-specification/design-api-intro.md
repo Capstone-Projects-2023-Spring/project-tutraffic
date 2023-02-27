@@ -54,6 +54,16 @@ The HomeScreen class display's a map of the user's current location which will g
 `displayMap(distance, carSize, cost, address): void`
 - Display new map based on updated settings and address.
 
+### Class: Settings
+
+**Methods:**
+
+`render(): void`
+- Renders the settings page
+
+`changeInfo(): void`
+- Allows user to change their information such as email and password.
+
 ## Back-end
 
 ### Class: User
@@ -66,8 +76,23 @@ The HomeScreen class display's a map of the user's current location which will g
 
 **Methods:**
 
-`getUser(): void`
-- Returns the username
+`getUser(): string`
+- Gets the username
+
+`setUser(): void`
+- Sets the username
+
+`getEmail(): string`
+- Gets the email
+
+`setEmail(): void`
+- Sets the email
+
+`setPassword(): void`
+- Sets the password
+
+`getUserId(): int`
+- Gets the userId
 
 ### Class: ParkingSpot
 
