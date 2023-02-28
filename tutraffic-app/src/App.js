@@ -1,28 +1,42 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react'
+import axios from "axios";
 import './App.css';
-import React, { useState, useEffect } from 'react';
 
 function App() {
-  // store message
-  const [message, setMessage] = useState([]);
 
-  // fetch message from backend
-  useEffect(() => {
-    fetch('http://127.0.0.1:5000/profile')
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(`Received message from server: ${data.about}`);
-        setMessage(data.about);
-      })
-      .catch((error) => {
-        console.error(`Error fetching message from server: ${error}`);
-      });
-  }, []);
+   // store message
+  const [profileData, setProfileData] = useState([]);
+
+  // receive message
+  function getData() {
+    axios({
+      method: "GET",
+      url:"http://127.0.0.1:5000/profile",
+    })
+    .then((response) => {
+      const res =response.data
+      setProfileData(({
+        project: res.name,
+        about: res.about}))
+    }).catch((error) => {
+      if (error.response) {
+        console.log(error.response)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+        }
+    })}
 
   return (
-      <div>
-        <p>Message received: {message}</p>
-      </div>
+    <div className="App">
+      <header className="App-header">
+        <p>Profile</p><button onClick={getData}>Get data</button>
+        {profileData && <div>
+              <p>Project: {profileData.project}</p>
+              <p>About: {profileData.about}</p>
+            </div>
+        }
+      </header>
+    </div>
   );
 }
 
