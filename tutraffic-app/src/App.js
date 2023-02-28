@@ -8,7 +8,7 @@ function App() {
 
   // fetch message from backend
   useEffect(() => {
-    fetch('http://localhost:5000/profile')
+    fetch('http://127.0.0.1:5000/profile')
       .then((response) => response.json())
       .then((data) => {
         console.log(`Received message from server: ${data.about}`);

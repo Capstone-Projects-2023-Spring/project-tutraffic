@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 
 app = Flask(__name__)
 
@@ -6,7 +6,8 @@ app = Flask(__name__)
 def my_profile():
     response_body = {
         "project": "TuTraffic",
-        "about" :"Hello! New way to find parking"
+        "about": "Hello! New way to find parking"
     }
-
-    return response_body
+    response = jsonify(response_body)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
