@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import axios from "axios";
 import './App.css';
 
@@ -11,7 +11,7 @@ function App() {
   function getData() {
     axios({
       method: "GET",
-      url: "http://127.0.0.1:5000/profile",
+      url: "http://127.0.0.1:8000/profile",
     })
       .then((response) => {
         const res = response.data
@@ -36,7 +36,7 @@ function App() {
     };
     axios({
       method: "POST",
-      url: "http://127.0.0.1:5000/data",
+      url: "http://127.0.0.1:8000/data",
       headers: {
         "Content-Type": "application/json"
       },
