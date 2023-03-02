@@ -1,6 +1,9 @@
 ---
 sidebar_position: 1
+description: Design Document - Par I Architecture
 ---
+Design
+=============================
 
 **Purpose**
 
