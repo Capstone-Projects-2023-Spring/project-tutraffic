@@ -1,5 +1,7 @@
 # Generated files
 .docusaurus
+env
+__pycache__
 
 # Misc
 .DS_Store
