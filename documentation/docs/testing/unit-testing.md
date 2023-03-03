@@ -125,19 +125,32 @@ The test assignee will accept or reject the appearance of the home screen accord
 	Case 2: A returning user session.
 	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map. Additionally, the home screen changes its appearance and behavior according to persistent data such as the user's favorite locations and settings.
 
-#### **test_changeInfo()**
-Renders the settings dialogue and verifies the client-side sanitation of settings transactions.
+#### **test_changeEmail()**
+Verifies that the system can change the email address associated with a user's account to another email address.
 
-The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
+	Case 1: The user changes their email address to a new, valid address.
+	Expected Result: Reading the user's current email address only returns the new address.
 
-	Case 1: The user opens the settings dialogue.
-	Expected Result: The home screen display is correct according to each settings field.
+	Case 2: The user changes their email address to an improperly formatted address, for example illegal characters.
+	Expected Result: The user's email address is not changed, and an error message is returned explaining that the address is invalid.
 
-	Case 2...16: The user changes the distance, car size, cost, or address setting to a valid value (15 total combinations).
-	Expected Result: The home screen correctly represents the latest settings.
+	Case 3: The user changes their email address to a address that is already associated with another account.
+	Expected Result: The user's email address is not changed, and an error message is returned explaining that the address is invalid.
 
-	Case 17...31: The user changes the distance, car size, cost, or address to an invalid value (15 total combinations).
-	Expected Result: A dialogue appears on the home screen that rejects the change and displays a message to the user that helps explain why.
+	Case 4: The user submits their current email address.
+	Expected Result: The user's email address is not changed, and an error message is returned explaining that the address is identical to the current address.
+
+#### **test_changePassword()**
+Verifies that the system can change the password used to access a user's account.
+
+	Case 1: The user changes their password to a new, valid password.
+	Expected Result: Only the new password can be entered to login to the user's account.
+
+	Case 2: The user changes their password to an improperly formatted password, for example due to incorrect length.
+	Expected Result: The user's password is not changed, and an error message is returned explaining that the password is invalid.
+
+	Case 3: The user submits their current password.
+	Expected Result: The user's password is not changed, and an error message is returned explaining that the password is identical to the current password.
 
 ## Back-end Unit Tests
 
@@ -199,10 +212,10 @@ Tests the system's capability to count the number of cars in a test image.
 	Case 7: there are 3 cars, 1 of which is separated from the others by another object.
 	Expected Result: Returns 3.
 
-### User Accounts API
+### Server REST API
 
-#### **test_create_user()**
-Tests the addition of a user account to the server. First, a request is made to add a user to the test server, then the test server is queried to check for the existence of a user with the matching fields (including _username_, _email_, _id_).
+#### **test_post_user_create()**
+Tests the addition of a user account to the server, using POST /user/create. First, a request is made to add a user to the test server, then the test server is queried to check for the existence of a user with the matching fields (including _username_, _email_, _id_).
 
 	Case 1: The username does not match an existing account on the server.
 	Expected Result: A new user exists on the server with matching fields.
@@ -210,8 +223,8 @@ Tests the addition of a user account to the server. First, a request is made to 
 	Case 2: The username matches an existing account on the server.
 	Expected Result: The server responds with an error message indicating that the user already exists.
 
-#### **test_get_user_info()**
-Verifies the retrieval of account information and settings by username. A test user is read from a test accounts database.
+#### **test_get_user()**
+Verifies the retrieval of account information and settings by username, using GET /user/{username}. A test user is read from a test accounts database.
 
 	Case 1: An existing user.
 	Expected Result: The user account information and settings match a deep copy of the existing user's information created prior to execution.
@@ -219,8 +232,8 @@ Verifies the retrieval of account information and settings by username. A test u
 	Case 2: An incorrect username.
 	Expected Result: The server reports that the username is invalid.
 
-#### **test_login()**
-Tests password-based authentication. Test username-password pairs are checked against a test account database.
+#### **test_get_user_login()**
+Tests password-based authentication using GET /user/login/{username}/{password}. Test username-password pairs are checked against a test account database.
 
 	Case 1: The username and password both match an account.
 	Expected Result: The user is authenticated.
@@ -237,8 +250,8 @@ Tests password-based authentication. Test username-password pairs are checked ag
 	Case 5: The username and password do not match.
 	Expected Result: The server reports invalid credentials.
 
-#### **test_update_user()**
-Tests updates to user account information. The test users are checked against a test accounts database.
+#### **test_put_user_update()**
+Tests updates to user account information, using PUT /user/update/{username}. The test users are checked against a test accounts database.
 
 	Case 1: The username matches an account.
 	Expected Result: The user's account details and settings reflect the changes.
@@ -247,7 +260,7 @@ Tests updates to user account information. The test users are checked against a 
 	Expected Result: The server rejects the changes and reports that the username is invalid.
 
 #### **test_delete_user()**
-Tests the deletion of a user from the server identified by their username. The test users are checked against a test accounts database.
+Tests the deletion of a user from the server identified by their username, using DELETE /user/{username}. The test users are checked against a test accounts database.
 
 	Case 1: The username matches an account.
 	Expected Result: The user is removed from the server and can no longer be found.
@@ -255,9 +268,48 @@ Tests the deletion of a user from the server identified by their username. The t
 	Case 2: The username does not match an account.
 	Expected Result: The server reports that the username is invalid.
 
+#### **test_get_parking_available()**
+Tests the ability to check for one or more available parking spots at a location, using GET /parking/available/{location}. The boolean value is checked against test parking-location data.
+
+	Case 1: There are 0 parking spots.
+	Expected Result: Returns false.
+
+	Case 2: There is 1 parking spot.
+	Expected Result: Returns true.
+
+	Case 3: There are 2 parking spots.
+	Expected Result: Returns true.
+
+	Case 4: The location ID is invalid.
+	Expected Result: The request returns an error message explaining that the request failed to gather the data.
+
+#### **test_get_parking_total_spots()**
+Tests the retrieval of the number of available parking spots at a location, using GET /parking/totalSpots/{location}. The number is checked against test parking-location data.
+
+	Case 1: There are 0 parking spots.
+	Expected Result: The request returns 0.
+
+	Case 2: There is 1 parking spot.
+	Expected Result: The request returns 1.
+
+	Case 3: The location ID is invalid.
+	Expected Result: The request returns an error message explaining that the request failed to gather the data.
+
+#### **test_get_parking_total_cars()**
+Tests the retrieval of the number of cars at a location, using GET /parking/totalCars/{location}. The number is checked against test parking-location data.
+
+	Case 1: The are no cars.
+	Expected Result: The request returns 0.
+
+	Case 2: The is 1 car.
+	Expected Result: The request returns 1.
+
+	Case 3: The location ID is invalid.
+	Expected Result: The request returns an error message explaining that the request failed to gather the data.
+
 ### Raspbery Pi API
 
-#### **test_create_node()**
+#### **test_post_create_node()**
 Tests the addition of a node to the server. First, a request is made to add a test node to the test server and associated it with a location ID, then the connection is verified.
 
 	Case 1: The location ID does not exist, the location ID is valid, and the credentials are correct.
@@ -272,7 +324,7 @@ Tests the addition of a node to the server. First, a request is made to add a te
 	Case 3: The location ID already exists on the server.
 	Expected Result: The connection fails. The server reports that the location is invalid.
 
-#### **test_update_location()**
+#### **test_put_update_location()**
 Tests the sending of updates from node to server. After each request completes, the test server, containing test locations, is queried to determine whether the update has completed correctly.
 
 	Case 1: Location 1 is updated from 1 spots to 2 spots.
@@ -290,7 +342,7 @@ Tests the sending of updates from node to server. After each request completes, 
 	Case 5: A non-existing location is updated.
 	Expected Result: The location does not exist on the server, and the server reports that the location is invalid.
 
-#### **test_delete_node()**
+#### **test_delete_location()**
 Tests the removal of a node from the server. First, a request is made to remove the test node associated with a location from ID the server, then the broken connection and its cause are verified.
 
 	Case 1: The node exists on the server and the credentials are valid.
