@@ -15,6 +15,130 @@ Some functions of the front-end will be verified manually:
 
 Manual testing activities will be documented in Jira.
 
+## Front-end Unit Tests
+
+### Class LoginScreen Tests
+#### **test_render()**
+Renders the login screen and loads a test User object.
+
+The test assignee will accept or reject the appearance of the login screen according to the acceptance criteria, which may change as the project progresses.
+
+	Case 1: A new user session.
+	Expected Result: The login screen has blank dialogue boxes.
+
+	Case 2: A returning user session.
+	Expected Result: The login screen displays the correct username, and has an empty password dialogue.
+
+#### **test_submit()**
+Verifies the client-side sanitation of plaintext username and password entries, for the purpose of improving user experience. This method does not check the entries against an account database. This method does not accept arguments because it reads from the class fields _username_ and _password_.
+
+	Case 1: The username and password are both valid.
+	Expected Result: Returns the username and password.
+
+	Case 2: The username is valid, and the password is invalid.
+	Expected Result: Returns a sentinel value and signals that the password is invalid.
+
+	Case 4: The username does not match, but the password matches.
+	Expected Result: Returns false.
+
+	Case 5: The username and password are invalid.
+	Expected Result: Returns a sentinel value and signals that both the username and password are invalid.
+
+#### **test_changeState()**
+Renders the login screen component and loads a test User collection.
+
+The test assignee will accept or reject the appearance of the login screen according to the acceptance criteria, which may change as the project progresses.
+
+	Case 1: The username text changes.
+	Expected Result: The login screen dialogue updates the displayed username text.
+
+	Case 2: The password text changes.
+	Expected Result: The login screen dialogue updates the displayed password text or substitute.
+
+	Case 3: The user submits correct credentials.
+	Expected Result: The login screen displays a specific message, e.g. "Logging in,", when the user enters correct credentials.
+
+	Case 4: The user submits incorrect credentials.
+	Expected Result: The login screen displays a specific message, e.g. "Incorrect username or password," when the user enters incorrect credentials.
+
+### Class HomeScreen Tests
+#### **test_render()**
+Renders the home screen and loads a test ParkingSpot collection, map data, and Settings object.
+
+The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
+
+	Case 1: A new user session.
+	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map.
+
+	Case 2: A returning user session.
+	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map. Additionally, the home screen changes its appearance and behavior according to persistent data such as the user's favorite locations and settings.
+
+#### **test_submit()**
+Renders the home screen, loads a test Settings object, and verifies the client-side sanitation of settings for display purposes.
+
+The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
+
+	Case 1: The user views the home screen.
+	Expected Result: The home screen display is correct according to each settings field.
+
+	Case 2...16: The user changes the distance, car size, cost, or address setting to a valid value (15 total combinations).
+	Expected Result: The home screen correctly represents the latest settings.
+
+	Case 17...31: The user changes the distance, car size, cost, or address to an invalid value (15 total combinations).
+	Expected Result: A dialogue appears on the home screen that rejects the change and displays a message to the user that helps explain why.
+
+#### **test_getSettings()**
+Tests the correct retrieval of settings by matching the fields against a test Settings object.
+
+	Case 1: The Settings object does not exist.
+	Expected Result: The Settings fields match those of a test Settings object containing the default values.
+
+	Case 2: The Settings object from a returning user session exists.
+	Expected Result: The Settings fields match those of a case-specific test Settings object.
+
+	Case 3: The Settings fields are manipulated.
+	Expected Result: The Settings fields match the latest fields.
+
+#### **test_displayMap(distance, carSize, cost, address)**
+Renders the embedded map according to a test Settings object, ParkingSpot collection, and test map data.
+
+The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
+
+	Case 1: A new user views the map.
+	Expected Result: The map area and pinned ParkingSpots fit the Settings criteria.
+
+	Case 2: The Settings fields are manipulated to correct values.
+	Expected Result: The map area fits the latest fields. ParkingSpots are pinned or removed according to those fields.
+
+	Case 3: The Settings fields are valid, but there are no valid ParkingSpots.
+	Expected Result: The component notifies the user that there are no valid ParkingSpots.
+
+### Class Settings Tests
+#### **test_render()**
+Renders the settings dialogue, and verifies that each setting can be manipulated by the user.
+
+The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
+
+	Case 1: A new user session.
+	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map.
+
+	Case 2: A returning user session.
+	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map. Additionally, the home screen changes its appearance and behavior according to persistent data such as the user's favorite locations and settings.
+
+#### **test_changeInfo()**
+Renders the settings dialogue and verifies the client-side sanitation of settings transactions.
+
+The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
+
+	Case 1: The user opens the settings dialogue.
+	Expected Result: The home screen display is correct according to each settings field.
+
+	Case 2...16: The user changes the distance, car size, cost, or address setting to a valid value (15 total combinations).
+	Expected Result: The home screen correctly represents the latest settings.
+
+	Case 17...31: The user changes the distance, car size, cost, or address to an invalid value (15 total combinations).
+	Expected Result: A dialogue appears on the home screen that rejects the change and displays a message to the user that helps explain why.
+
 ## Back-end Unit Tests
 
 ### Class ParkingSpot Tests
@@ -177,127 +301,3 @@ Tests the removal of a node from the server. First, a request is made to remove 
 
 	Case 3: The node exists on the server, but the credentials are invalid.
 	Expected Result: The connection succeeds.
-
-## Front-end Unit Tests
-
-### Class LoginScreen Tests
-#### **test_render()**
-Renders the login screen and loads a test User object.
-
-The test assignee will accept or reject the appearance of the login screen according to the acceptance criteria, which may change as the project progresses.
-
-	Case 1: A new user session.
-	Expected Result: The login screen has blank dialogue boxes.
-
-	Case 2: A returning user session.
-	Expected Result: The login screen displays the correct username, and has an empty password dialogue.
-
-#### **test_submit()**
-Verifies the client-side sanitation of plaintext username and password entries, for the purpose of improving user experience. This method does not check the entries against an account database. This method does not accept arguments because it reads from the class fields _username_ and _password_.
-
-	Case 1: The username and password are both valid.
-	Expected Result: Returns the username and password.
-
-	Case 2: The username is valid, and the password is invalid.
-	Expected Result: Returns a sentinel value and signals that the password is invalid.
-
-	Case 4: The username does not match, but the password matches.
-	Expected Result: Returns false.
-
-	Case 5: The username and password are invalid.
-	Expected Result: Returns a sentinel value and signals that both the username and password are invalid.
-
-#### **test_changeState()**
-Renders the login screen component and loads a test User collection.
-
-The test assignee will accept or reject the appearance of the login screen according to the acceptance criteria, which may change as the project progresses.
-
-	Case 1: The username text changes.
-	Expected Result: The login screen dialogue updates the displayed username text.
-
-	Case 2: The password text changes.
-	Expected Result: The login screen dialogue updates the displayed password text or substitute.
-
-	Case 3: The user submits correct credentials.
-	Expected Result: The login screen displays a specific message, e.g. "Logging in,", when the user enters correct credentials.
-
-	Case 4: The user submits incorrect credentials.
-	Expected Result: The login screen displays a specific message, e.g. "Incorrect username or password," when the user enters incorrect credentials.
-
-### Class HomeScreen Tests
-#### **test_render()**
-Renders the home screen and loads a test ParkingSpot collection, map data, and Settings object.
-
-The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
-
-	Case 1: A new user session.
-	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map.
-
-	Case 2: A returning user session.
-	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map. Additionally, the home screen changes its appearance and behavior according to persistent data such as the user's favorite locations and settings.
-
-#### **test_submit()**
-Renders the home screen, loads a test Settings object, and verifies the client-side sanitation of settings for display purposes.
-
-The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
-
-	Case 1: The user views the home screen.
-	Expected Result: The home screen display is correct according to each settings field.
-
-	Case 2...16: The user changes the distance, car size, cost, or address setting to a valid value (15 total combinations).
-	Expected Result: The home screen correctly represents the latest settings.
-
-	Case 17...31: The user changes the distance, car size, cost, or address to an invalid value (15 total combinations).
-	Expected Result: A dialogue appears on the home screen that rejects the change and displays a message to the user that helps explain why.
-
-#### **test_getSettings()**
-Tests the correct retrieval of settings by matching the fields against a test Settings object.
-
-	Case 1: The Settings object does not exist.
-	Expected Result: The Settings fields match those of a test Settings object containing the default values.
-
-	Case 2: The Settings object from a returning user session exists.
-	Expected Result: The Settings fields match those of a case-specific test Settings object.
-
-	Case 3: The Settings fields are manipulated.
-	Expected Result: The Settings fields match the latest fields.
-
-#### **test_displayMap(distance, carSize, cost, address)**
-Renders the embedded map according to a test Settings object, ParkingSpot collection, and test map data.
-
-The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
-
-	Case 1: A new user views the map.
-	Expected Result: The map area and pinned ParkingSpots fit the Settings criteria.
-
-	Case 2: The Settings fields are manipulated to correct values.
-	Expected Result: The map area fits the latest fields. ParkingSpots are pinned or removed according to those fields.
-
-	Case 3: The Settings fields are valid, but there are no valid ParkingSpots.
-	Expected Result: The component notifies the user that there are no valid ParkingSpots.
-
-### Class Settings Tests
-#### **test_render()**
-Renders the settings dialogue, and verifies that each setting can be manipulated by the user.
-
-The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
-
-	Case 1: A new user session.
-	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map.
-
-	Case 2: A returning user session.
-	Expected Result: The home screen displays the default menu dialogues and elements, including the settings dialogue and map. Additionally, the home screen changes its appearance and behavior according to persistent data such as the user's favorite locations and settings.
-
-#### **test_changeInfo()**
-Renders the settings dialogue and verifies the client-side sanitation of settings transactions.
-
-The test assignee will accept or reject the appearance of the home screen according to the acceptance criteria, which may change as the project progresses.
-
-	Case 1: The user opens the settings dialogue.
-	Expected Result: The home screen display is correct according to each settings field.
-
-	Case 2...16: The user changes the distance, car size, cost, or address setting to a valid value (15 total combinations).
-	Expected Result: The home screen correctly represents the latest settings.
-
-	Case 17...31: The user changes the distance, car size, cost, or address to an invalid value (15 total combinations).
-	Expected Result: A dialogue appears on the home screen that rejects the change and displays a message to the user that helps explain why.
