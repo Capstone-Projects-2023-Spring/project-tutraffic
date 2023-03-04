@@ -11,7 +11,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get('/profile')
+@app.get("/profile")
 def my_profile():
     response_body = {
         "name": "TuTraffic",
@@ -20,7 +20,7 @@ def my_profile():
     }
     return response_body
 
-@app.post('/data')
+@app.post("/data")
 async def receive_data(request: Request):
     received_data = await request.json()
     print(received_data)

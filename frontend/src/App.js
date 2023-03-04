@@ -8,10 +8,10 @@ function App() {
   const [profileData, setProfileData] = useState([]);
 
   // receive message
-  function getData() {
+  const getData = () => {
     axios({
       method: "GET",
-      url: "http://127.0.0.1:8000/profile",
+      url: "http://localhost:8000/profile",
     })
       .then((response) => {
         const res = response.data
@@ -27,16 +27,16 @@ function App() {
           console.log(error.response.headers)
         }
       })
-  }
+  };
 
-  function sendData() {
+  const sendData = () => {
     const data = {
       name: "tutraffic",
       email: "tutraffic@temple.edu"
     };
     axios({
       method: "POST",
-      url: "http://127.0.0.1:8000/data",
+      url: "http://localhost:8000/data",
       headers: {
         "Content-Type": "application/json"
       },
@@ -48,7 +48,7 @@ function App() {
       .catch((error) => {
         console.log(error.response);
       });
-  }
+  };
 
   return (
     <div className="App">
