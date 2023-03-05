@@ -71,7 +71,7 @@ section Construction Phase
 - R3: A user should be able to delete their account.
 
 **F4**: Raspberry Pi communication with server
-- R1: Raspberry Pi camera feed sent to datastore.
+- R1: Raspberry Pi measured parking spot data sent to the datastore.
 - R2: Raspberry Pi can communicate its existence to the server.
 
 ## Milestone Demo 2
