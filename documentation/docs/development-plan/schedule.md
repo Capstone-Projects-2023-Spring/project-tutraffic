@@ -79,7 +79,6 @@ section Construction Phase
 - R1: Integrates F1 and F2 together.
 - R2: Machine learning algorithms should also be able to detect street parking.
 - R3: Improved accuracy of detection to >= 50%
-- R4: Images are sent from Raspberry Pi node and processed.
 
 **F6**: Parking Preferences Consideration
 - R1: User can save their preferred parking lot or street.
