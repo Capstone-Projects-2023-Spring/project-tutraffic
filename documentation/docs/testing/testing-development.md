@@ -98,10 +98,9 @@ it('renders correctly', () => {
 
 ### **Run Back-end Tests**
 
-Run back-end tests using pytest from the commandline, within the backend directory.
+Run back-end tests using pytest from the commandline.
 ```
-$ cd backend # From the repository root directory, set the working directory to the back end.
-$ pytest	# Runs Python scripts ending in "_test.py"
+$ pytest	# Runs Python scripts ending in "_test.py" in all directories, including backend RaspberryPi.
 ```
 
 ### **Run Front-end Tests**
