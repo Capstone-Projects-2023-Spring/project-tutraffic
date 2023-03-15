@@ -21,9 +21,14 @@ public class BackendController {
         List<User> users = userRepository.findAll();
         boolean exists = users.stream().anyMatch(item -> item.getEmail().equals(user.getEmail()));
 
-        // Check to see if a user with the current email is already registered
+        // Make sure the request body isn't missing any data
+        if (user.getEmail() == null || user.getPassword() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Missing data in request body.");
+        }
+
+        // Check if a user with the current email is already registered
         if (exists) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User already exists.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already in use.");
         } else {
             userRepository.save(new User(user.getEmail(), user.encryptPassword()));
             return ResponseEntity.status(HttpStatus.CREATED).body("A new user has been successfully created.");
@@ -33,23 +38,31 @@ public class BackendController {
     // Update a user's data in the database
     @PutMapping("/users/update/{id}")
     public ResponseEntity<String> updateUser(@PathVariable("id") Integer id, @RequestBody User user) {
-        Optional<User> currentData = userRepository.findById(id);
-        if (currentData.isPresent()) {
-            User newData = currentData.get();
+        List<User> users = userRepository.findAll();
+        boolean exists = users.stream().anyMatch(item -> item.getEmail().equals(user.getEmail()));
 
-            // Only update values included in the request body
-            if (user.getEmail() != null) {
-                newData.setEmail(user.getEmail());
-            }
-            if (user.getPassword() != null) {
-                newData.setPassword(user.encryptPassword());
-            }
-
-            // Save the new changes
-            userRepository.save(newData);
-            return ResponseEntity.status(HttpStatus.OK).body("User with ID: " + id + " has been updated.");
+        // Check if a user with the new email is already being used
+        if (exists) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("No fields updated. Email already in use.");
         } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("User with ID:" + id + " does not exist.");
+            Optional<User> currentData = userRepository.findById(id);
+            if (currentData.isPresent()) {
+                User newData = currentData.get();
+
+                // Only update values included in the request body
+                if (user.getEmail() != null) {
+                    newData.setEmail(user.getEmail());
+                }
+                if (user.getPassword() != null) {
+                    newData.setPassword(user.encryptPassword());
+                }
+
+                // Save the new changes
+                userRepository.save(newData);
+                return ResponseEntity.status(HttpStatus.OK).body("User with ID: " + id + " has been updated.");
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("User with ID: " + id + " does not exist.");
+            }
         }
     }
 
