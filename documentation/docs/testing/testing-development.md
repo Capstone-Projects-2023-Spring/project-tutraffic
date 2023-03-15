@@ -13,7 +13,7 @@ The back-end testing environment requires:
 3. The [Starlette TestClient](https://www.starlette.io/testclient/) module is included with FastAPI, which is a part of the system enviornment.
 4. Additional requirements, including [pytest](https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest), can be installed from the commandline using pip:
 
-	```$ pip install -r requirements/development.txt```
+	```$ pip install -r backend/requirements/development.txt```
 
 #### **Front-end Requirements**
 The frontend testing environment requires:
