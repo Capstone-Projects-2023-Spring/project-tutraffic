@@ -7,7 +7,7 @@ This document describes how to setup and run the testing environment for the TuT
 ### **Software Requirements**
 
 #### **Node Back-end Requirements**
-The back-end testing environment requires:
+The node back-end testing environment requires:
 1. The [python3](https://www.python.org/downloads/) interpreter.
 2. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is included with the latest version of Python 3.
 3. Additional requirements, including [pytest](https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest), can be installed from the commandline using pip:
@@ -37,10 +37,9 @@ Follow these two conventions when naming Python test scripts and methods:
 	/example/src/script.py		# This script is being tested.
 	/example/src/script_test.py	# This script tests the above script.
 	```
-2. Use the name of the tested Python method, prefixed with "test_".
+2. Prefix test methods with "test_".
 	```
-	def foo( bar ):	# This method is being tested.
-	def test_foo():	# This method tests the above method.
+	def test_foo():	# This is an example test method declaration.
 	```
 
 ### **Writing Front-end Tests**
@@ -53,10 +52,9 @@ Follow these two conventions when naming JavaScript test scripts and methods:
 	/example/src/component.js		// This component is being tested.
 	/example/src/component.test.js	// This script tests the above component.
 	```
-2. Include the name of the class or method in the `name` parameter of the Jest method call, prefixed with "test".
+2. Describe the test using name of the class or method in the `name` parameter of the Jest method call.
 	```
-	function foo( bar )		// This method is being tested.
-	test('test_foo', (parameters) => expression)	// This call to test tests the above method.
+	test('test case 1', (parameters) => expression)	// This is an example test() method call in Jest.
 	```
 
 #### **Writing Snapshot Tests**
@@ -89,14 +87,14 @@ it('renders correctly', () => {
 
 ## **Running Tests**
 
-### **Run Node Back-end Tests**
+### **Running Node Back-end Tests**
 
 Run node back-end tests using pytest from the commandline.
 ```
 $ pytest	# Runs Python scripts ending in "_test.py" in all directories.
 ```
 
-### **Run Front-end Tests**
+### **Running Front-end Tests**
 
 Run front-end tests using Jest via npm from the commandline, within the frontend directory.
 
