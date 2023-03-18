@@ -1,9 +1,5 @@
-#############################################
-# Object detection - YOLO - OpenCV
-# Author : Arun Ponnusamy   (July 16, 2018)
-# Website : http://www.arunponnusamy.com
-############################################
-
+# run command: python yolo_opencv.py --image (image path) 
+# --config yolov3.cfg --weights yolov3.weights --classes yolov3.txt
 
 import cv2
 import argparse
