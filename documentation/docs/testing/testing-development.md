@@ -12,7 +12,7 @@ The back-end testing environment requires:
 2. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is included with the latest version of Python 3.
 3. Additional requirements, including [pytest](https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest), can be installed from the commandline using pip:
 
-	```$ pip install -r backend/requirements/development.txt```
+	```$ pip install -r testing/python/requirements.txt```
 
 #### **Front-end Requirements**
 The frontend testing environment requires:
