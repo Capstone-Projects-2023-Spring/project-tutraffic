@@ -1,9 +1,9 @@
 import React from 'react'
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 
 const containerStyle = {
-    width: '100vh',
-    height: '100vh'
+    width: '100%',
+    height: '95vh'
 };
 
 const center = {
@@ -11,22 +11,51 @@ const center = {
     lng: -75.155
 };
 
+const markers = [
+    {
+        position: { lat: 39.9821509161337, lng: -75.15208878141173 },
+        options: {
+            label: {
+                text: '0',
+                color: 'white',
+                fontSize: '1rem',
+            }
+        }
+    },
+    {
+        position: { lat: 39.98019995995171, lng: -75.15170180245298 },
+        options: {
+            label: {
+                text: '-1',
+                color: 'white',
+                fontSize: '1rem',
+            }
+        }
+    }
+];
 
 export default function Home() {
 
     return (
-        <LoadScript
-            googleMapsApiKey="EMPTY"
-        >
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={10}
+        <div>
+            <LoadScript
+                googleMapsApiKey="API_KEY_HERE"
             >
-                { /* Child components, such as markers, info windows, etc. */}
-                <></>
-            </GoogleMap>
-        </LoadScript>
+                <GoogleMap
+                    mapContainerStyle={containerStyle}
+                    center={center}
+                    zoom={16}
+                >
+                    {markers.map((marker, index) => (
+                        <MarkerF
+                            key={index}
+                            position={marker.position}
+                            options={marker.options}
+                        />
+                    ))}
+                </GoogleMap>
+            </LoadScript>
+        </div>
     );
 
 }
