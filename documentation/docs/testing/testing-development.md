@@ -6,12 +6,11 @@ This document describes how to setup and run the testing environment for the TuT
 
 ### **Software Requirements**
 
-#### **Back-end Requirements**
+#### **Node Back-end Requirements**
 The back-end testing environment requires:
 1. The [python3](https://www.python.org/downloads/) interpreter.
 2. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is included with the latest version of Python 3.
-3. The [Starlette TestClient](https://www.starlette.io/testclient/) module is included with FastAPI, which is a part of the system enviornment.
-4. Additional requirements, including [pytest](https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest), can be installed from the commandline using pip:
+3. Additional requirements, including [pytest](https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest), can be installed from the commandline using pip:
 
 	```$ pip install -r backend/requirements/development.txt```
 
@@ -23,22 +22,16 @@ The frontend testing environment requires:
 
 ## **Writing Tests**
 
-### **Writing Back-end Tests**
-
-Testing within [FastAPI](https://fastapi.tiangolo.com/tutorial/testing/) uses the [Starlette TestClient](https://www.starlette.io/testclient/) module to simulate a client. The TestClient can use [httpx](https://www.python-httpx.org/api/) API methods.
+### **Writing Node Back-end Tests**
 
 The [pytest](https://docs.pytest.org/en/7.2.x/reference/reference.html#api-reference) module provides functionality that the built-in assert statement does not provide, such as [fixtures](https://docs.pytest.org/en/7.1.x/explanation/fixtures.html#about-fixtures).
 
-Use one of more of the following imports to access the Python modules:
+Use the following import statement in Python to access the pytest module:
 ```
-# FastAPI, Starlette Test Client
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
-# PyTest
 import pytest
 ```
 
-Follow these conventions when naming Python test scripts and methods:
+Follow these two conventions when naming Python test scripts and methods:
 1. Use the file name of the tested Python script, suffixed with "_test", and store it in the same directory.
 	```
 	/example/src/script.py		# This script is being tested.
@@ -54,7 +47,7 @@ Follow these conventions when naming Python test scripts and methods:
 
 The testing framework, including [Jest](https://jestjs.io/api) and [react-test-renderer](https://www.npmjs.com/package/react-test-renderer), is included in the frontend environment.
 
-Follow these conventions when naming JavaScript test scripts and methods:
+Follow these two conventions when naming JavaScript test scripts and methods:
 1. Use the file name of tested JavaScript scripts, suffixed with ".test", and store it in the same directory.
 	```
 	/example/src/component.js		// This component is being tested.
@@ -66,7 +59,7 @@ Follow these conventions when naming JavaScript test scripts and methods:
 	test('test_foo', (parameters) => expression)	// This call to test tests the above method.
 	```
 
-#### Writing Snapshot Tests
+#### **Writing Snapshot Tests**
 
 [Snapshots](https://jestjs.io/docs/snapshot-testing) are files representing rendered React components. Tests can be created that compare a snapshot generated during testing with a reference snapshot.
 
@@ -96,11 +89,11 @@ it('renders correctly', () => {
 
 ## **Running Tests**
 
-### **Run Back-end Tests**
+### **Run Node Back-end Tests**
 
-Run back-end tests using pytest from the commandline.
+Run node back-end tests using pytest from the commandline.
 ```
-$ pytest	# Runs Python scripts ending in "_test.py" in all directories, including backend RaspberryPi.
+$ pytest	# Runs Python scripts ending in "_test.py" in all directories.
 ```
 
 ### **Run Front-end Tests**
@@ -113,7 +106,7 @@ $ cd frontend	# From the repository root directory, set the working directory to
 $ npm test	# Runs tests automatically when relevant files are changed.
 ```
 
-The `watchAll=false` Jest flag ignores the interactive prompt and runs test scripts ending in `.test.js`.
+The `watchAll=false` Jest flag skips watch mode and the interactive prompt.
 ```
 $ cd frontend # From the repository root directory, set the working directory to the front end.
 $ npm test -- --watchAll=false
@@ -126,8 +119,6 @@ $ npm test -- --watchAll=false --updateSnapshot
 ```
 
 ## Resources
-* FastAPI. Testing Tutorial. https://fastapi.tiangolo.com/tutorial/testing/
-* HTTPX. Developer Interface. https://www.python-httpx.org/api/
 * Jest.
 	* Expect. Describes methods for assertions. https://jestjs.io/docs/expect
 	* Globals. Describes methods for preparing and running tests. https://jestjs.io/docs/api
@@ -143,4 +134,3 @@ $ npm test -- --watchAll=false --updateSnapshot
 * Python. Download Python. https://www.python.org/downloads/
 * Pip documentation v23.0.1. Installation. https://pip.pypa.io/en/stable/installation/
 * React. Test Renderer. https://reactjs.org/docs/test-renderer.html
-* Starlette. Test Client. https://www.starlette.io/testclient/
