@@ -10,3 +10,4 @@ __pycache__
 .env.test.local
 .env.production.local
 .vscode
+.devcontainer
