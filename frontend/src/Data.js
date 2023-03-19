@@ -1,67 +1,41 @@
-import { useState } from 'react'
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import { useData } from './LotData';
 
-export default function Data() {
-
-  // store message
-  const [profileData, setProfileData] = useState([]);
-
-  // receive message
-  const getData = () => {
-    axios({
-      method: "GET",
-      url: "http://localhost:8000/profile",
-    })
-      .then((response) => {
-        const res = response.data
-        setProfileData(({
-          project: res.name,
-          message: res.message,
-          space: res.space
-        }))
-      }).catch((error) => {
-        if (error.response) {
-          console.log(error.response)
-          console.log(error.response.status)
-          console.log(error.response.headers)
-        }
-      })
-  };
-
-  const sendData = () => {
-    const data = {
-      name: "tutraffic",
-      email: "tutraffic@temple.edu"
-    };
-    axios({
-      method: "POST",
-      url: "http://localhost:8000/data",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      data: data
-    })
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response);
-      });
-  };
+const Data = () => {
+  const [data1, data2] = useData();
 
   return (
-      <div className="App">
-        <header className="App-header">
-          <p>Profile</p><button onClick={getData}>Get data</button>
-          {profileData && <div>
-            <p>Project: {profileData.project}</p>
-            <p>Message: {profileData.message}</p>
-            <p>Parking Space: {profileData.space}</p>
-          </div>
-          }
-          <button onClick={sendData}>Send data</button>
-        </header>
+    <div className="container mt-4">
+      <div className="row">
+        <div className="col mb-4">
+          {data1 ? (
+            <div className="card">
+              <div className="card-body">
+                <p className="card-text">Lot: {data1.name}</p>
+                <p className="card-text">Spots: {data1.spots}</p>
+              </div>
+            </div>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
       </div>
+      <div className="row">
+        <div className="col  mb-4">
+          {data2 ? (
+            <div className="card">
+              <div className="card-body">
+                <p className="card-text">Lot: {data2.name}</p>
+                <p className="card-text">Spots: {data2.spots}</p>
+              </div>
+            </div>
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
+export default Data;
