@@ -16,6 +16,12 @@ ap.add_argument('-cl', '--classes', required=True,
                 help = 'path to text file containing class names')
 args = ap.parse_args()
 
+def cropImage(Image):
+    if(Image.size !=0):
+        r = cv2.selectROI(Image)
+        #crop image
+        cropped = Image[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
+        return r, cropped
 
 def get_output_layers(net):
     
@@ -39,7 +45,8 @@ def draw_prediction(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
     cv2.putText(img, label, (x-10,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     
-image = cv2.imread(args.image)
+origionalimage = cv2.imread(args.image)
+roiDisplacement,image = cropImage(origionalimage)
 
 Width = image.shape[1]
 Height = image.shape[0]
@@ -92,15 +99,14 @@ for i in indices:
     except:
         i = i[0]
         box = boxes[i]
-    
-    x = box[0]
-    y = box[1]
+    x = int(roiDisplacement[0])+box[0]
+    y = int(roiDisplacement[1])+box[1]
     w = box[2]
     h = box[3]
-    draw_prediction(image, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
+    draw_prediction(origionalimage, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
 
-cv2.imshow("object detection", image)
+cv2.imshow("object detection", origionalimage)
 cv2.waitKey()
     
-cv2.imwrite("object-detection.jpg", image)
+cv2.imwrite("object-detection.jpg", origionalimage)
 cv2.destroyAllWindows()
