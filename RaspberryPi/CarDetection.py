@@ -11,11 +11,11 @@ def detectCars(image):
 
 if __name__ == '__main__' :
     im = cv .imread("ImageTests\parking-in-philadelphia.jpg")
-    #cropped = cropImage(im)
-    processed = preprocess(im)
+    cropped = cropImage(im)
+    processed = preprocess(cropped)
     cars = detectCars(processed)
     cnt = 0
-    imageArray = np.array(im)
+    imageArray = np.array(cropped)
     for (x,y,w,h) in cars:
         cv.rectangle(imageArray,(x,y),(x+w,y+h),(255,0,0),2)
         cnt += 1
