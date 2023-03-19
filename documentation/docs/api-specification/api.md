@@ -5,174 +5,116 @@ description: Back-End/Raspberri Pi API Documentation
 API
 =============================
 
-## REST API
+## Backend REST API
 
-### ["/user" Endpoint]
-
-### POST /user/create
+### POST /users/create
 **Description:**    
-Create a user account with a JSON request.
-
-**JSON request format:**
-```bash
-"user": {
-    "id": Integer,
-    "username": String,
-    "email": String
-}
-```
-**Failed call:**
-```bash
+Create a new user and store it in the database.
+  
+**Valid Request Body:**     
+```json
 {
-    "message": "409: Username taken",
-    "code" 409
-}
-```
-```bash
-{
-    "message": "409: Email already in use",
-    "code" 409
-}
-```
-
-### GET /user/{username}
-**Description:**    
-Return information about the user from their username including their account details. 
-
-**Parameters:**     
-- {username} String
-
-**Successful call:**
-```bash 
-"user": {
-    "id": 1,
-    "username": "joe123",
-    "email": "joesmith@gmail.com"
-}
-```
-**Failed call:**  
-```bash
-{
-    "message": "404: Username not found",
-    "code": 404
-}
-```
-
-### GET /user/login/{username}/{password}
-**Description:**    
-Checks user's entered username and password with information in database to authenticate user.
-
-**Parameters:** 
-- {username}: String
-- {password}: String
-
-**Failed call:**
-```bash
-{
-    "message": "401: Invalid credentials",
-    "code": 401
-}
-```
-
-### PUT /user/update/{username}
-**Description:**    
-Update user's account information in the database.  
-
-**Parameters:**     
-- {username} String
-
-**JSON request format:**
-```bash 
-"user": {
     "email": String,
-    "username": String,
     "password": String
 }
 ```
-**Failed call:**
-```bash
-{
-    "message": "404: Username not found",
-    "code": 404
-}
-```
-
-### DELETE /user/{username}
-**Description:**    
-Delete user from database.  
-
-**Parameters:**
-- {username}: String
-
-**Failed call:**
-```bash
-{
-    "message": "404: Username not found",
-    "code": 404
-}
-```
-
-### ["/parking" Endpoint]
-
-### GET /parking/available/{location}
-**Description:**    
-Checks whether there is any available parking.  
 
 **Successful call:**
-```bash 
-"parking": {
-    "available": true,
-}
-```
-```bash 
-"parking": {
-    "available": false,
+```json
+{
+    "status": 201,
+    "body": "A new user has been successfully created."
 }
 ```
 
 **Failed call:**
-```bash
+```json
 {
-    "message": "404: Failed to gather data for parking location",
-    "code": 404
+    "status": 409,
+    "body": "Email already in use."
 }
 ```
 
-### GET /parking/totalSpots/{location}
+```json
+{
+    "status": 400,
+    "message": "Missing data in request body."
+}
+```
+
+### PUT /users/update/{id}
 **Description:**    
-Gets the number of available parking.  
+Update a user's data in the database. 
+
+**Path Variable:**     
+- {id}: String
+
+**Valid Request Body:**     
+```json
+{
+    "email": String,
+    "password": String
+}
+```
+or
+```json
+{
+    "email": String
+}
+```
+or
+```json
+{
+    "password": String
+}
+```
 
 **Successful call:**
-```bash 
-"parking": {
-    "parkingSpots": 5,
+```json
+{
+    "status": 200,
+    "body": "User with ID: {id} has been updated."
 }
 ```
 
 **Failed call:**
-```bash
+```json
 {
-    "message": "404: Failed to gather data for parking location",
-    "code": 404
+    "status": 409,
+    "body": "No fields updated. Email already in use."
 }
 ```
 
-### GET /parking/totalCars/{location}
+```json
+{
+    "status": 409,
+    "body": "User with ID: {id} does not exist."
+}
+```
+
+### DELETE /users/delete/{id}
 **Description:**    
-Gets the total number of cars currently detected.  
+Delete an existing user from the database.  
+
+**Path Variable:**
+- {id}: String
+
+**Valid Request Body:**     
+No request body required.
 
 **Successful call:**
-```bash 
-"parking": {
-    "cars": 5,
+```json
+{
+    "status": 200,
+    "body": "User with ID: {id} has been deleted."
 }
 ```
 
 **Failed call:**
-```bash
+```json
 {
-    "message": "404: Failed to gather data for parking location",
-    "code": 404
+    "status": 409,
+    "body": "User with ID: {id} does not exist."
 }
 ```
 
