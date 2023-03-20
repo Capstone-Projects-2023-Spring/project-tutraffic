@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from "axios";
+import Navr from './Navr';
 
 export default function Data() {
 
@@ -51,6 +52,7 @@ export default function Data() {
 
   return (
       <div className="App">
+        <Navr />
         <header className="App-header">
           <p>Profile</p><button onClick={getData}>Get data</button>
           {profileData && <div>

@@ -1,5 +1,9 @@
 import React from 'react'
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import Navr from "./Navr";
+import Data from "./Data";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 
 const containerStyle = {
     width: '100%',
@@ -37,25 +41,26 @@ const markers = [
 export default function Home() {
 
     return (
-        <div>
-            <LoadScript
-                googleMapsApiKey="API_KEY_HERE"
-            >
-                <GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={center}
-                    zoom={16}
+            <div>
+                <Navr />
+                <LoadScript
+                    googleMapsApiKey="API_KEY_HERE"
                 >
-                    {markers.map((marker, index) => (
-                        <MarkerF
-                            key={index}
-                            position={marker.position}
-                            options={marker.options}
-                        />
-                    ))}
-                </GoogleMap>
-            </LoadScript>
-        </div>
+                    <GoogleMap
+                        mapContainerStyle={containerStyle}
+                        center={center}
+                        zoom={16}
+                    >
+                        {markers.map((marker, index) => (
+                            <MarkerF
+                                key={index}
+                                position={marker.position}
+                                options={marker.options}
+                            />
+                        ))}
+                    </GoogleMap>
+                </LoadScript>
+            </div>
     );
 
 }
