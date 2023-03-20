@@ -1,6 +1,7 @@
 import React from 'react'
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import { useData } from './LotData';
+import { API_KEY } from "./keys";
 
 export default function Home() {
     
@@ -43,7 +44,7 @@ export default function Home() {
     return (
         <div>
             <LoadScript
-                googleMapsApiKey="API_KEY"
+                googleMapsApiKey={API_KEY}
             >
                 <GoogleMap
                     mapContainerStyle={containerStyle}
