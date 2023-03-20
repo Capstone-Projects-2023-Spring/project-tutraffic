@@ -8,7 +8,7 @@ export const useData = () => {
     useEffect(() => {
         const fetchData1 = async () => {
             try {
-                const response = await axios.get('https://storage.googleapis.com/tutraffictest2/serc.json');
+                const response = await axios.get('https://storage.googleapis.com/parking-test-bucket/serc.json');
                 setData1(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -21,7 +21,7 @@ export const useData = () => {
     useEffect(() => {
         const fetchData2 = async () => {
             try {
-                const response = await axios.get('https://storage.googleapis.com/tutraffictest2/mong.json');
+                const response = await axios.get('https://storage.googleapis.com/parking-test-bucket/mong.json');
                 setData2(response.data);
             } catch (error) {
                 console.error('Error fetching data:', error);
