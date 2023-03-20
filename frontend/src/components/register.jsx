@@ -11,7 +11,7 @@ export const Register = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-        const response = await fetch("localhost:8080/users/create", {
+        const response = await fetch("http://127.0.0.1:8080/users/create", {
             method: "POST", // or 'PUT'
         headers: {
             "Content-Type": "application/json",
