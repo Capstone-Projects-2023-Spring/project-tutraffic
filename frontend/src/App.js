@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import Navr from "./Navr";
 import Home from "./Home";
 import Data from "./Data";
 import Login from "./components/login";
