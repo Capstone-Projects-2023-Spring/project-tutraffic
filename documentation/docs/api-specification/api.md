@@ -118,6 +118,58 @@ No request body required.
 }
 ```
 
+### GET /users/login
+**Description:**    
+Verify user login information.
+  
+**Valid Request Body:**     
+```json
+{
+    "email": String,
+    "password": String
+}
+```
+
+**Successful call:**
+```bash
+id: Integer
+```
+
+**Failed call:**
+```json
+{
+    "status": 409,
+    "body": "User with ID: {id} does not exist."
+}
+```
+
+```json
+{
+    "status": 409,
+    "body": "Incorrect password."
+}
+```
+
+### GET /users/get/{id}
+**Description:**    
+Get user email from an ID.
+  
+**Valid Request Body:**     
+No request body required.
+
+**Successful call:**
+```bash
+email: String
+```
+
+**Failed call:**
+```json
+{
+    "status": 409,
+    "body": "User with ID: {id} does not exist."
+}
+```
+
 ## Raspberri Pi API
 
 ### POST /createNode/{location}
