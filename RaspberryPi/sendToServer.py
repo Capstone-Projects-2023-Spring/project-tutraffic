@@ -5,6 +5,7 @@ import json
 from json import JSONEncoder
 import numpy as np
 import sys
+import random
 
 # permission to access GCS bucket
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'RaspberryPi/tutraffic1-92e09f8e1af7.json'
@@ -29,15 +30,18 @@ class NumpyArrayEncoder(JSONEncoder):
         return JSONEncoder.default(self, obj)
 
 def convertToJson(array):
-	convertData = {"arrayOfParkingLines": array}
-	newJson = json.dumps(convertData, cls=NumpyArrayEncoder)
-	return newJson
+	convertData = {"name": 'serc',
+		 "spots": array.size / 3,
+		 "size": random.randint(3,10)}
+	with open("RaspberryPi/serc.json", "w") as outfile:
+		json.dump(convertData, outfile)
+	return outfile
 
 def main():
 	linesArray = detectLines(sys.argv[1])
 	toSend = convertToJson(linesArray)
 	print(toSend)
-	upload('ParkingLotLines',os.path.abspath(toSend),'parking-test-bucket')
+	upload('serc.json',os.path.abspath(toSend),'parking-test-bucket')
 
 
 if __name__ == "__main__":
