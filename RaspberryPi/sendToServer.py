@@ -6,6 +6,7 @@ from json import JSONEncoder
 import numpy as np
 import sys
 import random
+from detectLines import detectLines
 
 # permission to access GCS bucket
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'RaspberryPi/tutraffic1-92e09f8e1af7.json'
@@ -41,7 +42,7 @@ def main():
 	linesArray = detectLines(sys.argv[1])
 	toSend = convertToJson(linesArray)
 	print(toSend)
-	upload('serc.json',os.path.abspath(toSend),'parking-test-bucket')
+	upload('serc.json',os.path.abspath(toSend.name),'parking-test-bucket')
 
 
 if __name__ == "__main__":
