@@ -1,0 +1,13 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Arial";
+}
+
+.page {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

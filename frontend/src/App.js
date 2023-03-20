@@ -2,6 +2,7 @@ import React from "react";
 import Navr from "./Navr";
 import Home from "./Home";
 import Data from "./Data";
+import Login from "./components/login"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export default function App() {
