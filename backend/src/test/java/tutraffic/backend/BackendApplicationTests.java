@@ -13,11 +13,6 @@ class BackendApplicationTests {
 	}
 
 	@Test
-	void fail() {
-		assertTrue(false);
-	}
-
-	@Test
 	void pass() {
 		assertTrue(true);
 	}
