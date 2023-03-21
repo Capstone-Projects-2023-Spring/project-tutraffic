@@ -16,8 +16,8 @@ export default function Navr() {
             <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/data">Data</Nav.Link>
             <NavDropdown title="Account" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/login">Login</NavDropdown.Item>
-              <NavDropdown.Item href="/register">Register</NavDropdown.Item>
+              <NavDropdown.Item href="/account/login">Login</NavDropdown.Item>
+              <NavDropdown.Item href="/account/register">Register</NavDropdown.Item>
               <NavDropdown.Item href="/account/3">Something</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="/account/4">Separated link</NavDropdown.Item>
