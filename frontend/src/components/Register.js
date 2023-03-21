@@ -29,7 +29,7 @@ export const Register = (props) => {
     }
 
         const onFormSwitch = () => {
-            navigate('/login')
+            navigate('/account/login')
     }
         return (
             <div className='auth-form-container'>
