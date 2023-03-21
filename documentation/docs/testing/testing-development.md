@@ -160,11 +160,11 @@ $ npm test -- --watchAll=false --updateSnapshot
 ```
 
 ## Resources
-* Jest. This framework runs front-end testing in JavaScript.
-	* Globals. Describes methods for preparing and running tests. https://jestjs.io/docs/api
-	* Expect. Describes methods for assertions. https://jestjs.io/docs/expect
-	* Jest CLI Options. https://jestjs.io/docs/cli
-	* Snapshot Testing Tutorial. https://jestjs.io/docs/snapshot-testing
+* Jest 27.x. This framework runs front-end testing in JavaScript.
+	* Globals. Describes methods for preparing and running tests. https://jestjs.io/docs/27.x/api
+	* Expect. Describes methods for assertions. https://jestjs.io/docs/27.x/expect
+	* Jest CLI Options. https://jestjs.io/docs/27.x/cli
+	* Snapshot Testing Tutorial. https://jestjs.io/docs/27.x/snapshot-testing
 * JUnit5. API Documentation. This framework runs server back-end testing in Java. https://junit.org/junit5/docs/current/api/
 * Nodejs.dev. How to install Node.js. https://nodejs.dev/en/learn/how-to-install-nodejs/
 * Npm Docs. Downloading and installing Node.js and npm. This sub-system runs and manages the front-end environment. https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
