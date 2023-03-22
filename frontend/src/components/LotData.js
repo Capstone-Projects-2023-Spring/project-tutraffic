@@ -1,35 +1,25 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { database } from '../firebase';
+import { ref, get } from 'firebase/database';
 
 export const useData = () => {
-    const [data1, setData1] = useState(null);
-    const [data2, setData2] = useState(null);
+  const [data1, setData1] = useState(null);
+  const [data2, setData2] = useState(null);
 
-    useEffect(() => {
-        const fetchData1 = async () => {
-            try {
-                const response = await axios.get('https://storage.googleapis.com/parking-test-bucket/serc.json');
-                setData1(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setData1(null);
-            }
-        };
-        fetchData1();
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const sercRef = ref(database, 'serc');
+      const montRef = ref(database, 'mont');
 
-    useEffect(() => {
-        const fetchData2 = async () => {
-            try {
-                const response = await axios.get('https://storage.googleapis.com/parking-test-bucket/mong.json');
-                setData2(response.data);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-                setData2(null);
-            }
-        };
-        fetchData2();
-    }, []);
+      const sercSnapshot = await get(sercRef);
+      const montSnapshot = await get(montRef);
 
-    return [data1, data2];
+      setData1(sercSnapshot.val());
+      setData2(montSnapshot.val());
+    };
+
+    fetchData();
+  }, []);
+
+  return [data1, data2];
 };

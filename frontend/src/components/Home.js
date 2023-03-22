@@ -43,7 +43,7 @@ export default function Home() {
     return (
         <div>
             <LoadScript
-                googleMapsApiKey="API_KEY"
+                googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
             >
                 <GoogleMap
                     mapContainerStyle={containerStyle}

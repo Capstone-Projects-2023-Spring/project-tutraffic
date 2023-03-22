@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import './Login.css';
+import { auth } from '../firebase';
 import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
@@ -9,10 +12,19 @@ export const Login = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const handleSubmit = (e) => {
+    const [showErrorModal, setShowErrorModal] = useState(false);
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        navigate('/home')
-    }
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            navigate('/home');
+        } catch (error) {
+            console.error('Error signing in with email and password:', error);
+            setShowErrorModal(true);
+        }
+    };
+
     const onFormSwitch = () => {
         navigate('/account/register')
     }
@@ -47,6 +59,17 @@ export const Login = (props) => {
                             Login
                         </Button>
                     </Form>
+                    <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Login Error</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>There was an error Logging to your account. Please try again.</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                     <Button
                         className="formswitch mt-3"
                         onClick={onFormSwitch}
