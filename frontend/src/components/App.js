@@ -8,14 +8,17 @@ import AccountInfo from "./AccountInfo";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export const App = () => {
+  const basename = "/tutraffic-app";
+
   return (
-    <Router>
+    <Router basename={basename}>
       <div className="App">
         <ConditionalNavr />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/data" element={<Data />} />
+          <Route path="/saved" element={<Data />} />
           <Route path="/account/login" element={<Login />} />
           <Route path="/account/register" element={<Register />} />
           <Route path="/account/info" element={<AccountInfo />} />

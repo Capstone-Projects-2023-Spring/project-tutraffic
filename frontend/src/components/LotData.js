@@ -8,8 +8,8 @@ export const useData = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const sercRef = ref(database, 'serc');
-      const montRef = ref(database, 'mont');
+      const sercRef = ref(database, 'parking/serc');
+      const montRef = ref(database, 'parking/mont');
 
       const sercSnapshot = await get(sercRef);
       const montSnapshot = await get(montRef);
