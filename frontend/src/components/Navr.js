@@ -38,26 +38,26 @@ export default function Navr() {
   return (
     <Navbar bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="/home">TuTraffic</Navbar.Brand>
+        <Navbar.Brand onClick={() => navigate('/')}>TuTraffic</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/data">Data</Nav.Link>
-            <Nav.Link href="/data">Saved</Nav.Link>
+            <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
+            <Nav.Link onClick={() => navigate('/data')}>Data</Nav.Link>
+            <Nav.Link onClick={() => navigate('/saved')}>Saved</Nav.Link>
           </Nav>
 
           {userEmail ? (
             <Nav>
               <NavDropdown title={userEmail} id="user-nav-dropdown">
-                <NavDropdown.Item href="/account/info">Account Detail</NavDropdown.Item>
+                <NavDropdown.Item onClick={() => navigate('/account/info')}>Account Detail</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleSignOut}>Logout</NavDropdown.Item>
               </NavDropdown>
             </Nav>
           ) : (
             <Nav>
-              <Nav.Link href="/account/login">Login</Nav.Link>
+              <Nav.Link onClick={() => navigate('/account/login')}>Login</Nav.Link>
             </Nav>
           )}
         </Navbar.Collapse>
