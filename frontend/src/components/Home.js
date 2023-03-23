@@ -3,8 +3,6 @@ import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import { useData } from './LotData';
 
 export default function Home() {
-    
-    const [data1, data2] = useData();
 
     const containerStyle = {
         width: '100%',
@@ -16,28 +14,27 @@ export default function Home() {
         lng: -75.155
     };
 
-    const markers = [
-        {
-            position: { lat: 39.9821509161337, lng: -75.15208878141173 },
-            options: {
-                label: {
-                    text: data1 ? data1.spots.toString() : '0',
-                    color: 'white',
-                    fontSize: '1rem',
-                }
+    const data = useData();
+    const markers = data
+        ? Object.keys(data).map((key) => {
+            const { lat, lng, spots } = data[key];
+            if (lat && lng) {
+                return {
+                    position: { lat, lng },
+                    options: {
+                        label: {
+                            text: spots.toString(),
+                            color: 'white',
+                            fontSize: '1rem',
+                        },
+                    },
+                };
+            } else {
+                // skip this marker if lat && lng not available
+                return null; 
             }
-        },
-        {
-            position: { lat: 39.98019995995171, lng: -75.15170180245298 },
-            options: {
-                label: {
-                    text: data2 ? data2.spots.toString() : '0',
-                    color: 'white',
-                    fontSize: '1rem',
-                }
-            }
-        }
-    ];
+        }).filter(marker => marker !== null)
+        : [];
 
 
     return (
