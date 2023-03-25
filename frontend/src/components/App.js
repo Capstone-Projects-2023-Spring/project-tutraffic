@@ -1,11 +1,11 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ConditionalNavr from "./ConditionalNavr";
 import Home from "./Home";
 import Data from "./Data";
 import Login from "./Login";
 import Register from "./Register";
 import AccountInfo from "./AccountInfo";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export const App = () => {
 
