@@ -6,8 +6,13 @@ export default function Home() {
 
     const containerStyle = {
         width: '100%',
-        height: '95vh'
+        height: '100%',
+        position: 'relative',
     };
+    const parentStyle = {
+        width: "100%",
+        height: "100vh",
+      };
     const data = useData();
     const [center, setCenter] = useState({ lat: 39.981, lng: -75.155 });
 
@@ -55,7 +60,7 @@ export default function Home() {
 
 
     return (
-        <div>
+        <div style={parentStyle}>
             <LoadScript
                 googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
             >
