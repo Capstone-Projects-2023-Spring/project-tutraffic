@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import { useData } from './LotData';
+import blueDot from '../images/bluecircle.png';
 
 export default function Home() {
 
@@ -65,6 +66,14 @@ export default function Home() {
                 center={center}
                 zoom={16}
             >
+                <MarkerF
+                    position={center}
+                    options={{
+                        icon: {
+                            url: blueDot,
+                        },
+                    }}
+                />
                 {markers.map((marker, index) => (
                     <MarkerF
                         key={index}
