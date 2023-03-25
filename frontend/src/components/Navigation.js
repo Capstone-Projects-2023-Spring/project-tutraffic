@@ -7,9 +7,13 @@ import { Map, FileText, Bookmark, User } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import './Navigation.css';
+import logo from '../images/logo_t.png';
 
 const Navigation = () => {
   const [windowDimension, setWindowDimension] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const navigate = useNavigate();
+  const pageTitle = "TuTraffic";
 
   useEffect(() => {
     setWindowDimension(window.innerWidth);
@@ -25,10 +29,7 @@ const Navigation = () => {
   }, []);
 
   const isMobile = windowDimension <= 640;
-
-  const navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState(null);
-
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -55,37 +56,50 @@ const Navigation = () => {
   return (
     <main className="wrapper">
       {isMobile ? (
-        <Navbar className="mobile">
-          <Nav className="justify-content-around" style={{ width: "100%" }}>
-            <Nav.Link onClick={() => navigate('/')}>
-              <Map />
-              <div>Home</div>
-            </Nav.Link>
-            <Nav.Link onClick={() => navigate('/data')}>
-              <FileText />
-              <div>Data</div>
-            </Nav.Link>
-            <Nav.Link onClick={() => navigate('/saved')}>
-              <Bookmark />
-              <div>Saved</div>
-            </Nav.Link>
-            {userEmail ? (
-              <Nav.Link onClick={() => navigate('/account/info')}>
-                <User />
-                <div>Account</div>
+        <>
+          <Navbar className="topnav">
+            <Container>
+              <Navbar.Brand>
+                <img src={logo} height="30" alt="mobile Logo" />
+                {pageTitle}
+              </Navbar.Brand>
+            </Container>
+          </Navbar>
+          <Navbar className="mobile">
+            <Nav className="justify-content-around" style={{ width: "100%" }}>
+              <Nav.Link onClick={() => navigate('/')}>
+                <Map />
+                <div>Home</div>
               </Nav.Link>
-            ) : (
-              <Nav.Link onClick={() => navigate('/account/login')}>
-                <User />
-                <div>Account</div>
+              <Nav.Link onClick={() => navigate('/data')}>
+                <FileText />
+                <div>Data</div>
               </Nav.Link>
-            )}
-          </Nav>
-        </Navbar>
+              <Nav.Link onClick={() => navigate('/saved')}>
+                <Bookmark />
+                <div>Saved</div>
+              </Nav.Link>
+              {userEmail ? (
+                <Nav.Link onClick={() => navigate('/account/info')}>
+                  <User />
+                  <div>Account</div>
+                </Nav.Link>
+              ) : (
+                <Nav.Link onClick={() => navigate('/account/login')}>
+                  <User />
+                  <div>Account</div>
+                </Nav.Link>
+              )}
+            </Nav>
+          </Navbar>
+        </>
       ) : (
         <Navbar className="navbar navbar-expand-lg navbar-light bg-light">
           <Container>
-            <Navbar.Brand onClick={() => navigate('/')}>TuTraffic</Navbar.Brand>
+            <Navbar.Brand onClick={() => navigate('/')}>
+              <img src={logo} height="30" alt="TuTraffic Logo" />
+              {pageTitle}
+            </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
@@ -103,7 +117,7 @@ const Navigation = () => {
                   </NavDropdown>
                 </Nav>
               ) : (
-                <Nav>
+                <Nav className="border">
                   <Nav.Link onClick={() => navigate('/account/login')}>Login</Nav.Link>
                 </Nav>
               )}
