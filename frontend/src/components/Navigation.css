@@ -1,36 +1,12 @@
-*,
-*::before,
-*::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
-}
-
-html {
-    box-sizing: border-box;
-}
-
-body {
-    font-size: 1.4rem;
-    font-family: sans-serif;
-}
-
-nav {
-    flex: 1;
-    align-self: flex-start;
-    padding: 1rem 3rem;
-    display: flex;
-    justify-content: space-between;
+Nav {
     align-items: center;
     background-color: white;
-    
 }
 
-nav.mobile {
+Nav.mobile {
     font-size: 0.8rem;
     position: fixed;
     width: 100vw;
     bottom: 0;
-    justify-content: center;
     z-index: 1;
 }

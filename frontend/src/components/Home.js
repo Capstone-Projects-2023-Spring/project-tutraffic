@@ -6,13 +6,10 @@ export default function Home() {
 
     const containerStyle = {
         width: '100%',
-        height: '100%',
+        height: '95vh',
         position: 'relative',
     };
-    const parentStyle = {
-        width: "100%",
-        height: "100vh",
-      };
+
     const data = useData();
     const [center, setCenter] = useState({ lat: 39.981, lng: -75.155 });
 
@@ -60,25 +57,23 @@ export default function Home() {
 
 
     return (
-        <div style={parentStyle}>
-            <LoadScript
-                googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
+        <LoadScript
+            googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
+        >
+            <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={16}
             >
-                <GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={center}
-                    zoom={16}
-                >
-                    {markers.map((marker, index) => (
-                        <MarkerF
-                            key={index}
-                            position={marker.position}
-                            options={marker.options}
-                        />
-                    ))}
-                </GoogleMap>
-            </LoadScript>
-        </div>
+                {markers.map((marker, index) => (
+                    <MarkerF
+                        key={index}
+                        position={marker.position}
+                        options={marker.options}
+                    />
+                ))}
+            </GoogleMap>
+        </LoadScript>
     );
 
 }

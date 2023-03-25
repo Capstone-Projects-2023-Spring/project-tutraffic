@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import './Navigation.css';
 
-function App() {
+const Navigation = () => {
   const [windowDimension, setWindowDimension] = useState(null);
 
   useEffect(() => {
@@ -56,7 +56,6 @@ function App() {
     <main className="wrapper">
       {isMobile ? (
         <Navbar className="mobile">
-
           <Nav className="justify-content-around" style={{ width: "100%" }}>
             <Nav.Link onClick={() => navigate('/')}>
               <Map />
@@ -84,7 +83,7 @@ function App() {
           </Nav>
         </Navbar>
       ) : (
-        <Navbar className="navbar navbar-expand-lg navbar-light bg-light fixed-top" bg="light" expand="lg">
+        <Navbar className="navbar navbar-expand-lg navbar-light bg-light">
           <Container>
             <Navbar.Brand onClick={() => navigate('/')}>TuTraffic</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -116,4 +115,4 @@ function App() {
   );
 };
 
-export default App;
+export default Navigation;
