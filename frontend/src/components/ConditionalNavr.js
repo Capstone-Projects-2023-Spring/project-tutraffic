@@ -1,7 +1,6 @@
-// ConditionalNavr.js
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Navr from './Navr';
+import Navigation from './Navigation';
 
 const ConditionalNavr = () => {
   const location = useLocation();
@@ -11,7 +10,7 @@ const ConditionalNavr = () => {
     return null;
   }
 
-  return <Navr />;
+  return <Navigation />;
 };
 
 export default ConditionalNavr;
