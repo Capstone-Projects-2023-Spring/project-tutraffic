@@ -71,13 +71,13 @@ const Navigation = () => {
                 <Map />
                 <div>Home</div>
               </Nav.Link>
-              <Nav.Link onClick={() => navigate('/data')}>
+              <Nav.Link onClick={() => navigate('/browse')}>
                 <FileText />
-                <div>Data</div>
+                <div>Browse</div>
               </Nav.Link>
-              <Nav.Link onClick={() => navigate('/saved')}>
+              <Nav.Link onClick={() => navigate('/favorite')}>
                 <Bookmark />
-                <div>Saved</div>
+                <div>Favorite</div>
               </Nav.Link>
               {userEmail ? (
                 <Nav.Link onClick={() => navigate('/account/info')}>
@@ -104,8 +104,8 @@ const Navigation = () => {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
                 <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
-                <Nav.Link onClick={() => navigate('/data')}>Data</Nav.Link>
-                <Nav.Link onClick={() => navigate('/saved')}>Saved</Nav.Link>
+                <Nav.Link onClick={() => navigate('/browse')}>Browse</Nav.Link>
+                <Nav.Link onClick={() => navigate('/favorite')}>Favorite</Nav.Link>
               </Nav>
 
               {userEmail ? (
