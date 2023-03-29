@@ -22,6 +22,9 @@ export const Login = (props) => {
         } catch (error) {
             console.error('Error signing in with email and password:', error);
             setShowErrorModal(true);
+            setTimeout(() => {
+                setShowErrorModal(false);
+            }, 2000);
         }
     };
 

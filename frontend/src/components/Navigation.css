@@ -1,0 +1,12 @@
+Nav {
+    align-items: center;
+    background-color: white;
+}
+
+Nav.mobile {
+    font-size: 0.8rem;
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+    z-index: 1;
+}
