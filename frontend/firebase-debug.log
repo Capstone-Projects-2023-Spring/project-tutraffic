@@ -1,0 +1,98 @@
+[debug] [2023-03-29T20:11:57.879Z] ----------------------------------------------------------------------
+[debug] [2023-03-29T20:11:57.882Z] Command:       /usr/local/share/nvm/versions/node/v19.5.0/bin/node /home/codespace/nvm/current/bin/firebase init hosting:github
+[debug] [2023-03-29T20:11:57.882Z] CLI Version:   11.25.2
+[debug] [2023-03-29T20:11:57.883Z] Platform:      linux
+[debug] [2023-03-29T20:11:57.883Z] Node Version:  v19.5.0
+[debug] [2023-03-29T20:11:57.883Z] Time:          Wed Mar 29 2023 20:11:57 GMT+0000 (Coordinated Universal Time)
+[debug] [2023-03-29T20:11:57.883Z] Env Overrides: GITHUB_API_URL
+[debug] [2023-03-29T20:11:57.883Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-29T20:11:58.000Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-29T20:11:58.001Z] > authorizing via signed-in user (raymondscyj@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /workspaces/project-tutraffic/frontend
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2023-03-29T20:11:58.008Z] Using project from CLI flag: tutrafficdatabase
+[debug] [2023-03-29T20:11:58.012Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tutrafficdatabase [none]
+[debug] [2023-03-29T20:11:58.323Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tutrafficdatabase 200
+[debug] [2023-03-29T20:11:58.323Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tutrafficdatabase {"projectId":"tutrafficdatabase","projectNumber":"655917325563","displayName":"tutrafficDataBase","name":"projects/tutrafficdatabase","resources":{"hostingSite":"tutrafficdatabase","realtimeDatabaseInstance":"tutrafficdatabase-default-rtdb"},"state":"ACTIVE","etag":"1_cffab805-da55-41f6-8698-54764ca6486e"}
+[info] i  Using project tutrafficdatabase (tutrafficDataBase) 
+[info] 
+=== Hosting:github Setup
+[info] 
+[info] i  Detected a .git folder at /workspaces/project-tutraffic 
+[info] i  Authorizing with GitHub to upload your service account to a GitHub repository's secrets store. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://github.com/login/oauth/authorize?client_id=89cf50f02ac6aaed3484&state=1061920555&redirect_uri=http%3A%2F%2Flocalhost%3A9005&scope=read%3Auser%20repo%20public_repo
+[info] 
+[info] Waiting for authentication...
+[debug] [2023-03-29T20:13:09.504Z] ----------------------------------------------------------------------
+[debug] [2023-03-29T20:13:09.506Z] Command:       /usr/local/share/nvm/versions/node/v19.5.0/bin/node /home/codespace/nvm/current/bin/firebase init hosting:github
+[debug] [2023-03-29T20:13:09.506Z] CLI Version:   11.25.2
+[debug] [2023-03-29T20:13:09.506Z] Platform:      linux
+[debug] [2023-03-29T20:13:09.506Z] Node Version:  v19.5.0
+[debug] [2023-03-29T20:13:09.507Z] Time:          Wed Mar 29 2023 20:13:09 GMT+0000 (Coordinated Universal Time)
+[debug] [2023-03-29T20:13:09.507Z] Env Overrides: GITHUB_API_URL
+[debug] [2023-03-29T20:13:09.507Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-03-29T20:13:09.573Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-03-29T20:13:09.574Z] > authorizing via signed-in user (raymondscyj@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /workspaces/project-tutraffic/frontend
+
+Before we get started, keep in mind:
+
+  * You are currently outside your home directory
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2023-03-29T20:13:09.578Z] Using project from CLI flag: tutrafficdatabase
+[debug] [2023-03-29T20:13:09.581Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/tutrafficdatabase [none]
+[debug] [2023-03-29T20:13:09.854Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/tutrafficdatabase 200
+[debug] [2023-03-29T20:13:09.855Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/tutrafficdatabase {"projectId":"tutrafficdatabase","projectNumber":"655917325563","displayName":"tutrafficDataBase","name":"projects/tutrafficdatabase","resources":{"hostingSite":"tutrafficdatabase","realtimeDatabaseInstance":"tutrafficdatabase-default-rtdb"},"state":"ACTIVE","etag":"1_cffab805-da55-41f6-8698-54764ca6486e"}
+[info] i  Using project tutrafficdatabase (tutrafficDataBase) 
+[info] 
+=== Hosting:github Setup
+[info] 
+[info] i  Detected a .git folder at /workspaces/project-tutraffic 
+[info] i  Authorizing with GitHub to upload your service account to a GitHub repository's secrets store. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://github.com/login/oauth/authorize?client_id=89cf50f02ac6aaed3484&state=693178327&redirect_uri=http%3A%2F%2Flocalhost%3A9005&scope=read%3Auser%20repo%20public_repo
+[info] 
+[info] Waiting for authentication...
