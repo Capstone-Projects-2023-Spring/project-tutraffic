@@ -1,0 +1,29 @@
+.settings {
+  background-color: gray;
+  margin-left: 20px;
+  max-width: 800px;
+  padding: 20px;
+}
+  
+.section {
+  background-color: aqua;
+  display: flex;
+  padding-bottom: 10px;
+}
+  
+.change-btn {
+  background-color: greenyellow;
+  padding-top: 15px;
+}
+
+.data-container {
+  background-color: coral;
+  width: 100%;
+}
+
+.delete-btn {
+  background-color: coral;
+  display: flex;
+  justify-content: flex-end;
+}
+  
