@@ -7,6 +7,7 @@ import Login from "./Login";
 import Register from "./Register";
 import AccountInfo from "./AccountInfo";
 import Favorite from "./Favorite";
+import ParkingLot from './ParkingLot';
 
 export const App = () => {
 
@@ -22,6 +23,7 @@ export const App = () => {
           <Route path="/account/login" element={<Login />} />
           <Route path="/account/register" element={<Register />} />
           <Route path="/account/info" element={<AccountInfo />} />
+          <Route path="/parkinglot/:key" element={<ParkingLot />} />
         </Routes>
       </div>
     </Router>

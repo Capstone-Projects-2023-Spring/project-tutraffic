@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
-import { useData } from './LotData';
+import { useNavigate } from 'react-router-dom';
+import { LotData } from './LotData';
 import blueDot from '../images/bluecircle.png';
+import streetIcon from '../images/streetParking.png';
+import lotIcon from '../images/lotParking.png';
 
 export default function Home() {
+    const navigate = useNavigate();
+    const handleMarkerClick = (key) => {
+        navigate(`/parkinglot/${key}`);
+    };
 
     const containerStyle = {
         width: '100%',
@@ -11,7 +18,28 @@ export default function Home() {
         position: 'relative',
     };
 
-    const data = useData();
+    const options = {
+        styles: [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [
+                    { visibility: "off" }
+                ]
+            },
+            {
+                "featureType": "landscape",
+                "elementType": "labels",
+                "stylers": [
+                    { visibility: "off" }
+                ]
+            }
+        ],
+        mapTypeControl: false,
+        streetViewControl: false
+    };
+
+    const data = LotData();
     const [center, setCenter] = useState({ lat: 39.981, lng: -75.155 });
 
     useEffect(() => {
@@ -36,7 +64,7 @@ export default function Home() {
 
     const markers = data
         ? Object.keys(data).map((key) => {
-            const { lat, lng, spots } = data[key];
+            const { lat, lng, spots, street } = data[key];
             if (lat && lng) {
                 return {
                     position: { lat, lng },
@@ -44,9 +72,13 @@ export default function Home() {
                         label: {
                             text: spots.toString(),
                             color: 'white',
-                            fontSize: '1rem',
+                            fontSize: '1.2rem',
+                        },
+                        icon: {
+                            url: street ? streetIcon : lotIcon,
                         },
                     },
+                    
                 };
             } else {
                 // skip this marker if lat && lng not available
@@ -64,7 +96,8 @@ export default function Home() {
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
-                zoom={16}
+                zoom={17}
+                options={options}
             >
                 <MarkerF
                     position={center}
@@ -78,6 +111,7 @@ export default function Home() {
                     <MarkerF
                         key={index}
                         position={marker.position}
+                        onClick={() => handleMarkerClick(Object.keys(data)[index])}
                         options={marker.options}
                     />
                 ))}
