@@ -11,25 +11,15 @@ if __name__ == '__main__':
     cam_port = 0
     cam = cv.VideoCapture(cam_port)
 
-    # reading the input using the camera
+    # reading the input using the camera, result true = succesful
     result, image = cam.read()
 
-    # If image will detected without any error,
-    # show result
     if result:
 
-        # showing result, it take frame name and image
-        # output
         cv.imshow("First try", image)
 
-        # saving image in local storage
-        #cv.imwrite("FirstTry", image)
-
-        # If keyboard interrupt occurs, destroy image
-        # window
         cv.waitKey(0)
         cv.destroyWindow("First try")
-        
 
     # If captured image is corrupted, moving to else part
     else:
@@ -42,41 +32,47 @@ if __name__ == '__main__':
         cv.waitKey(0)
         imageCheck = input("Is this Image correct? Y/N ")
         cv.destroyWindow("next Image try")
-        
-    #ask to crop image
+
+    # ask to crop image
     print("Image chosen crop image to include minimum extraneous data")
     image, roiDisplacement = cropImage(image)
 
-    #show cropped image to confirm correctness
-    lotOrStreet =input("Is this a parking lot or street parking? LOT/STREET: ")
+    lotOrStreet = input(
+        "Is this a parking lot or street parking? LOT/STREET: ")
+
     if lotOrStreet == "LOT":
-        maxParkingSpaces = int(input("enter the total maximum number of parking spaces. i.e the maximum amount of cars that could fit: "))
+
+        maxParkingSpaces = int(input(
+            "enter the total maximum number of parking spaces. i.e the maximum amount of cars that could fit: "))
         print("starting ")
+
         while True:
             inital_msg_time = time.time()
             images = []
             for i in range(numPictures):
-                #print(i, " image taken")
                 result, image = cam.read()
-                cropped = cropImage(image,roiDisplacement)[0]
+                cropped = cropImage(image, roiDisplacement)[0]
                 images.append(cropped)
                 time.sleep(timePicDelay)
+
             averaged = avgImages(images)
-            #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\Cars-parked-in-parking-lot.jpeg")
-            
-            #run ml model and count number of cars
+            # averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\Cars-parked-in-parking-lot.jpeg")
+
+            # run ml model and count number of cars
             start_model_time = time.time()
             numCarsFound = detectCars(averaged)
-            print("--- %s seconds to detect ---" % (time.time() - start_model_time))
+            print("--- %s seconds to detect ---" %
+                  (time.time() - start_model_time))
             sendToServer = maxParkingSpaces - numCarsFound
+            # send above number to server
+
             print(sendToServer, " num spots avaliable")
-            print("--- %s seconds till next msg ---" % (timeBetweenMessages - (time.time() - inital_msg_time)))
+            print("--- %s seconds till next msg ---" %
+                  (timeBetweenMessages - (time.time() - inital_msg_time)))
             time.sleep(timeBetweenMessages - (time.time() - inital_msg_time))
-    
+
     if lotOrStreet == "STREET":
         print("Street code setup goes here")
-    #numspots left = max- current amount
-    #send that data to server
+
     print("program finished!")
     cam.release()
-    
