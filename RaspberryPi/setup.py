@@ -1,10 +1,12 @@
 import cv2 as cv
 import time
+from detectCars import detectCars
 from imageMethods import cropImage, avgImages
 if __name__ == '__main__':
-    numPictures = 10
-    timePicDelay = .25
-    print("TUTraffic")
+    numPictures = 40
+    timePicDelay = .1
+    timeBetweenMessages = 20
+    print("TUTraffic: Press enter to exit image pop-up, all prompts are case sensitive")
     # program to capture single image from webcam in python
     cam_port = 0
     cam = cv.VideoCapture(cam_port)
@@ -44,31 +46,32 @@ if __name__ == '__main__':
     #ask to crop image
     print("Image chosen crop image to include minimum extraneous data")
     image, roiDisplacement = cropImage(image)
-    cv.imshow("cropped", image)
-    cv.waitKey(0)
-    cv.destroyWindow("cropped")
 
     #show cropped image to confirm correctness
-    lotOrStreet =input("Is this a parking lot or street parking? LOT/STREET")
+    lotOrStreet =input("Is this a parking lot or street parking? LOT/STREET: ")
     if lotOrStreet == "LOT":
-        maxParkingSpaces = int(input("enter the total maximum number of parking spaces. i.e the maximum amount of cars that could fit"))
+        maxParkingSpaces = int(input("enter the total maximum number of parking spaces. i.e the maximum amount of cars that could fit: "))
         print("starting ")
         while True:
+            inital_msg_time = time.time()
             images = []
             for i in range(numPictures):
-                print(i, " image taken")
+                #print(i, " image taken")
                 result, image = cam.read()
                 cropped = cropImage(image,roiDisplacement)[0]
                 images.append(cropped)
                 time.sleep(timePicDelay)
             averaged = avgImages(images)
-            #cv.imshow("cropped", cropped)
-            #cv.waitKey(0)
-            #cv.destroyWindow("cropped")
+            #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\Cars-parked-in-parking-lot.jpeg")
+            
             #run ml model and count number of cars
-            numCarsFound = int(maxParkingSpaces/2)
+            start_model_time = time.time()
+            numCarsFound = detectCars(averaged)
+            print("--- %s seconds to detect ---" % (time.time() - start_model_time))
             sendToServer = maxParkingSpaces - numCarsFound
-            print(sendToServer)
+            print(sendToServer, " num spots avaliable")
+            print("--- %s seconds till next msg ---" % (timeBetweenMessages - (time.time() - inital_msg_time)))
+            time.sleep(timeBetweenMessages - (time.time() - inital_msg_time))
     
     if lotOrStreet == "STREET":
         print("Street code setup goes here")
