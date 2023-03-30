@@ -13,6 +13,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @WebMvcTest(controllers = BackendController.class)
 public class BackendControllerTests {
@@ -25,6 +26,9 @@ public class BackendControllerTests {
 
 	@MockBean
 	private User user;
+
+	@MockBean(User.class)
+	private User user2;
 
 	/**
 	 * Tests the method createUser().
@@ -107,7 +111,20 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request was successful.
 	 */
 	@Test
-	void shouldUpdateUserEmail() {
+	void shouldUpdateUserEmail() throws Exception {
+		int id = 0;
+		List<User> users = new ArrayList<User>();
+
+		users.add(user);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn("password1234");
+		when(userRepository.findAll()).thenReturn(users);
+		when(userRepository.findById(id)).thenReturn(Optional.of(user));
+		mockMvc.perform(MockMvcRequestBuilders
+				.put("/users/update/{id}", id)
+				.content("{\"email\": \"user@domainb.com\",\"password\": \"password1234\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
@@ -116,7 +133,20 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request was successful.
 	 */
 	@Test
-	void shouldUpdateUserPassword() {
+	void shouldUpdateUserPassword() throws Exception {
+		int id = 0;
+		List<User> users = new ArrayList<User>();
+
+		users.add(user);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn("password1234");
+		when(userRepository.findAll()).thenReturn(users);
+		when(userRepository.findById(id)).thenReturn(Optional.of(user));
+		mockMvc.perform(MockMvcRequestBuilders
+				.put("/users/update/{id}", id)
+				.content("{\"email\": \"user@domain.com\",\"password\": \"password5678\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
@@ -125,7 +155,20 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request was successful.
 	 */
 	@Test
-	void shouldUpdateUserEmailAndPassword() {
+	void shouldUpdateUserEmailAndPassword() throws Exception {
+		int id = 0;
+		List<User> users = new ArrayList<User>();
+
+		users.add(user);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn("password1234");
+		when(userRepository.findAll()).thenReturn(users);
+		when(userRepository.findById(id)).thenReturn(Optional.of(user));
+		mockMvc.perform(MockMvcRequestBuilders
+				.put("/users/update/{id}", id)
+				.content("{\"email\": \"user@domainb.com\",\"password\": \"password5678\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
@@ -135,7 +178,12 @@ public class BackendControllerTests {
 	 * database.
 	 */
 	@Test
-	void shouldFailToUpdateUserNonexistent() {
+	void shouldFailToUpdateUserNonexistent() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders
+				.put("/users/update/{id}", 0)
+				.content("{\"email\": \"user@domain.com\",\"password\": \"password1234\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 
 	/**
@@ -144,7 +192,20 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
-	void shouldFailToUpdateUserEmailEmpty() {
+	void shouldFailToUpdateUserEmailEmpty() throws Exception {
+		int id = 0;
+		List<User> users = new ArrayList<User>();
+
+		users.add(user);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn("password1234");
+		when(userRepository.findAll()).thenReturn(users);
+		when(userRepository.findById(id)).thenReturn(Optional.of(user));
+		mockMvc.perform(MockMvcRequestBuilders
+				.put("/users/update/{id}", id)
+				.content("{\"email\": \"\",\"password\": \"password1234\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	/**
@@ -153,7 +214,46 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
-	void shouldFailToUpdateUserPasswordEmpty() {
+	void shouldFailToUpdateUserPasswordEmpty() throws Exception {
+		int id = 0;
+		List<User> users = new ArrayList<User>();
+
+		users.add(user);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn("password1234");
+		when(userRepository.findAll()).thenReturn(users);
+		when(userRepository.findById(id)).thenReturn(Optional.of(user));
+		mockMvc.perform(MockMvcRequestBuilders
+				.put("/users/update/{id}", id)
+				.content("{\"email\": \"user@domain.com\",\"password\": \"\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	/**
+	 * Tests the method updateUser().
+	 * Case 7: Update an existing user's email to another user's email.
+	 * Expected Result: The response states that the request conflicts with the
+	 * database.
+	 */
+	@Test
+	void shouldFailToUpdateUserEmailExists() throws Exception {
+		int id = 0;
+		List<User> users = new ArrayList<User>();
+
+		users.add(user);
+		users.add(user2);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn("password1234");
+		when(user2.getEmail()).thenReturn("user2@domain.com");
+		when(user2.getPassword()).thenReturn("password2468");
+		when(userRepository.findAll()).thenReturn(users);
+		when(userRepository.findById(id)).thenReturn(Optional.of(user));
+		mockMvc.perform(MockMvcRequestBuilders
+				.put("/users/update/{id}", id)
+				.content("{\"email\": \"user2@domain.com\",\"password\": \"password1234\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 
 	/**
