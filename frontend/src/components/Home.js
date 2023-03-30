@@ -11,6 +11,27 @@ export default function Home() {
         position: 'relative',
     };
 
+    const options = {
+        styles: [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [
+                    { visibility: "off" }
+                ]
+            }, 
+            {
+                "featureType": "landscape",
+                "elementType": "labels",
+                "stylers": [
+                    { visibility: "off" }
+                ]
+            }
+        ],
+        mapTypeControl: false,
+        streetViewControl: false
+    };
+
     const data = useData();
     const [center, setCenter] = useState({ lat: 39.981, lng: -75.155 });
 
@@ -36,13 +57,13 @@ export default function Home() {
 
     const markers = data
         ? Object.keys(data).map((key) => {
-            const { lat, lng, spots } = data[key];
+            const { lat, lng, spots, street } = data[key];
             if (lat && lng) {
                 return {
                     position: { lat, lng },
                     options: {
                         label: {
-                            text: spots.toString(),
+                            text: street ? '*' + spots.toString() : spots.toString(),
                             color: 'white',
                             fontSize: '1rem',
                         },
@@ -64,7 +85,8 @@ export default function Home() {
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={center}
-                zoom={16}
+                zoom={17}
+                options={options}
             >
                 <MarkerF
                     position={center}

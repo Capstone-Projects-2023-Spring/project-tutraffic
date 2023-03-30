@@ -55,6 +55,7 @@ const Browse = () => {
                   <div className="card-body">
                     <p className="card-text">Lot: {data[key].name}</p>
                     <p className="card-text">Spots: {data[key].spots}</p>
+                    {data[key].street && <p className="card-text text-end" style={{color: 'red'}}>STREET{data[key].street}</p>}
                     {latitude && longitude && !isNaN(distance) && (
                       <p className="card-text text-end">{distance.toFixed(2)} mi</p>
                     )}
