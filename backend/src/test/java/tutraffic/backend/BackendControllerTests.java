@@ -1,5 +1,6 @@
 package tutraffic.backend;
 
+import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -293,7 +294,17 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request was successful.
 	 */
 	@Test
-	void shouldVerifyLogin() {
+	void shouldVerifyLogin() throws Exception {
+		String encryptedPassword = new BasicPasswordEncryptor().encryptPassword("password1234");
+		when(user.getId()).thenReturn(0);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn(encryptedPassword);
+		when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+		mockMvc.perform(MockMvcRequestBuilders
+				.get("/users/login")
+				.content("{\"email\": \"user@domain.com\",\"password\": \"password1234\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
@@ -303,7 +314,17 @@ public class BackendControllerTests {
 	 * database.
 	 */
 	@Test
-	void shouldFailToVerifyLoginPasswordIncorrect() {
+	void shouldFailToVerifyLoginPasswordIncorrect() throws Exception {
+		String encryptedPassword = new BasicPasswordEncryptor().encryptPassword("password1234");
+		when(user.getId()).thenReturn(0);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn(encryptedPassword);
+		when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+		mockMvc.perform(MockMvcRequestBuilders
+				.get("/users/login")
+				.content("{\"email\": \"user@domain.com\",\"password\": \"password5678\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 
 	/**
@@ -313,7 +334,16 @@ public class BackendControllerTests {
 	 * database.
 	 */
 	@Test
-	void shouldFailToVerifyLoginEmailIncorrect() {
+	void shouldFailToVerifyLoginEmailIncorrect() throws Exception {
+		when(user.getId()).thenReturn(0);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(user.getPassword()).thenReturn("password1234");
+		when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
+		mockMvc.perform(MockMvcRequestBuilders
+				.get("/users/login")
+				.content("{\"email\": \"user2@domain.com\",\"password\": \"password1234\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 
 	/**
