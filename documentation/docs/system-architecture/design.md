@@ -142,17 +142,17 @@ classDiagram
 ```
 ### Sequence Diagrams
 
-**Use Case #1**: User wants to find a spot in a general vicinity.
+**Use Case #1**: A user knows their destination and wants to find a spot in its general vicinity.
 <details>
 <summary>
 Use Case 1 Description
 </summary>
 
-1. User opens parking options.
-2. In parking options, user adjusts the range of how far they are willing to park in the area surrounding from their destination. 
-3. User clicks the search button to find spots in an area.
-4. User enters the address of their destination.
-5. The TuTraffic application displays the detected spots in that range to the user's device.
+1. Upon opening the TuTraffic application, the user opens the *parking options* page, a page that acts as the settings for the users parking preferences and needs.
+2. In the *range* subsection of the parking options page, the user can adjust the range of how far they are willing to park in the area surrounding from their destination. 
+3. The user clicks *save* and exits the parking options page to return to the home screen.
+4. On the home screen, the user can click the *search* button to enter the address of their destination.
+5. The TuTraffic application displays a map of the detected spots in the saved range of the destination to the user's device.
 
 </details>
 
@@ -184,7 +184,7 @@ sequenceDiagram
 
 ```
 
-**Use Case #2**: User wants displayed parking spots to reflect price preferences.
+**Use Case #2**: A user wants to update their parking prefences to reflect how much they are willing to pay per hour for street parking.
 <details>
 <summary>
 Use Case 2 Description
