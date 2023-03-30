@@ -65,7 +65,12 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
-	void shouldFailToCreateUserEmptyPassword() {
+	void shouldFailToCreateUserEmptyPassword() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders
+				.post("/users/create")
+				.content("{\"email\": \"user@domain.com\",\"password\": \"\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	/**
@@ -74,7 +79,12 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
-	void shouldFailToCreateUserEmptyEmail() {
+	void shouldFailToCreateUserEmptyEmail() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders
+				.post("/users/create")
+				.content("{\"email\": \"\",\"password\": \"password1234\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	/**
@@ -83,7 +93,12 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
-	void shouldFailToCreateUserEmpty() {
+	void shouldFailToCreateUserEmpty() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders
+				.post("/users/create")
+				.content("{\"email\": \"\",\"password\": \"\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	/**
@@ -172,7 +187,8 @@ public class BackendControllerTests {
 	/**
 	 * Tests the method verifyLogin().
 	 * Case 2: User logs in with incorrect password.
-	 * Expected Result: The response states that the request conflicts with the database.
+	 * Expected Result: The response states that the request conflicts with the
+	 * database.
 	 */
 	@Test
 	void shouldFailToVerifyLoginPasswordIncorrect() {
@@ -181,7 +197,8 @@ public class BackendControllerTests {
 	/**
 	 * Tests the method verifyLogin().
 	 * Case 3: User logs in with an email that does not exist in the database.
-	 * Expected Result: The response states that the request conflicts with the database.
+	 * Expected Result: The response states that the request conflicts with the
+	 * database.
 	 */
 	@Test
 	void shouldFailToVerifyLoginEmailIncorrect() {
