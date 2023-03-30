@@ -9,14 +9,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(controllers= BackendController.class)
+@WebMvcTest(controllers = BackendController.class)
 public class BackendControllerTests {
 
 	@Autowired
 	MockMvc mockMvc;
 
 	@MockBean
-	private UserRepository userRepository; 
+	private UserRepository userRepository;
 
 	/**
 	 * Tests the method createUser().
@@ -29,13 +29,14 @@ public class BackendControllerTests {
 				.post("/users/create")
 				.content("{\"email\": \"user@domain.com\",\"password\": \"password1234\"}")
 				.contentType(MediaType.APPLICATION_JSON))
-			.andExpect(MockMvcResultMatchers.status().isCreated());
+				.andExpect(MockMvcResultMatchers.status().isCreated());
 	}
 
 	/**
 	 * Tests the method createUser().
 	 * Case 2: Create a user with an email that already exists in the database.
-	 * Expected Result: The response states that the request conflicts with the database.
+	 * Expected Result: The response states that the request conflicts with the
+	 * database.
 	 */
 	@Test
 	void shouldFailToCreateUserExisting() {
@@ -98,7 +99,8 @@ public class BackendControllerTests {
 	/**
 	 * Tests the method updateUser().
 	 * Case 4: Update a user that does not exist.
-	 * Expected Result: The response states that the request conflicts with the database.
+	 * Expected Result: The response states that the request conflicts with the
+	 * database.
 	 */
 	@Test
 	void shouldFailToUpdateUserNonexistent() {
@@ -116,7 +118,8 @@ public class BackendControllerTests {
 	/**
 	 * Tests the method deleteUser().
 	 * Case 2: Delete a user that does not exist.
-	 * Expected Result: The response states that the request conflicts with the database.
+	 * Expected Result: The response states that the request conflicts with the
+	 * database.
 	 */
 	@Test
 	void shouldFailToDeleteUserNonexistent() {
@@ -134,7 +137,8 @@ public class BackendControllerTests {
 	/**
 	 * Tests the method getUserEmail().
 	 * Case 2: Get the email of a user that does not exist.
-	 * Expected Result: The response states that the request conflicts with the database.
+	 * Expected Result: The response states that the request conflicts with the
+	 * database.
 	 */
 	@Test
 	void shouldFailToGetUserEmailNonexistent() {
