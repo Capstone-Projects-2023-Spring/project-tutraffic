@@ -10,12 +10,12 @@ def cropImage(Image, ROI = None):
 
 def avgImages(Images):
     image_data = []
-    for img in Images:
-        #this_image = cv2.imread(img, 1)
-        
+
+    for img in Images:  
         image_data.append(img)
 
     avg_image = image_data[0]
+
     for i in range(len(image_data)):
         if i == 0:
             pass
@@ -23,4 +23,7 @@ def avgImages(Images):
             alpha = 1.0/(i + 1)
             beta = 1.0 - alpha
             avg_image = cv2.addWeighted(image_data[i], alpha, avg_image, beta, 0.0)
+    cv2.imshow("avg", avg_image)
+    cv2.waitKey(0)
+    cv2.destroyWindow("avg")
     return avg_image

@@ -77,7 +77,9 @@ def detectCars(image):
     indices = cv2.dnn.NMSBoxes(boxes, confidences, conf_threshold, nms_threshold)
     numCars = 0
     for i in indices:
-        numCars+=1
+        #only count cars, trucks, and motorcycles
+        if class_ids[i]== 2 or class_ids[i]== 3 or class_ids[i]== 7:
+            numCars+=1
         try:
             box = boxes[i]
         except:
@@ -89,7 +91,4 @@ def detectCars(image):
         h = box[3]
         draw_prediction(origionalimage, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
 
-    #cv2.imshow("object detection", origionalimage)
-    #print(numCars)
-    #cv2.waitKey(0)
     return numCars
