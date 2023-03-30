@@ -1,5 +1,4 @@
 import os
-from google.cloud import storage
 from detectLines import *
 import json
 from json import JSONEncoder
@@ -7,16 +6,22 @@ import numpy as np
 import sys
 import random
 
-# permission to access GCS bucket
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'RaspberryPi/tutraffic1-92e09f8e1af7.json'
-storage_client = storage.Client()
+import firebase_admin
+from firebase_admin import db
+from firebase_admin import credentials
+
+cred = credentials.Certificate("RaspberryPi/tutraffic-firebase-key.json")
+firebase_admin.initialize_app(cred, {'databaseURL': 'https://tutrafficdatabase-default-rtdb.firebaseio.com'})
+
+
+
 
 # send data # 
-def upload(blob_name, file_path, bucket_name):
+def upload(filepath, spots, child):
 	try:
-		bucket = storage_client.get_bucket(bucket_name)
-		blob = bucket.blob(blob_name)
-		blob.upload_from_filename(file_path)
+		ref = db.reference(filepath)
+		spaceRef = ref.child(child)
+		spaceRef.update(spots)
 		return True
 	except Exception as e:
 		print(e)
@@ -38,11 +43,14 @@ def convertToJson(array):
 	return outfile
 
 def main():
-	linesArray = detectLines(sys.argv[1])
-	toSend = convertToJson(linesArray)
-	print(toSend)
-	upload('serc.json',os.path.abspath(toSend),'parking-test-bucket')
+	# get num of parking spaces first
+
+	# change second var to data collected from ml model
+	upload('parking/',{'spots': 20}, 'bell')
 
 
 if __name__ == "__main__":
 		main()
+		
+
+
