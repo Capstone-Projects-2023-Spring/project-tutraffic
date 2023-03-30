@@ -262,7 +262,13 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request was successful.
 	 */
 	@Test
-	void shouldDeleteUser() {
+	void shouldDeleteUser() throws Exception {
+		int id = 0;
+
+		when(userRepository.existsById(id)).thenReturn(true);
+		mockMvc.perform(MockMvcRequestBuilders
+				.delete("/users/delete/{id}", id))
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
@@ -272,7 +278,13 @@ public class BackendControllerTests {
 	 * database.
 	 */
 	@Test
-	void shouldFailToDeleteUserNonexistent() {
+	void shouldFailToDeleteUserNonexistent() throws Exception {
+		int id = 0;
+
+		when(userRepository.existsById(id)).thenReturn(false);
+		mockMvc.perform(MockMvcRequestBuilders
+				.delete("/users/delete/{id}", id))
+				.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 
 	/**
