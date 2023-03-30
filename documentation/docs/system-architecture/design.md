@@ -184,15 +184,17 @@ sequenceDiagram
 
 ```
 
-**Use Case #2**: A user wants to update their parking prefences to reflect how much they are willing to pay per hour for street parking.
+**Use Case #2**: A user wants to update their personal parking options to reflect how much they are willing to pay per hour for street parking.
 <details>
 <summary>
 Use Case 2 Description
 </summary>
 
-1. User opens parking options.
-2. In parking options, user removes parking garages and paid lots from their preferences.
-3. User edits their accepted hourly price range for street parking in parking options, reflecting how much they are willing to pay per hour.
+1. The user logs into their account on the TuTraffic application.
+2. The user opens parking options, where their saved preferences are stored.
+3. In the *parking type* subsection of the parking options page, the user removes parking garages and paid lots from their preferred list.
+4. In the *per hour* subsection of the parking options page, the user edits their accepted hourly price range, reflecting how much they are willing to pay per hour.
+5. The user clicks *save* and exits the parking options page to return to the home screen, where only street parking that is less than or equal to their budget will appear on the map.
 
 </details>
 
@@ -203,8 +205,13 @@ sequenceDiagram
     participant m as Mobile Application
     participant c as Cloud
     participant d as Database
-    u ->> m: Open parking options page
+    u ->> m: Log in
     activate m 
+    m->>d: Request user data
+    activate d
+    d-->>m: User data
+    deactivate d
+    u ->> m: Open parking options page
     u ->> m: Disable parking garages and paid lots
     m ->> c: Pricing preferences
     deactivate m
@@ -224,17 +231,19 @@ sequenceDiagram
 ```
 
 
-**Use Case #3**: User wants spots that can fit their car to be detected.
+**Use Case #3**: A user wants to indicate their car size as to only be shown parking spaces that are likely to fit their car.
 <details>
 <summary>
 Use Case 3 Description
 </summary>
 
-1. User opens parking options.
-2. User selects the option that best reflects the size of their car from a dropdown menu.
-3. The application sends a message to the server to communicate the unique size need.
-4. The server transmits this information to the raspberry pi node.
-5. The computer vision processing the video feed adjusts to make decisions on whether a spot exists in a space or not based on if the user's car size can fit there.
+1. A logged in user opens the parking options page.
+2. In the *car size* subsection of the parking options page, the user selects the option that best reflects the size of their car from a dropdown menu: small, medium, or large.
+3. The user clicks *save*.
+4. The TuTraffic application sends a message to the server to communicate the unique size need.
+5. The server requests this information of parking spots of a particular size to the database.
+6. The database, which continuously receives data from the Raspberry Pi node of parking spots and their location and size, sends the appropriate information back to the server.
+7. Now, when the user searches for spots, only parking spots that have been detected to likely fit at least their size will appear. 
 
 </details>
 
@@ -244,37 +253,40 @@ sequenceDiagram
     actor u as User
     participant t as TuTraffic App
     participant s as Server
-    participant p as Raspberry pi
     participant c as Camera
+    participant p as Raspberry pi
     participant d as Database
     activate u
+    activate c 
+    c ->> p: Sends images to be processed
+    activate p
+    deactivate c 
+    p ->> d: Sends data of parkings spots with their location and size
+    activate d
+    deactivate p
     u ->>+ t: Opens parking options
     t -->> u: Displays dropdown menu of car size options
-    u ->> t: Selects size of vehicle
+    u ->> t: Selects "size" of vehicle
     t ->>+ s: Requests parking data for "size"
-    s ->>+ p: Requests parking data for "size"
-    p ->>+ c: Adjusts computer vision processing for "size"
-    c -->>- p: Sends video to be processed
-    p -->>- s: Return parking data for "size"
-    s ->>+ d: Update parking data for "size"
-    d -->>- s: Return
-    s -->>- t: Return parking data for "size"
-    t -->>- u: Display parking data for "size"
+    s ->> d: Requests parking data for "size"
+    d -->> s: Return approproate parking data
+    s -->> t: Return parking data
+    t -->> u: Display parking data for "size"
     deactivate u
 
 ```
 
-**Use Case #4**: User wants be directed to a parking spot.
+**Use Case #4**: A user wants be directed to a parking spot after selecting it.
 <details>
 <summary>
 Use Case 4 Description
 </summary>
 
-1. User clicks the search button to find parking spots.
-2. User enters their destination's address.
+1. After opening the TuTraffic application, the user clicks the *search* button to find parking spots.
+2. The user enters their destination's address.
 3. The TuTraffic application displays the detected spots to the user's device.
-4. User selects on a parking spot and clicks the "Route" button.
-5. Google Maps API is loaded to direct the user to their destination.
+4. After browsing, the user selects on a parking spot and clicks the *route* button.
+5. The Google Maps API is loaded to direct the user to their destination.
 
 </details>
 
