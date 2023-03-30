@@ -61,25 +61,25 @@ public class BackendControllerTests {
 
 	/**
 	 * Tests the method createUser().
-	 * Case 3: Create a user without password.
+	 * Case 3: Create a user with empty password.
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
-	void shouldFailToCreateUserNoPassword() {
+	void shouldFailToCreateUserEmptyPassword() {
 	}
 
 	/**
 	 * Tests the method createUser().
-	 * Case 4: Create a user without email.
+	 * Case 4: Create a user with empty email.
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
-	void shouldFailToCreateUserNoEmail() {
+	void shouldFailToCreateUserEmptyEmail() {
 	}
 
 	/**
 	 * Tests the method createUser().
-	 * Case 5: Create a user without email and password.
+	 * Case 5: Create a user with empty email and empty password.
 	 * Expected Result: The response states that the request is bad.
 	 */
 	@Test
@@ -124,6 +124,24 @@ public class BackendControllerTests {
 	}
 
 	/**
+	 * Tests the method updateUser().
+	 * Case 5: Update an existing user's email to be empty.
+	 * Expected Result: The response states that the request is bad.
+	 */
+	@Test
+	void shouldFailToUpdateUserEmailEmpty() {
+	}
+
+	/**
+	 * Tests the method updateUser().
+	 * Case 6: Update an existing user's password to be empty.
+	 * Expected Result: The response states that the request is bad.
+	 */
+	@Test
+	void shouldFailToUpdateUserPasswordEmpty() {
+	}
+
+	/**
 	 * Tests the method deleteUser().
 	 * Case 1: Delete a user identified by id.
 	 * Expected Result: The response states that the request was successful.
@@ -140,6 +158,33 @@ public class BackendControllerTests {
 	 */
 	@Test
 	void shouldFailToDeleteUserNonexistent() {
+	}
+
+	/**
+	 * Tests the method verifyLogin().
+	 * Case 1: User logs in with correct email and password.
+	 * Expected Result: The response states that the request was successful.
+	 */
+	@Test
+	void shouldVerifyLogin() {
+	}
+
+	/**
+	 * Tests the method verifyLogin().
+	 * Case 2: User logs in with incorrect password.
+	 * Expected Result: The response states that the request conflicts with the database.
+	 */
+	@Test
+	void shouldFailToVerifyLoginPasswordIncorrect() {
+	}
+
+	/**
+	 * Tests the method verifyLogin().
+	 * Case 3: User logs in with an email that does not exist in the database.
+	 * Expected Result: The response states that the request conflicts with the database.
+	 */
+	@Test
+	void shouldFailToVerifyLoginEmailIncorrect() {
 	}
 
 	/**
