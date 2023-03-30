@@ -3,15 +3,15 @@ sidebar_position: 2
 ---
 
 # System Block Diagram
-![Figure 1. System Block Diagram](/img/system_block_diagram.png)
+![Figure 1. System Block Diagram](/img/tutrafficblockdiagram.png)
 
 
-The TuTraffic system implements a client-server model. Figure 1 illustrates the system at a high level; it comprises a client, server, node, camera, and the Google Maps API, a third-party geolocation service. Each node is associated with a parking location or section; it receives data from a camera and sends parking status updates to the server in real-time. The server manages a database, which stores parking information and user information including usernames and location data. The Google Maps API provides the system with location management, navigation, and street map functionality. The client application provides a graphical interface between the user and server, letting the user search for nearby parking spaces. 
+The TuTraffic system implements a client-server model. Figure 1 illustrates the system at a high level; it is comprised of a client, server, node, camera, and the Google Maps API (a third-party geolocation service). Each node is associated with a parking location or section; it receives data from a camera and sends parking status updates to the server in real-time. The server manages a database, which stores parking information and user information including usernames and location data. The Google Maps API provides the system with location management, navigation, and street map functionality. The client application provides a graphical interface between the user and server, letting the user search for nearby parking spaces. 
 
 ## Description of Each Block
-Camera: The first block is a Raspberry Pi camera, which will capture images and send them to the Raspberry Pi. 
+Camera: The first block is a Raspberry Pi camera, which will capture images and then send them to the Raspberry Pi. 
 
-Raspberry Pi: Using OpenCv and Python, the Raspberry Pi will determine open parking spaces in the captured images and send data to the server, which is created with Google Cloud. 
+Raspberry Pi: Using OpenCV and Python, the Raspberry Pi will determine open parking spaces in the captured images and send data to the server, which is created with Google Cloud. 
 
 Server/Google Cloud: The server is responsible for connecting different parts of the system. It updates the database on user and parking information, sends and receives data from the client component and keeps the Google Maps API updated on the user’s location.  
 

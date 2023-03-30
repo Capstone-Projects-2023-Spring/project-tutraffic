@@ -5,6 +5,7 @@ from json import JSONEncoder
 import numpy as np
 import sys
 import random
+from detectLines import detectLines
 
 import firebase_admin
 from firebase_admin import db
@@ -43,6 +44,7 @@ def convertToJson(array):
 	return outfile
 
 def main():
+
 	# get num of parking spaces first
 
 	# change second var to data collected from ml model
