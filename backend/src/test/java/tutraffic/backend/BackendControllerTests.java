@@ -352,7 +352,17 @@ public class BackendControllerTests {
 	 * Expected Result: The response states that the request was successful.
 	 */
 	@Test
-	void shouldGetUserEmail() {
+	void shouldGetUserEmail() throws Exception {
+		int id = 0;
+		List<User> users = new ArrayList<User>();
+
+		users.add(user);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(userRepository.findAll()).thenReturn(users);
+		when(userRepository.findById(id)).thenReturn(Optional.of(user));
+		mockMvc.perform(MockMvcRequestBuilders
+				.get("/users/get/{id}", id))
+				.andExpect(MockMvcResultMatchers.status().isOk());
 	}
 
 	/**
@@ -362,6 +372,9 @@ public class BackendControllerTests {
 	 * database.
 	 */
 	@Test
-	void shouldFailToGetUserEmailNonexistent() {
+	void shouldFailToGetUserEmailNonexistent() throws Exception {
+		mockMvc.perform(MockMvcRequestBuilders
+				.get("/users/get/{id}", 0))
+				.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 }
