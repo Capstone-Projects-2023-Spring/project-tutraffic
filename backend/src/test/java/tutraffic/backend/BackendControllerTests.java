@@ -9,6 +9,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @WebMvcTest(controllers = BackendController.class)
 public class BackendControllerTests {
 
@@ -17,6 +22,9 @@ public class BackendControllerTests {
 
 	@MockBean
 	private UserRepository userRepository;
+
+	@MockBean
+	private User user;
 
 	/**
 	 * Tests the method createUser().
@@ -39,7 +47,16 @@ public class BackendControllerTests {
 	 * database.
 	 */
 	@Test
-	void shouldFailToCreateUserExisting() {
+	void shouldFailToCreateUserExisting() throws Exception {
+		List<User> users = new ArrayList<User>();
+		users.add(user);
+		when(user.getEmail()).thenReturn("user@domain.com");
+		when(userRepository.findAll()).thenReturn(users);
+		mockMvc.perform(MockMvcRequestBuilders
+				.post("/users/create")
+				.content("{\"email\": \"user@domain.com\",\"password\": \"password5678\"}")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isConflict());
 	}
 
 	/**
