@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { database } from '../firebase';
 import { ref, get } from 'firebase/database';
 
-export const useData = () => {
+export const LotData = () => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
