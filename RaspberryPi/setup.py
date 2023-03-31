@@ -1,7 +1,16 @@
 import cv2 as cv
 import time
 from detectCars import detectCars
-from imageMethods import cropImage, avgImages
+from imageMethods import cropImage, avgImages, takePictures
+
+def timeToNextMsg(timeBetweenMessages, inital_msg_time):
+    timeToNextMessage = (timeBetweenMessages - (time.time() - inital_msg_time))
+    if timeToNextMessage<0 :
+        timeToNextMessage = 0
+    print("--- %s seconds till next msg ---" % (timeToNextMessage))
+    return timeToNextMessage
+
+
 if __name__ == '__main__':
     numPictures = 40
     timePicDelay = .1
@@ -51,13 +60,8 @@ if __name__ == '__main__':
 
         while True:
             inital_msg_time = time.time()
-            images = []
-            for i in range(numPictures):
-                result, image = cam.read()
-                cropped = cropImage(image, roiDisplacement)[0]
-                images.append(cropped)
-                time.sleep(timePicDelay)
 
+            images = takePictures(cam, roiDisplacement, numPictures, timePicDelay)
             averaged = avgImages(images)
             #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\Cars-parked-in-parking-lot.jpeg")
 
@@ -71,12 +75,7 @@ if __name__ == '__main__':
             print(sendToServer, " num spots avaliable")
             # send above number to server
 
-            
-            timeToNextMessage = (timeBetweenMessages - (time.time() - inital_msg_time))
-            if timeToNextMessage<0 :
-                timeToNextMessage = 0
-            print("--- %s seconds till next msg ---" % (timeToNextMessage))
-            time.sleep(timeBetweenMessages)
+            time.sleep(timeToNextMsg(timeBetweenMessages, inital_msg_time))
 
     elif lotOrStreet == "STREET":
         print("Street code setup goes here")
