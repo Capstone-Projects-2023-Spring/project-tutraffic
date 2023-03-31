@@ -1,0 +1,46 @@
+.mini-nav {
+  margin-bottom: 3rem;
+  border-bottom: 1px solid;
+  border-color: lightgray;
+}
+
+.highlighted-btn {
+  color: black;
+  border-bottom: 4px solid;
+  border-color: blue;
+}
+
+.header-title {
+  font-size: small;
+  font-weight: bold;
+  border-bottom: 1px solid;
+  border-color: gray;
+  margin-bottom: 2rem;
+}
+
+.settings {
+  margin-left:10%;
+  margin-right: 10%;
+  padding-top: 2%;
+}
+  
+.section {
+  display: flex;
+  padding-bottom: 10px;
+}
+  
+.change-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.data-container {
+  width: 100%;
+}
+
+.delete-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+  
