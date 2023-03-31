@@ -1,6 +1,7 @@
 .settings {
   background-color: gray;
   margin-left: 20px;
+  margin-right: 20px;
   max-width: 800px;
   padding: 20px;
 }
@@ -13,7 +14,9 @@
   
 .change-btn {
   background-color: greenyellow;
-  padding-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center
 }
 
 .data-container {

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { onAuthStateChanged, updatePassword } from 'firebase/auth';
+import { onAuthStateChanged, updatePassword, updateEmail } from 'firebase/auth';
 import { auth } from '../firebase';
-import { useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import './AccountInfo.css';
+import { reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 
 const AccountInfo = () => {
-  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [emailForm, setEmailForm] = useState(false);
   const [passwordForm, setPasswordForm] = useState(false);
+  const [message, setMessage] = useState("");
+  const [textColor, setTextColor] = useState(0);
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -37,15 +38,47 @@ const AccountInfo = () => {
   const changePassword = async (e) => {
     e.preventDefault();
     const user = auth.currentUser;
-    updatePassword(user, newPassword).then(() => {
-      // Update successful.
-    }).catch((error) => {
-      // An error ocurred
-    });
+    const cred = EmailAuthProvider.credential(user.email, currentPassword);
 
+    // In order to change the password the user must reauthenticate
+    await reauthenticateWithCredential(user, cred).then(() => {
+      if (newPassword === "") {
+        setTextColor(0);
+        setMessage("Password must be at least 6 characters long.");
+        return;
+      } else {
+        updatePassword(user, newPassword).then(() => {
+          setTextColor(1);
+          console.log("Password updated");
+          setMessage("Password has been successfully updated!");
+          setTimeout(() => {closeModal()}, 2000);
+        }).catch((error) => { 
+          setTextColor(0);
+          console.log(error.message);
+          if (error.code === 'auth/weak-password') {
+            setMessage("Password must be at least 6 characters long.");
+          }
+        });
+      }
+    }).catch((error) => { 
+      setTextColor(0);
+      console.log(error.message);
+      if (error.code === 'auth/wrong-password') {
+        setMessage("Incorrect password.");
+      } else if (error.code === 'auth/internal-error') {
+        setMessage("Please enter your current password.");
+      }
+    });
+  };
+
+  const closeModal = () => {
+    setMessage("");
+    //setCurrentEmail("");
     setCurrentPassword("");
     setNewPassword("");
-};
+    setEmailForm(false);
+    setPasswordForm(false);
+  }
 
   return (
     <div className="settings">
@@ -59,36 +92,37 @@ const AccountInfo = () => {
         </div>
         <div className="change-btn">
           <Button onClick={() => setPasswordForm(true)}>Change</Button>
-          <Modal show={passwordForm} onHide={() => setPasswordForm(false)}>
+          <Modal show={passwordForm} onHide={closeModal}>
             <Modal.Header closeButton>
               <Modal.Title>Update your password</Modal.Title>
             </Modal.Header>
             <Form onSubmit={changePassword}>
               <Modal.Body>
+                <p style={{color: textColor ? "blue" : "red" }}>{message}</p>
                 <Form.Group controlId="current-password">
-                <Form.Label>Current Password</Form.Label>
-                <Form.Control
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  type="password"
-                  name="currentPassword"
-                />
+                  <Form.Label>Current Password</Form.Label>
+                  <Form.Control
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    type="password"
+                    name="currentPassword"
+                  />
                 </Form.Group>
                 <Form.Group controlId="new-password">
                 <Form.Label>New Password</Form.Label>
-                <Form.Control
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  type="password"
-                  name="newPassword"
-                />
+                  <Form.Control
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    type="password"
+                    name="newPassword"
+                  />
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" type="reset" onClick={() => setPasswordForm(false)}>
+                <Button variant="secondary" type="reset" onClick={closeModal}>
                   Close
                 </Button>
-                <Button variant="primary" type="submit" onClick={() => setPasswordForm(false)}>
+                <Button variant="primary" type="submit" >
                   Save Changes
                 </Button>
               </Modal.Footer>
