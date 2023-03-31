@@ -8,6 +8,7 @@ import Register from "./Register";
 import AccountInfo from "./AccountInfo";
 import AccountProfile from "./AccountProfile";
 import Favorite from "./Favorite";
+import ParkingLot from './ParkingLot';
 
 export const App = () => {
 
@@ -24,6 +25,7 @@ export const App = () => {
           <Route path="/account/register" element={<Register />} />
           <Route path="/account/info" element={<AccountInfo />} />
           <Route path="/account/profile" element={<AccountProfile />} />
+          <Route path="/parkinglot/:key" element={<ParkingLot />} />
         </Routes>
       </div>
     </Router>

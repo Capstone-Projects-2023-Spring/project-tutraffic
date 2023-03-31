@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useData } from './LotData';
+import { useNavigate } from 'react-router-dom';
+import { LotData } from './LotData';
 import { calculateDistance } from './utils';
 import { FaHeart } from 'react-icons/fa';
 import { db, auth } from '../firebase';
 import { doc, setDoc } from "firebase/firestore";
-import Modal from 'react-bootstrap/Modal';
+import { Card, Modal, Button } from 'react-bootstrap';
 
 const Browse = () => {
-  const data = useData();
+  const navigate = useNavigate();
+  const handleMarkerClick = (key) => {
+    navigate(`/parkinglot/${key}`);
+  };
+
+  const data = LotData();
   const latitude = localStorage.getItem('latitude');
   const longitude = localStorage.getItem('longitude');
   const [favorites, setFavorites] = useState([]);
@@ -50,21 +56,29 @@ const Browse = () => {
           return (
             <div className="row" key={key}>
               <div className="col mb-4">
-
-                <div className="card">
-                  <div className="card-body">
-                    <p className="card-text">Lot: {data[key].name}</p>
-                    <p className="card-text">Spots: {data[key].spots}</p>
+                <Card>
+                  <Card.Body>
+                    <Card.Title>
+                      {data[key].name}
+                    </Card.Title>
+                    <Card.Text>Spots: {data[key].spots}</Card.Text>
+                    {data[key].street && <Card.Text className="card-text text-end" style={{ color: 'red' }}>STREET{data[key].street}</Card.Text>}
                     {latitude && longitude && !isNaN(distance) && (
-                      <p className="card-text text-end">{distance.toFixed(2)} mi</p>
+                      <Card.Text className="text-end">{distance.toFixed(2)} mi</Card.Text>
                     )}
                     {user && (
-                      <button onClick={() => handleFavorite(key)} className="btn btn-outline-danger">
-                        <FaHeart />
-                      </button>
+                      <div className="d-flex justify-content-end">
+                        <button onClick={() => handleFavorite(key)} className="btn btn-outline-danger">
+                          <FaHeart /> Add to Favorite
+                        </button>
+                      </div>
                     )}
-                  </div>
-                </div>
+                    <div className="mt-2 d-flex justify-content-end">
+                      <Button onClick={() => handleMarkerClick(key)}>Detail</Button>
+                    </div>
+                  </Card.Body>
+                </Card>
+
 
                 <Modal show={showModal} onHide={() => setShowModal(false)}>
                   <Modal.Header closeButton>
