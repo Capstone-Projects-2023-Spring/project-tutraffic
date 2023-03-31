@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 
-export const Login = (props) => {
+export const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();

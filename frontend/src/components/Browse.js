@@ -61,20 +61,22 @@ const Browse = () => {
                     <Card.Title>
                       {data[key].name}
                     </Card.Title>
-                    <Card.Text>Spots: {data[key].spots}</Card.Text>
+                    <Card.Text>
+                      Spots available: <span className="fw-bold fs-4">{data[key].spots}</span>
+                    </Card.Text>
                     {data[key].street && <Card.Text className="card-text text-end" style={{ color: 'red' }}>STREET{data[key].street}</Card.Text>}
                     {latitude && longitude && !isNaN(distance) && (
-                      <Card.Text className="text-end">{distance.toFixed(2)} mi</Card.Text>
+                      <Card.Text className="text-end fw-bold">{distance.toFixed(2)} mi</Card.Text>
                     )}
                     {user && (
                       <div className="d-flex justify-content-end">
-                        <button onClick={() => handleFavorite(key)} className="btn btn-outline-danger">
+                        <Button onClick={() => handleFavorite(key)} variant="outline-danger">
                           <FaHeart /> Add to Favorite
-                        </button>
+                        </Button>
                       </div>
                     )}
                     <div className="mt-2 d-flex justify-content-end">
-                      <Button onClick={() => handleMarkerClick(key)}>Detail</Button>
+                      <Button onClick={() => handleMarkerClick(key)}>View Detail</Button>
                     </div>
                   </Card.Body>
                 </Card>
