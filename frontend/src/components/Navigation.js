@@ -111,7 +111,7 @@ const Navigation = () => {
               {userEmail ? (
                 <Nav>
                   <NavDropdown title={userEmail} id="user-nav-dropdown">
-                    <NavDropdown.Item onClick={() => navigate('/account/info')}>Account Detail</NavDropdown.Item>
+                    <NavDropdown.Item onClick={() => navigate('/account/info')}>User Settings</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item onClick={handleSignOut}>Logout</NavDropdown.Item>
                   </NavDropdown>
