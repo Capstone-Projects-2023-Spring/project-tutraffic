@@ -342,6 +342,12 @@ Currently, the computer vision aspect of TuTraffic is being developed with the d
 
 TuTraffic detects both street parking and parking in traditional parking lots. YOLO's car detection is the biggest component of street parking, while OpenCV's built in line detection is the biggest component for parking spots in a parking lot. OpenCV has a fast line detection algorithm built into its library and does not require the use of any additional object detection algorithms. YOLO's car detection and OpenCV's line detection will work together to detect parking spots in both environments.  
 
+![Computer vision diagram](/img/computer_vision_diagram.png)
+
+##### Figure 3.1 - YOLO diagram
+
+Figure 3.1 shows the process an image goes through and its output when ran through the YOLO object detection algorithm supported by OpenCV. The original image is first transformed into a blob format to be read by the network. YOLO then completes two steps - one surrounding the blob in boxes of different thickness to indicate confidence of an object being present, and the other adding a colored probability map over the image to indicate the objects the algorithm believes exists in those locations. The bounding boxes and probability map are combined to create the final image, boxes surrounding the detected objects with their label & probability. 
+
 ### State Diagrams
 
 ```mermaid
@@ -359,9 +365,9 @@ Requesting --> Viewing
 Navigation --> Viewing
 Viewing --> Searching
 ```
-##### Figure 3.1 - Client State Diagram
+##### Figure 4.1 - Client State Diagram
 
-Figure 3.1 shows the state diagram of the frontend application, describing the different behaviors of the TuTraffic application.
+Figure 4.1 shows the state diagram of the frontend application, describing the different behaviors of the TuTraffic application.
 
 The TuTraffic client application experiences multiple states throughout its usage. As depicted in the figure above, its first state is Searching: in this state, the client displays a list of nearby parking spaces, which may be initially empty. The client enters the Viewing state after the user selects a parking location; they can return to the Searching state to view the other locations, or enter the Navigation state. In either the Searching or Viewing State, the client submits requests to the server, such as parking status updates or reservations, in the Requesting state before returning to the previous state. In the Navigation state, the client connects to a third party navigation service and receives real-time driving assistance to help them reach their selected parking location. After the client reaches their destination or ceases navigation, the application returns to the Viewing state.
 
@@ -380,9 +386,9 @@ Reading --> Writing
 Writing --> Reading
 Replying --> Waiting
 ```
-##### Figure 3.2 - Server State Diagram
+##### Figure 4.2 - Server State Diagram
 
-Figure 3.2 shows the state diagram of the backend server, exhibiting the different modes the server may be acting in.
+Figure 4.2 shows the state diagram of the backend server, exhibiting the different modes the server may be acting in.
 
 The figure above illustrates the server states of the TuTraffic system. The server starts in the Waiting state; it is idle while there are no jobs to complete. When it receives a request from a client or node, the server proceeds to the Handling state, in which it comprehends the request. Then, the server enters a Reading or Writing state to handle the reading or writing operations, respectively, that are necessary to fulfill the request. For example, a search query is primarily a reading operation, while a parking reservation request is primarily a writing operation. Finally, the server formulates a response, delivers the message in the Replying state, and returns to the Waiting state before the next job.
 
@@ -397,9 +403,9 @@ Capturing --> Processing
 Processing --> Sending
 Sending --> Waiting
 ```
-#### Figure 3.3 - Raspberry Pi Node State Diagram
+#### Figure 4.3 - Raspberry Pi Node State Diagram
 
-Figure 3.3 shows the state diagram of the Raspberry Pi node as it cycles through different behaviors.
+Figure 4.3 shows the state diagram of the Raspberry Pi node as it cycles through different behaviors.
 
 Each Raspberry Pi node in the TuTraffic system begins in the Waiting state, as shown in the above state diagram. The node exits this Waiting state on a regular schedule or upon request, then enters the Capturing state, during which it records an image. The node proceeds to the Processing state, in which computer vision is used to produce a parking location update message. This update is pushed to the server during the Sending state, then the node resumes the Waiting state.
 
@@ -433,9 +439,9 @@ erDiagram
         boolean availability
     }
 ```
-##### Figure 4.1 - Database Entity-Relation Diagram
+##### Figure 5.1 - Database Entity-Relation Diagram
 
-Figure 4.1 shows the relationship between the different entities of TuTraffic's database.
+Figure 5.1 shows the relationship between the different entities of TuTraffic's database.
 
 **Table Design**
 - Customer Table: This table contain customer information including, email and password. The primary key is customerId. Contains 2 foreign keys locationId and spotID
