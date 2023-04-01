@@ -25,8 +25,11 @@ const AccountProfile = () => {
   }, []);
 
   if (!user) {
-    navigate('/account/login');
-    return;
+    return (
+      <div className="container mt-4">
+        <h4>Please sign in to view your account information.</h4>
+      </div>
+    );
   }
 
   return (
@@ -36,10 +39,10 @@ const AccountProfile = () => {
 
         <Nav className="mini-nav" activeKey="/account/info">
           <Nav.Item>
-            <Nav.Link style={{color: "black"}} href="/account/info">Account Information</Nav.Link>
+            <Nav.Link style={{color: "black"}} onClick={() => navigate("/account/info")}>Account Information</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link className="highlighted-btn" href="/account/profile">User Profile</Nav.Link>
+            <Nav.Link className="highlighted-btn" onClick={() => navigate("/account/profile")}>User Profile</Nav.Link>
           </Nav.Item>
         </Nav>
 
