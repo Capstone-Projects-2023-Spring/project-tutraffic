@@ -6,7 +6,7 @@ import blueDot from '../images/bluecircle.png';
 import streetIcon from '../images/streetParking.png';
 import lotIcon from '../images/lotParking.png';
 
-export default function Home() {
+const Home = () => {
     const navigate = useNavigate();
     const handleMarkerClick = (key) => {
         navigate(`/parkinglot/${key}`);
@@ -14,7 +14,7 @@ export default function Home() {
 
     const containerStyle = {
         width: '100%',
-        height: '95vh',
+        height: '100%',
         position: 'relative',
     };
 
@@ -119,4 +119,6 @@ export default function Home() {
         </LoadScript>
     );
 
-}
+};
+
+export default Home;

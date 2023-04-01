@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from '../firebase';
 import { collection, query, getDocs, deleteDoc, doc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { Card, Button } from 'react-bootstrap';
 
 const Favorite = () => {
+    const navigate = useNavigate();
     const [favorites, setFavorites] = useState([]);
     const [user, setUser] = useState(null);
+
+    const handleMarkerClick = (key) => {
+        navigate(`/parkinglot/${key}`);
+    };
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -46,14 +53,22 @@ const Favorite = () => {
                     return (
                         <div className="row" key={id}>
                             <div className="col mb-4">
-                                <div className="card">
-                                    <div className="card-body d-flex justify-content-between align-items-center">
-                                        <p className="card-text  mb-0">{id}</p>
-                                        <button onClick={() => handleDelete(id)} className="btn btn-outline-danger">
-                                            Remove
-                                        </button>
-                                    </div>
-                                </div>
+                                <Card>
+                                    <Card.Body>
+                                        <div className="d-flex justify-content-between align-items-center">
+                                            <Card.Title className="mb-0">{id}</Card.Title>
+                                            <Button variant="outline-danger" onClick={() => handleDelete(id)}>
+                                                Remove from favorite
+                                            </Button>
+                                        </div>
+                                        <div className="d-flex justify-content-end mt-3">
+                                            <Button variant="info" onClick={() => handleMarkerClick(id)}>
+                                                View Detail
+                                            </Button>
+                                        </div>
+                                    </Card.Body>
+
+                                </Card>
                             </div>
                         </div>
                     );
@@ -61,7 +76,7 @@ const Favorite = () => {
             ) : (
                 <p>You haven't added any favorites yet.</p>
             )}
-        </div>
+        </div >
     );
 };
 
