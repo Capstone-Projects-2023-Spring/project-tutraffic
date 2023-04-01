@@ -15,11 +15,11 @@ export const App = () => {
   return (
     <>
       <Router>
-        <div className="App" data-testid="app-component" style={{ height: "100vh", display: "flex", "flex-direction": "column" }}>
+        <div className="App" data-testid="app-component" style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
           <div>
             <Navigation />
           </div>
-          <div style={{ "flex-grow": "1" }}>
+          <div style={{ flexGrow: "1" }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
