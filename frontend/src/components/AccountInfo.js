@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged, updatePassword, updateEmail } from 'firebase/auth';
+import { onAuthStateChanged, updatePassword, updateEmail, deleteUser } from 'firebase/auth';
 import { reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { auth } from '../firebase';
 import Button from 'react-bootstrap/Button';
@@ -18,6 +18,7 @@ const AccountInfo = () => {
   const [newEmail, setNewEmail] = useState("");
   const [emailForm, setEmailForm] = useState(false);
   const [passwordForm, setPasswordForm] = useState(false);
+  const [deleteForm, setDeleteForm] = useState(false);
   const [message, setMessage] = useState("");
   const [textColor, setTextColor] = useState(0);
   
@@ -37,8 +38,11 @@ const AccountInfo = () => {
   }, []);
 
   if (!user) {
-    navigate('/account/login');
-    return;
+    return (
+      <div className="container mt-4">
+        <h4>Please sign in to view your account information.</h4>
+      </div>
+    );
   }
 
   const changeEmail = async (e) => {
@@ -113,6 +117,40 @@ const AccountInfo = () => {
     });
   };
 
+  const deleteAccount = async (e) => {
+    e.preventDefault();
+    setTextColor(0);
+    const user = auth.currentUser;
+    const cred = EmailAuthProvider.credential(user.email, confirmPassword);
+
+    // In order to delete an account the user must reauthenticate
+    await reauthenticateWithCredential(user, cred).then(() => {
+      setTextColor(1);
+      setMessage("Your account is now being deleted.");
+      setTimeout(() => {
+        closeModal();
+        deleteUser(user);
+      }, 2000);
+      console.log("User successfully deleted from Firebase");
+    }).catch((error) => { 
+      console.log(error.message);
+      if (error.code === 'auth/wrong-password') {
+        setMessage("Incorrect password.");
+      } else if (error.code === 'auth/internal-error') {
+        setMessage("Please enter your current password.");
+      }
+    });
+  }
+
+  const logout = async () => {
+    try {
+      await auth.signOut(); // Sign out the user
+      navigate('/home');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
+
   // Resets all values when clicking outside a modal or clicking the "close" button
   const closeModal = () => {
     setMessage("");
@@ -122,6 +160,7 @@ const AccountInfo = () => {
     setConfirmPassword("");
     setEmailForm(false);
     setPasswordForm(false);
+    setDeleteForm(false)
   }
 
   return (
@@ -131,15 +170,15 @@ const AccountInfo = () => {
 
         <Nav className="mini-nav" activeKey="/account/info">
           <Nav.Item>
-            <Nav.Link className="highlighted-btn" href="/account/info">Account Information</Nav.Link>
+            <Nav.Link className="highlighted-btn" onClick={() => navigate("/account/info")}>Account Information</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link style={{color: "black"}} href="/account/profile">User Profile</Nav.Link>
+            <Nav.Link style={{color: "black"}} onClick={() => navigate("/account/profile")}>User Profile</Nav.Link>
           </Nav.Item>
         </Nav>
 
         <div className="header-title">
-          <h7 style={{color: "rgb(100,100,100)"}}>PERSONAL DETAILS</h7>
+          <div style={{color: "rgb(100,100,100)", paddingBottom: "4px"}}>PERSONAL DETAILS</div>
         </div>
 
         <div className="section">
@@ -244,10 +283,44 @@ const AccountInfo = () => {
         </div>
 
         <div className="header-title">
-          <h7 style={{color: "rgb(100,100,100)"}}>DELETE ACCOUNT</h7>
+          <div style={{color: "rgb(100,100,100)", paddingBottom: "4px"}}>MANAGE ACCOUNT</div>
         </div>
-        <div className="delete-btn">
-          <Button>DELETE ACCOUNT</Button>
+        <div className="manage-btn">
+          <Button variant="danger" onClick={() => setDeleteForm(true)}>DELETE ACCOUNT</Button>
+          <Modal show={deleteForm} onHide={closeModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Delete Your Account</Modal.Title>
+              </Modal.Header>
+              <Form onSubmit={deleteAccount}>
+                <Modal.Body>
+                  <p style={{color: "red"}}>
+                    WARNING: You are about to delete your account. Once you confirm your
+                    password you will no longer be able to access your account or recover it.
+                  </p>
+                  <p style={{color: textColor ? "blue" : "red" }}>{message}</p>
+
+                  <Form.Group controlId="confirm-password">
+                  <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      type="password"
+                      name="confirmPassword"
+                    />
+                  </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" type="reset" onClick={closeModal}>
+                    Close
+                  </Button>
+                  <Button variant="danger" type="submit">
+                    DELETE
+                  </Button>
+                </Modal.Footer>
+              </Form>
+            </Modal>
+
+          <Button variant="secondary" onClick={logout}>LOGOUT</Button>
         </div>
       </div>
     </div>

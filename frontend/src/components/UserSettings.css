@@ -39,8 +39,9 @@
   width: 100%;
 }
 
-.delete-btn {
+.manage-btn {
   display: flex;
   justify-content: flex-end;
+  gap: 5px;
 }
   
