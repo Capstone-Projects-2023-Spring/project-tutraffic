@@ -33,7 +33,6 @@ def detectCars(image):
     net.setInput(blob)
 
     outs = net.forward(get_output_layers(net))
-
     class_ids = []
     confidences = []
     boxes = []
@@ -63,4 +62,4 @@ def detectCars(image):
         boarder.append(boxes[i])
         
 
-    return boarder, [image.shape[0], image.shape[1]]
+    return boarder, [image.shape[1], image.shape[0]]
