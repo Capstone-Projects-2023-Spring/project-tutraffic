@@ -1,6 +1,6 @@
 import detectCarsStreet
 import sendToServer
-import refactoredDetectCars
+import dispayCarBoxesStreet
 #from picamera import PiCamera
 import cv2 as cv
 import numpy as np
@@ -62,7 +62,7 @@ def checkSpots(original, spaces):
             IoU = intersectArea / float(boxO + boxS - intersectArea)
             #print(IoU)
             if IoU >= 0.5 and IoU <= 1.0:
-                #print(spot, orig)
+                print(spot, orig)
                 total -= 1
     return total
         
@@ -75,8 +75,9 @@ def determineSpaces(left, right, imDim, carAvgDim):
     free = 0
     spotsL = []
     spotsR = []
-    if left or right:
-        if left:
+    print(len(left))
+    if len(left) != 0 or len(right) != 0:
+        if len(left) != 0:
             template = left[0]
             spots = []
             temp = 0
@@ -103,7 +104,7 @@ def determineSpaces(left, right, imDim, carAvgDim):
                 spotsL = spots
                 free += checkSpots(left, spots)
 
-        if right:
+        if len(right) != 0:
             template = right[0]
             spots = []
             temp = 1
@@ -130,12 +131,12 @@ def determineSpaces(left, right, imDim, carAvgDim):
                 spotsR = spots
                 free += checkSpots(right, spots)
     else:	
-        pass
-        #come up with a way to find spaces without other cars present
-        # maybe use avg car length and dimensions of pic
-	
+        free += 2 * int(imDim[0] / 1000)
+        
+	#if no cars are parked on one side add the spots for that side of the road
     if left and not right or right and not left:
             free += int(imDim[0] / carAvgDim[0])
+            
     return free, spotsL, spotsR
 
 
@@ -154,20 +155,25 @@ def sortList(carLoc, imgHeight):
 
 
 def main():
-    
-    #image = captureImage()
-    image = 'RaspberryPi/images/IMG_1411.jpeg'
-    carLocations, imgDim = detectCarBoxes(image)
-    print(carLocations)
-    fixedCarLoc = convertCords(carLocations)
-    listLeft, listRight = sortList(fixedCarLoc, imgDim[1])
-    avgCarLength = determineAvgLength(fixedCarLoc)
-    #print(avgCarLength)
-    totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
-    print(totalSpaces)
-    
-    #refactoredDetectCars.detectCars(image)
-    #sendToServer.upload("parking/", totalSpaces,"bell")
+    image = True
+    while image:
+        #image = captureImage()
+        image = 'RaspberryPi/images/IMG_1411.jpeg'
+        carLocations, imgDim = detectCarBoxes(image)
+        print(carLocations)
+        if carLocations:
+            fixedCarLoc = convertCords(carLocations)
+            listLeft, listRight = sortList(fixedCarLoc, imgDim[1])
+            avgCarLength = determineAvgLength(fixedCarLoc)
+        else:
+            listLeft = []
+            listRight = []
+            avgCarLength = [0,0]
+        totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
+        print(totalSpaces)
+        
+        dispayCarBoxesStreet.detectCars(image)
+        #sendToServer.upload("parking/", {'spaces': totalSpaces},"bell")
     
 if __name__ == '__main__':
     main()
