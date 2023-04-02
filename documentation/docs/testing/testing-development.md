@@ -6,9 +6,6 @@ This document describes how to setup and run the testing environment for the TuT
 
 ### **Software Requirements**
 
-#### **Server Back-end Requirements**
-The server back-end testing environment dependencies, are automatically handled by the system via Maven.
-
 #### **Node Back-end Requirements**
 The node back-end testing environment requires:
 1. The [python3](https://www.python.org/downloads/) interpreter.
@@ -25,41 +22,16 @@ The frontend testing environment requires:
 
 ## **Writing Tests**
 
-#### **Writing Server Back-end Tests**
-
-When naming a JUnit test class, use the name of the tested Java class, suffixed with "Tests", and store it in the test directory parallel to the tested class.
-
-	// Example directory structure.
-	/example/src/main/path/MyClass.java
-	/example/src/test/path/MyClassTests.java
-
-Import classes and static methods in Java when needed.
-
-	// Example Java import statements
-	import org.junit.jupiter.api.Test;
-
-	import static org.junit.jupiter.api.Assertions.assertEquals; // Static import of methods allow the usage of the methods without qualifying the class where it is inherited from.
-
-	import org.springframework.boot.test.context.SpringBootTest; // This import statement is needed for the @SpringBootTest annotation, which loads the application context.
-
-Use the Annotation Interfaces or Annotation Types in the API documentation for [Spring Boot](https://docs.spring.io/spring-boot/docs/3.0.4/api/) and [JUnit5](https://junit.org/junit5/docs/current/api/) for test-component configuration and test-runner configuration.
-
-	// Example test method.
-	@Test
-	static void testAdditionPositiveIntegers(){
-		assertEquals(addInt(2,2), 4)
-	}
-
 ### **Writing Node Back-end Tests**
 
 The [pytest](https://docs.pytest.org/en/7.2.x/reference/reference.html#api-reference) module provides functionality that the built-in assert statement does not provide, such as [fixtures](https://docs.pytest.org/en/7.1.x/explanation/fixtures.html#about-fixtures).
 
 Follow these two conventions when naming Python test scripts and methods:
-1. Use the file name of the tested Python script, suffixed with "_test", and store it in the same directory.
+1. Use the file name of the tested Python script, prefixed with "test_", and store it in the same directory.
 	```
 	# Example directory structure.
 	/example/src/script.py
-	/example/src/script_test.py
+	/example/src/test_script.py
 	```
 2. Prefix test methods with "test_".
 	```
@@ -119,14 +91,6 @@ it('renders correctly', () => {
 
 ## **Running Tests**
 
-#### **Running Server Back-end Tests**
-Run server back-end tests using the maven wrapper from the commandline.
-Make sure that `mvnw` has executable permissions before running it.
-```
-$ cd backend	# From the repository root directory, set the working directory to the back end.
-$ ./mvnw test
-```
-
 ### **Running Node Back-end Tests**
 
 Run node back-end tests using pytest from the commandline.
@@ -165,17 +129,16 @@ $ npm test -- --watchAll=false --updateSnapshot
 	* Expect. Describes methods for assertions. https://jestjs.io/docs/27.x/expect
 	* Jest CLI Options. https://jestjs.io/docs/27.x/cli
 	* Snapshot Testing Tutorial. https://jestjs.io/docs/27.x/snapshot-testing
-* JUnit5. API Documentation. This framework runs server back-end testing in Java. https://junit.org/junit5/docs/current/api/
 * Nodejs.dev. How to install Node.js. https://nodejs.dev/en/learn/how-to-install-nodejs/
 * Npm Docs. Downloading and installing Node.js and npm. This sub-system runs and manages the front-end environment. https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
 * Pytest 7.2.x. This framework for node back-end testing in Python.
 	* Install pytest. https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest
 	* Commandline Flags. https://docs.pytest.org/en/7.2.x/reference/reference.html#command-line-flags
 	* API reference. https://docs.pytest.org/en/7.2.x/reference/reference.html#api-reference
-	* About Fixtures. Fixutres are used to prepare tests. https://docs.pytest.org/en/7.2.x/explanation/fixtures.html#about-fixtures
-* Python. Download Python. https://www.python.org/downloads/
+	* About Fixtures. Fixtures are used to prepare tests. https://docs.pytest.org/en/7.2.x/explanation/fixtures.html#about-fixtures
+* Pytest-mock 3.10.x. This framework integrates built-in Python mocking libraries with Pytest. https://pytest-mock.readthedocs.io/en/latest/
+* Python.
+	* Download Python. https://www.python.org/downloads/
+	* unittest.mock documentation. Used for mocking objects. https://docs.python.org/3/library/unittest.mock.html
 * Pip documentation v23.0.1. Installation. This tool manages Python modules. https://pip.pypa.io/en/stable/installation/
 * React. Test Renderer. This module provides snapshot testing for the front end. https://reactjs.org/docs/test-renderer.html
-* Spring Boot 3.0.4. This framework manages the server back-end environment.
-	* Testing Features Overview. https://docs.spring.io/spring-boot/docs/3.0.4/reference/html/features.html#features.testing
-	* API Documentation. https://docs.spring.io/spring-boot/docs/3.0.4/api/
