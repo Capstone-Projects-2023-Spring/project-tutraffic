@@ -1,14 +1,33 @@
 import cv2 as cv
 import time
+import signal
+import sys
 from detectCars import detectCars
 from imageMethods import cropImage, avgImages, takePictures
+from continuousCapture import task
+from threading import Timer
+from apscheduler.schedulers.background import BackgroundScheduler
 
+global images
+images = []
 def timeToNextMsg(timeBetweenMessages, inital_msg_time):
     timeToNextMessage = (timeBetweenMessages - (time.time() - inital_msg_time))
     if timeToNextMessage<0 :
         timeToNextMessage = 0
     print("--- %s seconds till next msg ---" % (timeToNextMessage))
     return timeToNextMessage
+
+def task(*args):
+    cam = args[0]
+    roi = args[1]
+    print("test")
+    result, image = cam.read()
+    if result:
+        cropped = cropImage(image, roi)[0]
+        images.append(cropped)
+    if len(images)>=30:
+        images.pop()
+
 
 
 if __name__ == '__main__':
@@ -23,6 +42,8 @@ if __name__ == '__main__':
     if not cam.isOpened():
         print("No Camera Found")
         exit()
+    
+    #set up camera thread
     
     # reading the input using the camera, result true = succesful
     result, image = cam.read()
@@ -49,6 +70,23 @@ if __name__ == '__main__':
     # ask to crop image
     print("Image chosen crop image to include minimum extraneous data")
     image, roiDisplacement = cropImage(image)
+
+    
+
+    sched = BackgroundScheduler(daemon=True)
+    sched.add_job(task,'interval',seconds=5)
+    sched.start()
+
+
+    sched.add_job(task, 'interval', seconds = 1, args=[cam, roiDisplacement])
+
+    
+    time.sleep(10)
+    cv.imshow("test",images[1])
+    cv.waitKey(0)
+    cv.destroyWindow("test")
+    sched.shutdown()
+    exit(0)
 
     lotOrStreet = input(
         "Is this a parking lot or street parking? LOT/STREET: ")
