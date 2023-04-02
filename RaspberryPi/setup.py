@@ -37,14 +37,14 @@ if __name__ == '__main__':
     #set up camera and camera scheduler
     cam_port = 0
     cam = cv.VideoCapture(cam_port)
-    sched = BackgroundScheduler(daemon=True)
+    camSched = BackgroundScheduler(daemon=True)
 
     def gracefulExit(signum, frame):
         print('Program halted early')
         if cam.isOpened():
             cam.release()
-        if sched.running:
-            sched.shutdown()
+        if camSched.running:
+            camSched.shutdown()
         exit(0)
     
     signal.signal(signal.SIGINT, gracefulExit)
@@ -80,8 +80,8 @@ if __name__ == '__main__':
     print("Image chosen crop image to include minimum extraneous data")
     image, roiDisplacement = cropImage(image)
     
-    sched.add_job(task, 'interval', seconds = 1, args=[cam, roiDisplacement])
-    sched.start()
+    camSched.add_job(task, 'interval', seconds = 1, args=[cam, roiDisplacement])
+    camSched.start()
 
     lotOrStreet = input(
         "Is this a parking lot or street parking? LOT/STREET: ")
@@ -95,7 +95,7 @@ if __name__ == '__main__':
             while len(images)<NUMPICTURES:
                 print(len(images)," images taken, please wait for ", NUMPICTURES, " images")
                 time.sleep(1)
-                
+
             inital_msg_time = time.time()
             averaged = avgImages(images)
             
@@ -117,5 +117,5 @@ if __name__ == '__main__':
 
     print("program finished!")
     cam.release()
-    sched.shutdown()
+    camSched.shutdown()
     exit(0)
