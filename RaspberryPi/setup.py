@@ -2,6 +2,7 @@ import cv2 as cv
 import time
 from detectCars import detectCars
 from imageMethods import cropImage, avgImages, takePictures
+from sendToServer import upload
 
 def timeToNextMsg(timeBetweenMessages, inital_msg_time):
     timeToNextMessage = (timeBetweenMessages - (time.time() - inital_msg_time))
@@ -54,7 +55,7 @@ if __name__ == '__main__':
         "Is this a parking lot or street parking? LOT/STREET: ")
 
     if lotOrStreet == "LOT":
-
+        lotname = input("enter the name of the parking lot: ")
         maxParkingSpaces = int(input("enter the total maximum number of parking spaces. i.e the maximum amount of cars that could fit: "))
         print("starting ")
 
@@ -73,6 +74,7 @@ if __name__ == '__main__':
 
             sendToServer = maxParkingSpaces - numCarsFound
             print(sendToServer, " num spots avaliable")
+            upload('parking/',{'spots': sendToServer}, 'serc')
             # send above number to server
 
             time.sleep(timeToNextMsg(timeBetweenMessages, inital_msg_time))
