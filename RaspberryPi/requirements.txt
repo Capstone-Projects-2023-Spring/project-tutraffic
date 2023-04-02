@@ -1,3 +1,11 @@
+firebase_admin==6.1.0
+libcblas-dev
+libhdf5-dev
+libhdf5-serial-dev
+libatlas-base-dev
+libjasper-dev 
+libqtgui4 
+libqt4-test
 arandr==0.1.10
 astroid==2.5.1
 asttokens==2.0.4
