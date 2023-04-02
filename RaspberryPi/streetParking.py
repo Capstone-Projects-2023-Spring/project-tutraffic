@@ -187,7 +187,7 @@ def main():
         print(totalSpaces)
         
         #displayCarBoxesStreet.detectCars(image)
-        #sendToServer.upload("parking/", {'spaces': totalSpaces},"bell")
+        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno")
     
 if __name__ == '__main__':
     main()
