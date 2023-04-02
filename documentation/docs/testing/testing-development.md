@@ -125,8 +125,8 @@ $ npm test -- --watchAll=false --updateSnapshot
 
 ## Resources
 * Jest 27.x. This framework runs front-end testing in JavaScript.
+	* Getting Started. A feature overview. https://jestjs.io/docs/27.x/getting-started
 	* Globals. Describes methods for preparing and running tests. https://jestjs.io/docs/27.x/api
-	* Expect. Describes methods for assertions. https://jestjs.io/docs/27.x/expect
 	* Jest CLI Options. https://jestjs.io/docs/27.x/cli
 	* Snapshot Testing Tutorial. https://jestjs.io/docs/27.x/snapshot-testing
 * Nodejs.dev. How to install Node.js. https://nodejs.dev/en/learn/how-to-install-nodejs/
@@ -139,6 +139,6 @@ $ npm test -- --watchAll=false --updateSnapshot
 * Pytest-mock 3.10.x. This framework integrates built-in Python mocking libraries with Pytest. https://pytest-mock.readthedocs.io/en/latest/
 * Python.
 	* Download Python. https://www.python.org/downloads/
-	* unittest.mock documentation. Used for mocking objects. https://docs.python.org/3/library/unittest.mock.html
+	* unittest.mock Documentation. Used for mocking objects. https://docs.python.org/3/library/unittest.mock.html
 * Pip documentation v23.0.1. Installation. This tool manages Python modules. https://pip.pypa.io/en/stable/installation/
 * React. Test Renderer. This module provides snapshot testing for the front end. https://reactjs.org/docs/test-renderer.html
