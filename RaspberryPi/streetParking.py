@@ -1,11 +1,14 @@
 import detectCarsStreet
 import sendToServer
-import dispayCarBoxesStreet
-#from picamera import PiCamera
+import displayCarBoxesStreet
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+from libcamera import controls
 import cv2 as cv
 import numpy as np
 import time
 from operator import itemgetter
+import os
 
 
 def detectCarBoxes(image):
@@ -34,12 +37,23 @@ def determineAvgLength(carList):
     return [w / len(carList), h / len(carList)]
 
 def captureImage():
+    '''
     camera = PiCamera()
+    cap = PiRGBArray(camera)
     time.sleep(3)
-    camera.capture('home/pi/Pictures/img.jpg')
-    imagePath = 'home/pi/Pictures/img.jpg'
+    camera.capture(cap, format = 'bgr')
+    image = cap.array
+    '''
+    cap = cv.VideoCapture(0)
     
-    return imagePath
+    ret, frame = cap.read()
+    if ret:
+        cv.imwrite('home/tutrafficpi/Desktop/image2.jpg', frame)
+    
+    #cv.imshow('image', frame)
+    #cv.waitKey(0)
+    
+    return frame
 
 def checkSpots(original, spaces):
     free = 0
@@ -155,10 +169,10 @@ def sortList(carLoc, imgHeight):
 
 
 def main():
-    image = True
-    while image:
-        #image = captureImage()
-        image = 'RaspberryPi/images/IMG_1411.jpeg'
+    go = True
+    while go == True:
+        image = captureImage()
+        #image = 'RaspberryPi/images/IMG_1411.jpeg'
         carLocations, imgDim = detectCarBoxes(image)
         print(carLocations)
         if carLocations:
@@ -172,7 +186,7 @@ def main():
         totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
         print(totalSpaces)
         
-        dispayCarBoxesStreet.detectCars(image)
+        #displayCarBoxesStreet.detectCars(image)
         #sendToServer.upload("parking/", {'spaces': totalSpaces},"bell")
     
 if __name__ == '__main__':

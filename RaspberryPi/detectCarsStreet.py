@@ -1,8 +1,8 @@
 import cv2
 import numpy as np
 
-def detectCars(image):
-    image = cv2.imread(image)
+def detectCars(image1):
+    image = image1
     config = "RaspberryPi/yolov3.cfg"
     weights = "RaspberryPi/yolov3.weights"
     classes = "RaspberryPi/yolov3.txt"

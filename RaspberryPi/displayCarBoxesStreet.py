@@ -1,8 +1,9 @@
 import cv2
 import numpy as np
 
-def detectCars(image):
-
+def detectCars(image1):
+    
+    image = image1
     config = "RaspberryPi/yolov3.cfg"
     weights = "RaspberryPi/yolov3.weights"
     classes = "RaspberryPi/yolov3.txt"
@@ -36,7 +37,7 @@ def detectCars(image):
         cv2.putText(img, label, (x-10,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 
-    origionalimage = cv2.imread(image)
+    origionalimage = image1
     roiDisplacement = origionalimage
     image = origionalimage
 
