@@ -11,7 +11,7 @@ import firebase_admin
 from firebase_admin import db
 from firebase_admin import credentials
 
-cred = credentials.Certificate("RaspberryPi/tutraffic-firebase-key.json")
+cred = credentials.Certificate("tutraffic-firebase-key.json")
 firebase_admin.initialize_app(cred, {'databaseURL': 'https://tutrafficdatabase-default-rtdb.firebaseio.com'})
 
 
@@ -48,7 +48,7 @@ def main():
 	# get num of parking spaces first
 
 	# change second var to data collected from ml model
-	upload('parking/',{'spots': 20}, 'bell')
+	upload('parking/',{'spots': 28}, 'serc')
 
 
 if __name__ == "__main__":

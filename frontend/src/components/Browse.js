@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { useData } from './LotData';
+import { useNavigate } from 'react-router-dom';
+import { LotData } from './LotData';
 import { calculateDistance } from './utils';
 import { FaHeart } from 'react-icons/fa';
 import { db, auth } from '../firebase';
 import { doc, setDoc } from "firebase/firestore";
-import Modal from 'react-bootstrap/Modal';
+import { Card, Modal, Button } from 'react-bootstrap';
 
 const Browse = () => {
-  const data = useData();
+  const navigate = useNavigate();
+  const handleMarkerClick = (key) => {
+    navigate(`/parkinglot/${key}`);
+  };
+
+  const data = LotData();
   const latitude = localStorage.getItem('latitude');
   const longitude = localStorage.getItem('longitude');
   const [favorites, setFavorites] = useState([]);
@@ -38,52 +44,68 @@ const Browse = () => {
     }, 1000);
   };
 
+
+  const renderData = () => {
+    if (!data) {
+      return <p>Loading...</p>;
+    }
+
+    const sortedData = Object.keys(data)
+      .map((key) => {
+        const distance = calculateDistance(latitude, longitude, data[key].lat, data[key].lng);
+        return { key, distance, ...data[key] };
+      })
+      .filter((item) => !isNaN(item.distance))
+      .sort((a, b) => a.distance - b.distance);
+
+    return sortedData.map(({ key, name, spots, street, distance }) => (
+      <div className="row" key={key}>
+        <div className="col mb-4">
+          <Card>
+            <Card.Body>
+              <Card.Title>{name}</Card.Title>
+              <Card.Text>
+                Spots available: <span className="fw-bold fs-4">{spots}</span>
+              </Card.Text>
+              {street && (
+                <Card.Text className="card-text text-end" style={{ color: 'red' }}>
+                  STREET{street}
+                </Card.Text>
+              )}
+              {latitude && longitude && !isNaN(distance) && (
+                <Card.Text className="text-end fw-bold">{distance.toFixed(2)} mi</Card.Text>
+              )}
+              {user && (
+                <div className="d-flex justify-content-end">
+                  <Button onClick={() => handleFavorite(key)} variant="outline-danger">
+                    <FaHeart /> Add to Favorite
+                  </Button>
+                </div>
+              )}
+              <div className="mt-2 d-flex justify-content-end">
+                <Button onClick={() => handleMarkerClick(key)}>View Detail</Button>
+              </div>
+            </Card.Body>
+          </Card>
+
+          <Modal show={showModal} onHide={() => setShowModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Success!</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>This lot has been added to your favorites.</Modal.Body>
+          </Modal>
+        </div>
+      </div>
+    ));
+  };
+
   return (
     <div className="container mt-4">
-
-      <h2>All Parking Lots data</h2>
-
-      {data ? (
-        Object.keys(data).map((key) => {
-          const distance = calculateDistance(latitude, longitude, data[key].lat, data[key].lng);
-
-          return (
-            <div className="row" key={key}>
-              <div className="col mb-4">
-
-                <div className="card">
-                  <div className="card-body">
-                    <p className="card-text">Lot: {data[key].name}</p>
-                    <p className="card-text">Spots: {data[key].spots}</p>
-                    {latitude && longitude && !isNaN(distance) && (
-                      <p className="card-text text-end">{distance.toFixed(2)} mi</p>
-                    )}
-                    {user && (
-                      <button onClick={() => handleFavorite(key)} className="btn btn-outline-danger">
-                        <FaHeart />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                <Modal show={showModal} onHide={() => setShowModal(false)}>
-                  <Modal.Header closeButton>
-                    <Modal.Title>Success!</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                    This lot has been added to your favorites.
-                  </Modal.Body>
-                </Modal>
-
-              </div>
-            </div>
-          );
-        })
-      ) : (
-        <p>Loading...</p>
+      <h2>Parking Locations</h2>
+      {latitude && longitude && (
+        <p className="text-muted">Data displayed in order of distance</p>
       )}
-
-
+      {renderData()}
     </div>
   );
 };
