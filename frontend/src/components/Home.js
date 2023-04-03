@@ -71,7 +71,7 @@ export default function Home() {
                 setSelected({ lat, lng });
                 setCenter({ lat, lng });
             } catch (error) {
-                console.log("Error: ", error);
+                console.log("Error: No such place", error);
             }
         };
         return (
@@ -85,12 +85,6 @@ export default function Home() {
             </Combobox>
         );
     };
-        //return <Combobox>
-        //    <ComboboxInput value={value} onChange={e => setValue(e.target.value)}  className="combobox-input" placeholder="Search an Address"/>
-        //</Combobox>
-        
-    //};
-
 
     const markers = data
         ? Object.keys(data).map((key) => {
@@ -113,41 +107,6 @@ export default function Home() {
         }).filter(marker => marker !== null)
         : [];
 
-
-
-   /* return (
-        <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
-            libraries={["places"]}
-        >
-            <div className="places-container">
-                <PlacesAutocomplete setSelected={setSelected} />
-            </div>
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={16}
-            >
-                <MarkerF
-                    position={center}
-                    options={{
-                        icon: {
-                            url: blueDot,
-                        },
-                    }}
-                />
-                {markers.map((marker, index) => (
-                    <MarkerF
-                        key={index}
-                        position={marker.position}
-                        options={marker.options}
-                    />
-                ))}
-                {selected && <MarkerF position={selected} />}
-            </GoogleMap>
-        </LoadScript>
-    );
-*/
 return (
     <LoadScript
     googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
