@@ -155,6 +155,41 @@ classDiagram
 
 Figure 2.3 shows the class diagram of the different data fields stored in the TuTraffic database.
 
+**Raspberry Pi**
+
+- A camera is attached to the Raspberry Pi that sends it images. The Pi runs code on itself to process the images then sends the gathered data to the server.
+- No images are sent to the server, only the data detected from them.
+
+```mermaid
+classDiagram
+    DetectCars -- DetectParking
+    Detect Lines -- DetectParking
+    class DetectCars{
+        +String config
+        +String classes
+        +String weights
+        +cropImage(String image)
+        +get_output_layers(String net)
+        +draw_prediciton(String image, int class_id, int confidence)
+    }
+    class DetectLines{
+        +Img edges
+        +Int[] lines
+        +Img image
+        +detectLines(Img image)
+    }
+    class DetectParking{
+        +int numberOfSpots
+        +int[] location
+        +String[] size
+        +detectParking()
+    }
+```
+
+##### Figure 2.4 - Raspberry Pi Class Diagram
+
+Figure 2.4 illustrates the class diagram of the code run on the Raspberry Pi after an image is sent to it from its camera.
+
 ### Sequence Diagrams
 
 **Use Case #1**: A user knows their destination and wants to find a spot in its general vicinity.
