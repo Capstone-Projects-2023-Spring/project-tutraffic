@@ -1,20 +1,60 @@
 import cv2 as cv
 import time
+import signal
 from detectCars import detectCars
 from imageMethods import cropImage, avgImages
+from apscheduler.schedulers.background import BackgroundScheduler
+from sendToServer import upload
+
+global images
+images = []
+NUMPICTURES = 30
+
+def timeToNextMsg(timeBetweenMessages, inital_msg_time):
+    timeToNextMessage = (timeBetweenMessages - (time.time() - inital_msg_time))
+    if timeToNextMessage<0 :
+        timeToNextMessage = 0
+    print("--- %s seconds till next msg ---" % (timeToNextMessage))
+    return timeToNextMessage
+
+def task(*args):
+    cam = args[0]
+    roi = args[1]
+    
+    result, image = cam.read()
+
+    if result:
+        cropped = cropImage(image, roi)[0]
+        images.append(cropped)
+        if len(images)> NUMPICTURES:
+            del images[0]
+
+
+
 if __name__ == '__main__':
-    numPictures = 40
-    timePicDelay = .1
     timeBetweenMessages = 20
     print("TUTraffic: Press enter to exit image pop-up, all prompts are case sensitive")
-    
-    #set up camera
+
+    #set up camera and camera scheduler
     cam_port = 0
     cam = cv.VideoCapture(cam_port)
+    camSched = BackgroundScheduler(daemon=True)
+
+    def gracefulExit(signum, frame):
+        print('Program halted early')
+        if cam.isOpened():
+            cam.release()
+        if camSched.running:
+            camSched.shutdown()
+        exit(0)
+    
+    signal.signal(signal.SIGINT, gracefulExit)
+
     if not cam.isOpened():
         print("No Camera Found")
         exit()
     
+
     # reading the input using the camera, result true = succesful
     result, image = cam.read()
     imageCheck = "N"
@@ -40,25 +80,26 @@ if __name__ == '__main__':
     # ask to crop image
     print("Image chosen crop image to include minimum extraneous data")
     image, roiDisplacement = cropImage(image)
+    
+    camSched.add_job(task, 'interval', seconds = 1, args=[cam, roiDisplacement])
+    camSched.start()
 
     lotOrStreet = input(
         "Is this a parking lot or street parking? LOT/STREET: ")
 
     if lotOrStreet == "LOT":
-
+        lotname = input("enter the name of the parking lot: ")
         maxParkingSpaces = int(input("enter the total maximum number of parking spaces. i.e the maximum amount of cars that could fit: "))
         print("starting ")
 
         while True:
-            inital_msg_time = time.time()
-            images = []
-            for i in range(numPictures):
-                result, image = cam.read()
-                cropped = cropImage(image, roiDisplacement)[0]
-                images.append(cropped)
-                time.sleep(timePicDelay)
+            while len(images)<NUMPICTURES:
+                print(len(images)," images taken, please wait for ", NUMPICTURES, " images")
+                time.sleep(1)
 
+            inital_msg_time = time.time()
             averaged = avgImages(images)
+            
             #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\Cars-parked-in-parking-lot.jpeg")
 
             # run ml model and count number of cars
@@ -66,20 +107,17 @@ if __name__ == '__main__':
             numCarsFound = detectCars(averaged)
             print("--- %s seconds to detect ---" % (time.time() - start_model_time))
 
-
             sendToServer = maxParkingSpaces - numCarsFound
             print(sendToServer, " num spots avaliable")
+            upload('parking/',{'spots': sendToServer}, 'serc')
             # send above number to server
 
-            
-            timeToNextMessage = (timeBetweenMessages - (time.time() - inital_msg_time))
-            if timeToNextMessage<0 :
-                timeToNextMessage = 0
-            print("--- %s seconds till next msg ---" % (timeToNextMessage))
-            time.sleep(timeBetweenMessages)
+            time.sleep(timeToNextMsg(timeBetweenMessages, inital_msg_time))
 
     elif lotOrStreet == "STREET":
         print("Street code setup goes here")
 
     print("program finished!")
     cam.release()
+    camSched.shutdown()
+    exit(0)
