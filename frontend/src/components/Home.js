@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
+
 import { GoogleMap, LoadScript, MarkerF, useLoadScript } from '@react-google-maps/api';
-import { useData } from './LotData';
+import { LotData } from './LotData';
 import blueDot from '../images/bluecircle.png';
+import { useNavigate } from 'react-router-dom';
+import streetIcon from '../images/streetParking.png';
+import lotIcon from '../images/lotParking.png';
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
@@ -16,13 +20,41 @@ import {
 import "@reach/combobox/styles.css";
 import styles from "./Home.css"
 
-export default function Home() {
-    const containerStyle = {
+const Home = () => {
+    const navigate = useNavigate();
+    const handleMarkerClick = (key) => {
+        navigate(`/parkinglot/${key}`);
+    };
+
+
+const containerStyle = {
         width: '100%',
-        height: '95vh',
+        height: '100%',
         position: 'relative',
     };
-    const data = useData();
+
+    const options = {
+        styles: [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [
+                    { visibility: "off" }
+                ]
+            },
+            {
+                "featureType": "landscape",
+                "elementType": "labels",
+                "stylers": [
+                    { visibility: "off" }
+                ]
+            }
+        ],
+        mapTypeControl: false,
+        streetViewControl: false
+    };
+
+    const data = LotData();
     const [center, setCenter] = useState({ lat: 39.981, lng: -75.155 });
     const [selected, setSelected] = useState(null)
 
@@ -88,7 +120,7 @@ export default function Home() {
 
     const markers = data
         ? Object.keys(data).map((key) => {
-            const { lat, lng, spots } = data[key];
+            const { lat, lng, spots, street } = data[key];
             if (lat && lng) {
                 return {
                     position: { lat, lng },
@@ -96,9 +128,13 @@ export default function Home() {
                         label: {
                             text: spots.toString(),
                             color: 'white',
-                            fontSize: '1rem',
+                            fontSize: '1.2rem',
+                        },
+                        icon: {
+                            url: street ? streetIcon : lotIcon,
                         },
                     },
+                    
                 };
             } else {
                 // skip this marker if lat && lng not available
@@ -115,17 +151,33 @@ return (
         <div className="places-container">
             <PlacesAutocomplete setSelected={setSelected} />
         </div>
-        <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16}>
-            <MarkerF position={center} options={{ icon: {url: blueDot,},}}/>
-            {markers.map((marker, index) => (
-            <MarkerF
-                    key={index}
-                    position={marker.position}
-                    options={marker.options}
+         <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={17}
+                options={options}
+            >
+                <MarkerF
+                    position={center}
+                    options={{
+                        icon: {
+                            url: blueDot,
+                        },
+                    }}
                 />
-            ))}
-            {selected && <MarkerF position={selected} />}
-        </GoogleMap>
+                {markers.map((marker, index) => (
+                    <MarkerF
+                        key={index}
+                        position={marker.position}
+                        onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                        options={marker.options}
+                    />
+                ))}
+                {selected && <MarkerF position={selected} />}
+            </GoogleMap>
     </LoadScript>
     );
-}
+};
+
+export default Home;
+

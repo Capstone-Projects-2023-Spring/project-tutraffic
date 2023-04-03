@@ -26,8 +26,11 @@ const Register = () => {
       console.log('Success:', userCredential);
       navigate('/');
     } catch (error) {
-      console.error('Error registering user with email and password:', error);
-      setShowErrorModal(true);
+            console.error('Error registering user with email and password:', error);
+            setShowErrorModal(true);
+            setTimeout(() => {
+                setShowErrorModal(false);
+            }, 2000);
     }
   };
 

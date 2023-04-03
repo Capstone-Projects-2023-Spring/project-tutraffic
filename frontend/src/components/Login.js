@@ -19,10 +19,13 @@ const Login = (props) => {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/home");
     } catch (error) {
-      console.error("Error signing in with email and password:", error);
-      setShowErrorModal(true);
-    }
-  };
+            console.error('Error signing in with email and password:', error);
+            setShowErrorModal(true);
+            setTimeout(() => {
+                setShowErrorModal(false);
+            }, 2000);
+        }
+    };
 
   const onFormSwitch = () => {
     navigate("/account/register");
