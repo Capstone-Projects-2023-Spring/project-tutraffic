@@ -1,12 +1,16 @@
 Nav {
-    align-items: center;
-    background-color: white;
+  align-items: center;
+  background-color: white;
+  border-bottom: 1px solid;
+  border-color: rgb(220, 220, 220);
 }
 
 Nav.mobile {
-    font-size: 0.8rem;
-    position: fixed;
-    width: 100vw;
-    bottom: 0;
-    z-index: 1;
+  font-size: 0.8rem;
+  position: fixed;
+  width: 100vw;
+  bottom: 0;
+  z-index: 1;
+  border-top: 1px solid;
+  border-color: rgb(220, 220, 220);
 }

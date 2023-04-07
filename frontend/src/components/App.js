@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home";
+import Map from "./Map";
 import Browse from "./Browse";
 import Login from "./Login";
 import Register from "./Register";
@@ -23,6 +24,7 @@ export const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/map" element={<Map />} />
               <Route path="/browse" element={<Browse />} />
               <Route path="/favorite" element={<Favorite />} />
               <Route path="/account/login" element={<Login />} />
