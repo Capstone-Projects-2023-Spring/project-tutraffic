@@ -3,10 +3,11 @@ import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
 import { LotData } from './LotData';
-import streetIcon from '../images/streetParking.png';
-import lotIcon from '../images/lotParking.png';
 
 const Map = () => {
+    const streetIcon = `${process.env.PUBLIC_URL}/images/streetParking.png`;
+    const lotIcon = `${process.env.PUBLIC_URL}/images/lotParking.png`;
+
     // Retrieve the user's latitude and longitude from local storage
     const latitude = parseFloat(localStorage.getItem('latitude'));
     const longitude = parseFloat(localStorage.getItem('longitude'));

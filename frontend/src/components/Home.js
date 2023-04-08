@@ -9,7 +9,6 @@ const libraries = ["places"];
 
 const Home = () => {
     const [address, setAddress] = useState("");
-    const [coordinates, setCoordinates] = useState(null);
     const [autocomplete, setAutocomplete] = useState(null);
     const navigate = useNavigate();
 
@@ -28,7 +27,6 @@ const Home = () => {
             if (status === "OK") {
                 const lat = results[0].geometry.location.lat();
                 const lng = results[0].geometry.location.lng();
-                setCoordinates({ lat, lng });
 
                 // Save to localStorage
                 localStorage.setItem('latitude', lat);
@@ -55,7 +53,6 @@ const Home = () => {
             navigator.geolocation.getCurrentPosition(position => {
                 const lat = position.coords.latitude;
                 const lng = position.coords.longitude;
-                setCoordinates({ lat, lng });
 
                 // Save to localStorage
                 localStorage.setItem('latitude', lat);
@@ -70,38 +67,33 @@ const Home = () => {
     }
 
     return (
-        <div className="d-flex flex-column align-items-center mt-5">
-            <FaParking size={40}/>
-            <h1>Find Parking Now</h1>
-            <p>at Temple University</p>
-            <Form>
-                <Autocomplete
-                    onLoad={(autocomplete) => setAutocomplete(autocomplete)}
-                    onPlaceChanged={handlePlaceChanged}
-                >
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter an address"
-                        value={address}
-                        onChange={handleInputChange}
-                        style={{ width: '20rem', height: '3rem' }}
-                    />
-                </Autocomplete>
-                <div className="d-flex justify-content-center mt-2">
-                    <Button variant="warning" onClick={handleSearch}>Search</Button>
-                </div>
-                <div className="d-flex justify-content-center mt-2">
-                    <Button variant="outline-secondary" onClick={handleGetCurrentLocation}><FaLocationArrow /> Use Current Location</Button>
-                </div>
-            </Form>
-            {coordinates && (
-                <div className="mt-3">
-                    Latitude: {localStorage.getItem('latitude')}
-                    <br />
-                    Longitude: {localStorage.getItem('longitude')}
-                </div>
-            )}
-        </div>
+        <>
+            <div className="d-flex flex-column align-items-center mt-5" >
+                <FaParking size={40} />
+                <h1>Find Parking Now</h1>
+                <p>at Temple University</p>
+                <Form>
+                    <Autocomplete
+                        onLoad={(autocomplete) => setAutocomplete(autocomplete)}
+                        onPlaceChanged={handlePlaceChanged}
+                    >
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter an address"
+                            value={address}
+                            onChange={handleInputChange}
+                            style={{ width: '20rem', height: '3rem' }}
+                        />
+                    </Autocomplete>
+                    <div className="d-flex justify-content-center mt-2">
+                        <Button variant="warning" onClick={handleSearch}>Search</Button>
+                    </div>
+                    <div className="d-flex justify-content-center mt-2">
+                        <Button variant="outline-secondary" onClick={handleGetCurrentLocation}><FaLocationArrow /> Use Current Location</Button>
+                    </div>
+                </Form>
+            </div>
+        </>
     );
 }
 
