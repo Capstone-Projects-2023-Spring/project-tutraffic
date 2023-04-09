@@ -18,7 +18,6 @@ runs:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ inputs.python-version }}
       uses: actions/setup-python@v4
-      shell: ${{ inputs.shell }}
       with:
         python-version: ${{ inputs.python-version }}
     - name: Install dependencies
@@ -28,6 +27,7 @@ runs:
         python -m pip install flake8
         python -m pip install -r testing/python/requirements.txt
     - name: Create .json containing secrets.
+      shell: ${{ inputs.shell }}
       env:
           KEY: ${{ inputs.KEY }}
       run: |
