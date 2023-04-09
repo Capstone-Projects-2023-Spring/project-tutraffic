@@ -5,6 +5,8 @@ name: Setup Frontend Testing
 on:
   workflow_call:
     inputs:
+      shell:
+        required: true
       node-version:
         required: true
       API_KEY:
@@ -18,6 +20,7 @@ on:
 
 runs:
   using: composite
+  shell: ${{ inputs.shell }}
   steps:
     - uses: actions/checkout@v3
       with:
