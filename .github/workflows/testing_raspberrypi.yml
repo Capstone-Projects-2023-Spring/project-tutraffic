@@ -22,6 +22,7 @@ jobs:
     - uses: actions/checkout@v3
     - uses: ./.github/actions/raspberrypi-setup
       with:
+          shell: bash
           python-version: ${{ matrix.python-version }}
           KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY}}
     - name: Lint with flake8
