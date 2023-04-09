@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useLoadScript } from '@react-google-maps/api';
+
 import Home from "./Home";
 import Map from "./Map";
 import Browse from "./Browse";
@@ -11,7 +13,17 @@ import Favorite from "./Favorite";
 import ParkingLot from './ParkingLot';
 import Navigation from './Navigation';
 
+const libraries = ['places'];
+
 export const App = () => {
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLEMAP_API_KEY,
+    libraries,
+  });
+
+  if (loadError) return <div>Error loading google maps API</div>;
+  if (!isLoaded) return <div>Loading google maps API</div>;
 
   return (
     <>
