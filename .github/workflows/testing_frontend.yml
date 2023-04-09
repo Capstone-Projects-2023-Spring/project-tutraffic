@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/testing/frontend_setup.yml
+      - uses: ./.github/actions/frontend-setup
         with:
           node-version: ${{ matrix.node-version }}
           API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }},
