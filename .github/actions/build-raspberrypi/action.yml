@@ -1,0 +1,37 @@
+# This workflow builds the Python enviroment for the RaspberryPi.
+
+name: Build RaspberryPi
+
+on:
+  workflow_call:
+    inputs:
+      shell:
+        required: true
+      python-version:
+        required: true
+      KEY:
+        required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ inputs.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+    - name: Install dependencies
+      shell: ${{ inputs.shell }}
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install flake8
+        python -m pip install -r testing/python/requirements.txt
+    - name: Create .json containing secrets.
+      shell: ${{ inputs.shell }}
+      env:
+          KEY: ${{ inputs.KEY }}
+      run: |
+          cat <<EOF > tutraffic-firebase-key.json
+          KEY
+          EOF
+      working-directory: ./RaspberryPi
