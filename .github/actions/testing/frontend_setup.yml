@@ -1,0 +1,46 @@
+# This workflow builds the Node.js frontend testing enviromenkt.
+
+name: Setup Frontend Testing
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        required: true
+      API_KEY:
+        required: true
+      AUTH_DOMAIN:
+        required: true
+      PROJECT_ID:
+        required: true
+      REF_URL:
+        required: true
+
+jobs:
+  build-frontend:
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ inputs.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ inputs.node-version }}
+      - name: Create .env containing secrets.
+        env:
+          API_KEY: ${{ inputs.API_KEY }}
+          AUTH_DOMAIN: ${{ inputs.AUTH_DOMAIN }}
+          PROJECT_ID: ${{ inputs.PROJECT_ID }}
+          REF_URL: ${{ inputs.REF_URL }}
+        run: |
+          cat <<EOF > .env
+          REACT_APP_FIREBASE_API_KEY="$API_KEY"
+          REACT_APP_FIREBASE_AUTH_DOMAIN="$AUTH_DOMAIN"
+          REACT_APP_FIREBASE_PROJECT_ID="$PROJECT_ID"
+          REACT_APP_FIREBASE_REF_URL="$REF_URL"
+          EOF
+        working-directory: ./frontend
+      - name: Install frontend dependencies.
+        run: npm ci
+        working-directory: ./frontend
+      - name: Build the frontend.
+        run: npm run build --if-present
+        working-directory: ./frontend
