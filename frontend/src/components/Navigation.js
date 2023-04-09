@@ -7,7 +7,6 @@ import { Map, FileText, Bookmark, User } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import './Navigation.css';
-import logo from '../images/logo_t.png';
 
 const Navigation = () => {
   const [windowDimension, setWindowDimension] = useState(null);
@@ -60,7 +59,7 @@ const Navigation = () => {
           <Navbar className="topnav">
             <Container>
               <Navbar.Brand>
-                <img src={logo} height="30" alt="mobile Logo" />
+                <img src={process.env.PUBLIC_URL + "/images/logo_t.png"} height="30" alt="mobile Logo" />
                 {pageTitle}
               </Navbar.Brand>
             </Container>
@@ -97,7 +96,7 @@ const Navigation = () => {
         <Navbar className="navbar navbar-expand-lg navbar-light bg-light">
           <Container>
             <Navbar.Brand onClick={() => navigate('/')}>
-              <img src={logo} height="30" alt="TuTraffic Logo" />
+              <img src={process.env.PUBLIC_URL + "/logo_t.png"} height="30" alt="TuTraffic Logo" />
               {pageTitle}
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
