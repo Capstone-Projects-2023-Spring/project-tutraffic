@@ -1,17 +1,9 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { useLoadScript } from '@react-google-maps/api';
 
-import Home from "./Home";
-import Map from "./Map";
-import Browse from "./Browse";
-import Login from "./Login";
-import Register from "./Register";
-import AccountInfo from "./AccountInfo";
-import AccountProfile from "./AccountProfile";
-import Favorite from "./Favorite";
-import ParkingLot from './ParkingLot';
 import Navigation from './Navigation';
+import AppRoutes from "./Routes";
 
 const libraries = ['places'];
 
@@ -22,9 +14,6 @@ export const App = () => {
     libraries,
   });
 
-  if (loadError) return <div>Error loading google maps API</div>;
-  if (!isLoaded) return <div>Loading google maps API</div>;
-
   return (
     <>
       <Router>
@@ -33,18 +22,9 @@ export const App = () => {
             <Navigation />
           </div>
           <div style={{ flexGrow: "1" }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/map" element={<Map />} />
-              <Route path="/browse" element={<Browse />} />
-              <Route path="/favorite" element={<Favorite />} />
-              <Route path="/account/login" element={<Login />} />
-              <Route path="/account/register" element={<Register />} />
-              <Route path="/account/info" element={<AccountInfo />} />
-              <Route path="/account/profile" element={<AccountProfile />} />
-              <Route path="/parkinglot/:key" element={<ParkingLot />} />
-            </Routes>
+            {loadError && <div>Error loading google maps API</div>}
+            {!isLoaded && !loadError && <div>Loading google maps API</div>}
+            {isLoaded && <AppRoutes />}
           </div>
         </div>
       </Router>
