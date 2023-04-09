@@ -103,7 +103,7 @@ const Navigation = () => {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto">
-                <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
+                <Nav.Link onClick={() => navigate('/map')}>Map</Nav.Link>
                 <Nav.Link onClick={() => navigate('/browse')}>Browse</Nav.Link>
                 <Nav.Link onClick={() => navigate('/favorite')}>Favorite</Nav.Link>
               </Nav>
