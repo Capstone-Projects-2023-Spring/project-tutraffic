@@ -19,8 +19,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/actions/testing/frontend_setup.yml@TT-109-integration-testing
+      - uses: ./.github/actions/testing/frontend_setup.yml
         with:
+          Default: ${{ github.repository }}
           node-version: ${{ matrix.node-version }}
           API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }},
           AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }},
