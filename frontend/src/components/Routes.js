@@ -11,7 +11,7 @@ import AccountProfile from "./AccountProfile";
 import Favorite from "./Favorite";
 import ParkingLot from './ParkingLot';
 
-export default function AppRoutes() {
+export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -26,4 +26,6 @@ export default function AppRoutes() {
       <Route path="/parkinglot/:key" element={<ParkingLot />} />
     </Routes>
   );
-}
+};
+
+export default AppRoutes;
