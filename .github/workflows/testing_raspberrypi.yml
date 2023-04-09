@@ -19,6 +19,7 @@ jobs:
         python-version: ["3.10"]
 
     steps:
+    - uses: actions/checkout@v3
     - uses: ./.github/actions/raspberrypi-setup
       with:
           python-version: ${{ matrix.python-version }}
