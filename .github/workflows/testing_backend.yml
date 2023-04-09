@@ -5,7 +5,6 @@ name: Testing Backend
 
 on:
   pull_request:
-    branches: [ "main" ]
     paths:
       - 'backend/**'
       - '.github/workflows/testing_backend.yml'

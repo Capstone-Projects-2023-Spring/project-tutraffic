@@ -5,7 +5,6 @@ name: Testing RaspberryPi
 
 on:
   pull_request:
-    branches: [ "main" ]
     paths:
       - 'RaspberryPi/**'
       - '.github/workflows/testing_raspberrypi.yml'
