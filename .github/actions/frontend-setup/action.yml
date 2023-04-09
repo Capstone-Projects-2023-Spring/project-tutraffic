@@ -22,12 +22,10 @@ runs:
   using: composite
   steps:
     - uses: actions/checkout@v3
-      shell: ${{ inputs.shell }}
       with:
           repository: Capstone-Projects-2023-Spring/project-tutraffic
     - name: Use Node.js ${{ inputs.node-version }}
       uses: actions/setup-node@v3
-      shell: ${{ inputs.shell }}
       with:
         node-version: ${{ inputs.node-version }}
     - name: Create .env containing secrets.
