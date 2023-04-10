@@ -10,6 +10,8 @@ const AccountProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [carSize, setCarSize] = useState('default average'); // add state for car size
+  const [priceRange, setPriceRange] = useState('default'); // add state for price range
+
 
 
   useEffect(() => {
@@ -31,9 +33,10 @@ const AccountProfile = () => {
     if (user && (carSize === "Small" || carSize === "Average" || carSize === "Large")) {
       setDoc(doc(db, "users", user.uid), {
         CarSize: carSize,
+        PriceRange: priceRange,
       });
     }
-  }, [carSize, user]);
+  }, [carSize, priceRange, user]);
 
   if (!user) {
     return (
@@ -61,6 +64,13 @@ const AccountProfile = () => {
         <h2>User Profile</h2>
         <h4>Current Car Size: {carSize}</h4>
         <select value={carSize} onChange={(e) => setCarSize(e.target.value)}>
+          <option value="">Nothing selected</option>
+          <option value="Small">Small</option>
+          <option value="Average">Average</option>
+          <option value="Large">Large</option>
+        </select>
+        <h4>Current Price Range: {priceRange}</h4>
+        <select value={priceRange} onChange={(e) => setPriceRange(e.target.value)}>
           <option value="">Nothing selected</option>
           <option value="Small">Small</option>
           <option value="Average">Average</option>
