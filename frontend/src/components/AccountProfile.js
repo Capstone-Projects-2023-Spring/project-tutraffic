@@ -9,9 +9,8 @@ import './UserSettings.css';
 const AccountProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const [carSize, setCarSize] = useState('default average'); // add state for car size
-  const [priceRange, setPriceRange] = useState('default'); // add state for price range
-
+  const [carSize, setCarSize] = useState('nothing selected'); 
+  const [lotType, setLotType] = useState('nothing selected'); 
 
 
   useEffect(() => {
@@ -33,10 +32,10 @@ const AccountProfile = () => {
     if (user && (carSize === "Small" || carSize === "Average" || carSize === "Large")) {
       setDoc(doc(db, "users", user.uid), {
         CarSize: carSize,
-        PriceRange: priceRange,
+        lotType: lotType,
       });
     }
-  }, [carSize, priceRange, user]);
+  }, [carSize, lotType, user]);
 
   if (!user) {
     return (
@@ -69,12 +68,11 @@ const AccountProfile = () => {
           <option value="Average">Average</option>
           <option value="Large">Large</option>
         </select>
-        <h4>Current Price Range: {priceRange}</h4>
-        <select value={priceRange} onChange={(e) => setPriceRange(e.target.value)}>
+        <h4>Current Lot Type: {lotType}</h4>
+        <select value={lotType} onChange={(e) => setLotType(e.target.value)}>
           <option value="">Nothing selected</option>
-          <option value="Small">Small</option>
-          <option value="Average">Average</option>
-          <option value="Large">Large</option>
+          <option value="Parking Lot">Lot</option>
+          <option value="Street">Stree</option>
         </select>
         </div>
     </div>
