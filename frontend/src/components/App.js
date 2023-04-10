@@ -17,7 +17,7 @@ export const App = () => {
   return (
     <>
       <Router>
-        <div className="App" data-testid="app-component" style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+        <div className="App" data-testid="app-component" style={{ height: "100vh", display: "flex", flexDirection: "column", fontFamily: "Arial, Helvetica, sans-serif"}}>
           <div>
             <Navigation />
           </div>

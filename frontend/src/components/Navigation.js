@@ -4,9 +4,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Map, FileText, Bookmark, User } from "react-feather";
-import { useNavigate } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import { NavLink, useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import './Navigation.css';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 const Navigation = () => {
   const [windowDimension, setWindowDimension] = useState(null);
@@ -55,70 +58,64 @@ const Navigation = () => {
   return (
     <main className="wrapper">
       {isMobile ? (
-        <>
-          <Navbar className="topnav">
-            <Container>
-              <Navbar.Brand>
-                <img src={process.env.PUBLIC_URL + "/images/logo_t.png"} height="30" alt="mobile Logo" />
-                {pageTitle}
-              </Navbar.Brand>
-            </Container>
-          </Navbar>
-          <Navbar className="mobile">
-            <Nav className="justify-content-around" style={{ width: "100%" }}>
-              <Nav.Link onClick={() => navigate('/')}>
-                <Map />
-                <div>Home</div>
+        <Navbar className="mobile">
+          <Nav className="justify-content-around" style={{ width: "100%" }}>
+            <Nav.Link onClick={() => navigate('/')}>
+              <Map />
+              <div>Home</div>
+            </Nav.Link>
+            <Nav.Link onClick={() => navigate('/browse')}>
+              <FileText />
+              <div>Browse</div>
+            </Nav.Link>
+            <Nav.Link onClick={() => navigate('/favorite')}>
+              <Bookmark />
+              <div>Favorite</div>
+            </Nav.Link>
+            {userEmail ? (
+              <Nav.Link onClick={() => navigate('/account/info')}>
+                <User />
+                <div>Account</div>
               </Nav.Link>
-              <Nav.Link onClick={() => navigate('/browse')}>
-                <FileText />
-                <div>Browse</div>
+            ) : (
+              <Nav.Link onClick={() => navigate('/account/login')}>
+                <User />
+                <div>Account</div>
               </Nav.Link>
-              <Nav.Link onClick={() => navigate('/favorite')}>
-                <Bookmark />
-                <div>Favorite</div>
-              </Nav.Link>
-              {userEmail ? (
-                <Nav.Link onClick={() => navigate('/account/info')}>
-                  <User />
-                  <div>Account</div>
-                </Nav.Link>
-              ) : (
-                <Nav.Link onClick={() => navigate('/account/login')}>
-                  <User />
-                  <div>Account</div>
-                </Nav.Link>
-              )}
-            </Nav>
-          </Navbar>
-        </>
+            )}
+          </Nav>
+        </Navbar>
       ) : (
-        <Navbar className="navbar navbar-expand-lg navbar-light bg-light">
+        <Navbar style={{padding:"4px"}}>
           <Container>
-            <Navbar.Brand onClick={() => navigate('/')}>
-              <img src={process.env.PUBLIC_URL + "/logo_t.png"} height="30" alt="TuTraffic Logo" />
-              {pageTitle}
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto">
-                <Nav.Link onClick={() => navigate('/map')}>Map</Nav.Link>
-                <Nav.Link onClick={() => navigate('/browse')}>Browse</Nav.Link>
-                <Nav.Link onClick={() => navigate('/favorite')}>Favorite</Nav.Link>
-              </Nav>
-
+              <Button variant="light brand" onClick={() => navigate('/home')}>
+                <Navbar.Brand>
+                  <img src={process.env.PUBLIC_URL + "/logo.png"} height="30" alt="TuTraffic Logo" />
+                </Navbar.Brand>
+              </Button>
+              <Button variant="light links" onClick={() => navigate('/map')}>Map</Button>
+              <Button variant="light links" onClick={() => navigate('/browse')}>Browse</Button>
+              <Button variant="light links" onClick={() => navigate('/favorite')}>Favorites</Button>
               {userEmail ? (
-                <Nav>
-                  <NavDropdown title={userEmail} id="user-nav-dropdown">
-                    <NavDropdown.Item onClick={() => navigate('/account/info')}>User Settings</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={handleSignOut}>Logout</NavDropdown.Item>
-                  </NavDropdown>
-                </Nav>
+                <Navbar.Collapse className="justify-content-end">
+                  <DropdownButton variant="light" align="end" title={<img src={process.env.PUBLIC_URL + "/notification.png"} height="30" alt="Notification icon" />} >
+                    <></>
+                  </DropdownButton>
+                  <DropdownButton variant="light" align="end" title={<img src={process.env.PUBLIC_URL + "/settings.png"} height="30" alt="Settings icon" />} >
+                    <Dropdown.ItemText>Signed in as</Dropdown.ItemText>
+                    <Dropdown.ItemText className="item-email">{userEmail}</Dropdown.ItemText>
+                    <Dropdown.Divider/>
+                    <Dropdown.Item onClick={() => navigate('/account/info')}>Account Info</Dropdown.Item>
+                    <Dropdown.Item onClick={() => navigate('/account/profile')}>User Profile</Dropdown.Item>
+                    <Dropdown.Divider/>
+                    <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
+                  </DropdownButton>
+                </Navbar.Collapse>
               ) : (
-                <Nav className="border">
-                  <Nav.Link onClick={() => navigate('/account/login')}>Login</Nav.Link>
-                </Nav>
+                <Navbar.Collapse className="justify-content-end">
+                  <Button variant="secondary" onClick={() => navigate('/account/login')}>Login</Button>
+                </Navbar.Collapse>
               )}
             </Navbar.Collapse>
           </Container>
