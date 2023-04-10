@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
+
 import { LotData } from './LotData';
-import blueDot from '../images/bluecircle.png';
-import streetIcon from '../images/streetParking.png';
-import lotIcon from '../images/lotParking.png';
 
 const Map = () => {
+    const streetIcon = `${process.env.PUBLIC_URL}/images/streetParking.png`;
+    const lotIcon = `${process.env.PUBLIC_URL}/images/lotParking.png`;
+
+    // Retrieve the user's latitude and longitude from local storage
+    const latitude = parseFloat(localStorage.getItem('latitude'));
+    const longitude = parseFloat(localStorage.getItem('longitude'));
+
     const navigate = useNavigate();
     const handleMarkerClick = (key) => {
         navigate(`/parkinglot/${key}`);
@@ -39,28 +44,15 @@ const Map = () => {
         streetViewControl: false
     };
 
+    // Retrieve the parking lot data
     const data = LotData();
-    const [center, setCenter] = useState({ lat: 39.981, lng: -75.155 });
+    
+    // set the map center
+    const center = {
+        lat: latitude,
+        lng: longitude,
+    };
 
-    useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    setCenter({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    });
-                    localStorage.setItem('latitude', position.coords.latitude);
-                    localStorage.setItem('longitude', position.coords.longitude);
-                },
-                error => {
-                    console.error(error);
-                }
-            );
-        } else {
-            console.error('Geolocation not supported by the browser.');
-        }
-    }, []);
 
     const markers = data
         ? Object.keys(data).map((key) => {
@@ -78,7 +70,7 @@ const Map = () => {
                             url: street ? streetIcon : lotIcon,
                         },
                     },
-                    
+
                 };
             } else {
                 // skip this marker if lat && lng not available
@@ -101,11 +93,6 @@ const Map = () => {
             >
                 <MarkerF
                     position={center}
-                    options={{
-                        icon: {
-                            url: blueDot,
-                        },
-                    }}
                 />
                 {markers.map((marker, index) => (
                     <MarkerF
