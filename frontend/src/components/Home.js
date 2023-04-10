@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
-import { useLoadScript, Autocomplete } from '@react-google-maps/api';
+import { Autocomplete } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { FaParking, FaLocationArrow } from 'react-icons/fa';
 
-const libraries = ["places"];
-
 const Home = () => {
     const [address, setAddress] = useState("");
     const [autocomplete, setAutocomplete] = useState(null);
     const navigate = useNavigate();
-
-    const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: process.env.REACT_APP_GOOGLEMAP_API_KEY,
-        libraries
-    });
-
-    if (loadError) return "Error loading googleMapsApi";
-    if (!isLoaded) return "Loading";
 
     const handleSearch = () => {
         // Use the Geocoder API to get the coordinates of the address

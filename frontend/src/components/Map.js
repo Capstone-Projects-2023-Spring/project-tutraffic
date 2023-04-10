@@ -1,5 +1,5 @@
 import React from 'react'
-import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 
 import { LotData } from './LotData';
@@ -46,7 +46,7 @@ const Map = () => {
 
     // Retrieve the parking lot data
     const data = LotData();
-    
+
     // set the map center
     const center = {
         lat: latitude,
@@ -82,28 +82,24 @@ const Map = () => {
 
 
     return (
-        <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
+        <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={17}
+            options={options}
         >
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={17}
-                options={options}
-            >
+            <MarkerF
+                position={center}
+            />
+            {markers.map((marker, index) => (
                 <MarkerF
-                    position={center}
+                    key={index}
+                    position={marker.position}
+                    onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                    options={marker.options}
                 />
-                {markers.map((marker, index) => (
-                    <MarkerF
-                        key={index}
-                        position={marker.position}
-                        onClick={() => handleMarkerClick(Object.keys(data)[index])}
-                        options={marker.options}
-                    />
-                ))}
-            </GoogleMap>
-        </LoadScript>
+            ))}
+        </GoogleMap>
     );
 
 };
