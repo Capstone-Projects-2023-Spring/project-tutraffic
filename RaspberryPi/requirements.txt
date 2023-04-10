@@ -1,5 +1,4 @@
 firebase_admin==6.1.0
-libatlas-base-dev
 libjasper-dev 
 libqtgui4 
 libqt4-test
