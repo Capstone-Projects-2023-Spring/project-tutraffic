@@ -1,5 +1,4 @@
 firebase_admin==6.1.0 
-libqtgui4 
 libqt4-test
 arandr==0.1.10
 astroid==2.5.1
