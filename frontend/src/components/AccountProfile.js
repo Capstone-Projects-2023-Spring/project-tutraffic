@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
+import { setDoc, doc } from 'firebase/firestore';
 import Nav from 'react-bootstrap/Nav';
 import './UserSettings.css';
 
 const AccountProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [carSize, setCarSize] = useState('default average'); // add state for car size
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -23,6 +26,14 @@ const AccountProfile = () => {
       unsubscribe();
     };
   }, []);
+  
+  useEffect(() => { // update the car size in Firestore whenever it changes
+    if (user && (carSize === "Small" || carSize === "Average" || carSize === "Large")) {
+      setDoc(doc(db, "users", user.uid), {
+        CarSize: carSize,
+      });
+    }
+  }, [carSize, user]);
 
   if (!user) {
     return (
@@ -45,8 +56,17 @@ const AccountProfile = () => {
             <Nav.Link className="highlighted-btn" onClick={() => navigate("/account/profile")}>User Profile</Nav.Link>
           </Nav.Item>
         </Nav>
-
       </div>
+      <div className="profile">
+        <h2>User Profile</h2>
+        <h4>Current Car Size: {carSize}</h4>
+        <select value={carSize} onChange={(e) => setCarSize(e.target.value)}>
+          <option value="">Nothing selected</option>
+          <option value="Small">Small</option>
+          <option value="Average">Average</option>
+          <option value="Large">Large</option>
+        </select>
+        </div>
     </div>
   );
 };
