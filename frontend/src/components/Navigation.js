@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Home, Map, FileText, Bookmark, User } from "react-feather";
+import { Home, Map, FileText, Heart, UserPlus, UserCheck } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import Nav from 'react-bootstrap/Nav';
@@ -73,18 +73,18 @@ const Navigation = () => {
                 <div>Browse</div>
               </Nav.Link>
               <Nav.Link onClick={() => navigate('/favorite')} className="d-flex flex-column align-items-center">
-                <Bookmark />
+                <Heart />
                 <div>Favorite</div>
               </Nav.Link>
               {userEmail ? (
                 <Nav.Link onClick={() => navigate('/account/info')} className="d-flex flex-column align-items-center">
-                  <User />
+                  <UserCheck />
                   <div>Account</div>
                 </Nav.Link>
               ) : (
                 <Nav.Link onClick={() => navigate('/account/login')} className="d-flex flex-column align-items-center">
-                  <User />
-                  <div>Account</div>
+                  <UserPlus />
+                  <div>Login</div>
                 </Nav.Link>
               )}
             </Nav>
