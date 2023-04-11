@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Home, Map, FileText, Bookmark, Bell, User } from "react-feather";
+import { Home, Map, FileText, Bookmark, User } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import Nav from 'react-bootstrap/Nav';
