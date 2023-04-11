@@ -21,11 +21,12 @@ Nav.mobile {
 }
 
 .links {
+  font-size: 1.2rem;
   font-weight: 600;
-  font-size: 18px;
+  color: #808080;
 }
 
-.dropdown-toggle:after { 
+.dropdown-toggle:after {
   content: none
 }
 

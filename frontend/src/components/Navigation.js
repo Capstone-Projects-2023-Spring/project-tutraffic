@@ -8,6 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from "react-bootstrap/Button";
+import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
 import './Navigation.css';
 
 const Navigation = () => {
@@ -29,7 +30,7 @@ const Navigation = () => {
   }, []);
 
   const isMobile = windowDimension <= 640;
-  
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -56,46 +57,46 @@ const Navigation = () => {
   return (
     <main className="wrapper">
       {isMobile ? (
-      <Nav style={{ height:"77px" }}>
-        <Navbar className="mobile">
-          <Nav className="justify-content-around" style={{ width: "100%" }}>
-            <Nav.Link onClick={() => navigate('/home')}>
-              <Home />
-              <div>Home</div>
-            </Nav.Link>
-            <Nav.Link onClick={() => navigate('/map')}>
-              <Map />
-              <div>Map</div>
-            </Nav.Link>
-            <Nav.Link onClick={() => navigate('/browse')}>
-              <FileText />
-              <div>Browse</div>
-            </Nav.Link>
-            <Nav.Link onClick={() => navigate('/favorite')}>
-              <Bookmark />
-              <div>Favorite</div>
-            </Nav.Link>
-            {userEmail ? (
-              <Nav.Link onClick={() => navigate('/account/info')}>
-                <User />
-                <div>Account</div>
+        <Nav style={{ height: "77px" }}>
+          <Navbar className="mobile">
+            <Nav className="justify-content-around" style={{ width: "100%" }}>
+              <Nav.Link onClick={() => navigate('/home')} className="d-flex flex-column align-items-center">
+                <Home />
+                <div>Home</div>
               </Nav.Link>
-            ) : (
-              <Nav.Link onClick={() => navigate('/account/login')}>
-                <User />
-                <div>Account</div>
+              <Nav.Link onClick={() => navigate('/map')} className="d-flex flex-column align-items-center">
+                <Map />
+                <div>Map</div>
               </Nav.Link>
-            )}
-          </Nav>
-        </Navbar>
-      </Nav>
+              <Nav.Link onClick={() => navigate('/browse')} className="d-flex flex-column align-items-center">
+                <FileText />
+                <div>Browse</div>
+              </Nav.Link>
+              <Nav.Link onClick={() => navigate('/favorite')} className="d-flex flex-column align-items-center">
+                <Bookmark />
+                <div>Favorite</div>
+              </Nav.Link>
+              {userEmail ? (
+                <Nav.Link onClick={() => navigate('/account/info')} className="d-flex flex-column align-items-center">
+                  <User />
+                  <div>Account</div>
+                </Nav.Link>
+              ) : (
+                <Nav.Link onClick={() => navigate('/account/login')} className="d-flex flex-column align-items-center">
+                  <User />
+                  <div>Account</div>
+                </Nav.Link>
+              )}
+            </Nav>
+          </Navbar>
+        </Nav>
       ) : (
-        <Navbar style={{padding:"4px"}}>
+        <Navbar style={{ padding: "4px" }}>
           <Container>
             <Navbar.Collapse id="basic-navbar-nav">
               <Button variant="light brand" onClick={() => navigate('/home')}>
                 <Navbar.Brand>
-                  <img src={process.env.PUBLIC_URL + "/logo.png"} height="30" alt="TuTraffic Logo" />
+                  <img src={process.env.PUBLIC_URL + "/logo.png"} height="28" alt="TuTraffic Logo" />
                 </Navbar.Brand>
               </Button>
               <Button variant="light links" onClick={() => navigate('/map')}>Map</Button>
@@ -103,16 +104,16 @@ const Navigation = () => {
               <Button variant="light links" onClick={() => navigate('/favorite')}>Favorites</Button>
               {userEmail ? (
                 <Navbar.Collapse className="justify-content-end">
-                  <DropdownButton variant="light" align="end" title={<img src={process.env.PUBLIC_URL + "/notification.png"} height="30" alt="Notification icon" />} >
+                  <DropdownButton variant="light" align="end" title={<IoNotificationsOutline size={30} />} >
                     <></>
                   </DropdownButton>
-                  <DropdownButton variant="light" align="end" title={<img src={process.env.PUBLIC_URL + "/settings.png"} height="30" alt="Settings icon" />} >
+                  <DropdownButton variant="light" align="end" title={<IoSettingsOutline size={30} />} >
                     <Dropdown.ItemText>Signed in as</Dropdown.ItemText>
                     <Dropdown.ItemText className="item-email">{userEmail}</Dropdown.ItemText>
-                    <Dropdown.Divider/>
+                    <Dropdown.Divider />
                     <Dropdown.Item onClick={() => navigate('/account/info')}>Account Info</Dropdown.Item>
                     <Dropdown.Item onClick={() => navigate('/account/profile')}>User Profile</Dropdown.Item>
-                    <Dropdown.Divider/>
+                    <Dropdown.Divider />
                     <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
                   </DropdownButton>
                 </Navbar.Collapse>
