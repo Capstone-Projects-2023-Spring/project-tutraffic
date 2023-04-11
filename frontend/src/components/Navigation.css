@@ -1,7 +1,19 @@
 Nav {
-  background-color: white;
+  background-color: #f8f9fa;
+  border-top: 1px solid;
   border-bottom: 1px solid;
   border-color: rgb(220, 220, 220);
+}
+
+Nav.mobile {
+  font-size: 0.8rem;
+  font-weight: 600;
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 77px;
+  background-color: #f8f9fa;
 }
 
 .brand {

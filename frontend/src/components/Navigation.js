@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Home, Map, FileText, Bookmark, User } from "react-feather";
+import { Home, Map, FileText, Bookmark, Bell, User } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import Nav from 'react-bootstrap/Nav';
@@ -56,7 +56,7 @@ const Navigation = () => {
   return (
     <main className="wrapper">
       {isMobile ? (
-        <>
+      <Nav style={{ height:"77px" }}>
         <Navbar className="mobile">
           <Nav className="justify-content-around" style={{ width: "100%" }}>
             <Nav.Link onClick={() => navigate('/home')}>
@@ -88,7 +88,7 @@ const Navigation = () => {
             )}
           </Nav>
         </Navbar>
-      </>
+      </Nav>
       ) : (
         <Navbar style={{padding:"4px"}}>
           <Container>
