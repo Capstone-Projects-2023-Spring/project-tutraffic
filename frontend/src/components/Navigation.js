@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { Home, Map, FileText, Bookmark, User } from "react-feather";
+import { useNavigate } from "react-router-dom";
+import { auth } from '../firebase';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Map, FileText, Bookmark, User } from "react-feather";
-import Button from "react-bootstrap/Button";
-import { NavLink, useNavigate } from "react-router-dom";
-import { auth } from '../firebase';
-import './Navigation.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import Button from "react-bootstrap/Button";
+import './Navigation.css';
 
 const Navigation = () => {
   const [windowDimension, setWindowDimension] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const navigate = useNavigate();
-  const pageTitle = "TuTraffic";
 
   useEffect(() => {
     setWindowDimension(window.innerWidth);
@@ -58,11 +56,16 @@ const Navigation = () => {
   return (
     <main className="wrapper">
       {isMobile ? (
+        <>
         <Navbar className="mobile">
           <Nav className="justify-content-around" style={{ width: "100%" }}>
-            <Nav.Link onClick={() => navigate('/')}>
-              <Map />
+            <Nav.Link onClick={() => navigate('/home')}>
+              <Home />
               <div>Home</div>
+            </Nav.Link>
+            <Nav.Link onClick={() => navigate('/map')}>
+              <Map />
+              <div>Map</div>
             </Nav.Link>
             <Nav.Link onClick={() => navigate('/browse')}>
               <FileText />
@@ -85,6 +88,7 @@ const Navigation = () => {
             )}
           </Nav>
         </Navbar>
+      </>
       ) : (
         <Navbar style={{padding:"4px"}}>
           <Container>
