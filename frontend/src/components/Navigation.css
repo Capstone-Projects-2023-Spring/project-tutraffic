@@ -1,16 +1,26 @@
 Nav {
-  align-items: center;
   background-color: white;
   border-bottom: 1px solid;
   border-color: rgb(220, 220, 220);
 }
 
-Nav.mobile {
-  font-size: 0.8rem;
-  position: fixed;
-  width: 100vw;
-  bottom: 0;
-  z-index: 1;
-  border-top: 1px solid;
-  border-color: rgb(220, 220, 220);
+.brand {
+  width: 200px;
+}
+
+.links {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.dropdown-toggle:after { 
+  content: none
+}
+
+.item-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 14rem;
+  font-weight: 600;
 }
