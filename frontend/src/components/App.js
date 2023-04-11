@@ -1,36 +1,30 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Home";
-import Browse from "./Browse";
-import Login from "./Login";
-import Register from "./Register";
-import AccountInfo from "./AccountInfo";
-import AccountProfile from "./AccountProfile";
-import Favorite from "./Favorite";
-import ParkingLot from './ParkingLot';
+import { BrowserRouter as Router } from "react-router-dom";
+import { useLoadScript } from '@react-google-maps/api';
+
 import Navigation from './Navigation';
+import AppRoutes from "./Routes";
+
+const libraries = ['places'];
 
 export const App = () => {
+
+  const { isLoaded, loadError } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLEMAP_API_KEY,
+    libraries,
+  });
 
   return (
     <>
       <Router>
-        <div className="App" data-testid="app-component" style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+        <div className="App" data-testid="app-component" style={{ height: "100vh", display: "flex", flexDirection: "column", fontFamily: "Arial, Helvetica, sans-serif"}}>
           <div>
             <Navigation />
           </div>
           <div style={{ flexGrow: "1" }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/browse" element={<Browse />} />
-              <Route path="/favorite" element={<Favorite />} />
-              <Route path="/account/login" element={<Login />} />
-              <Route path="/account/register" element={<Register />} />
-              <Route path="/account/info" element={<AccountInfo />} />
-              <Route path="/account/profile" element={<AccountProfile />} />
-              <Route path="/parkinglot/:key" element={<ParkingLot />} />
-            </Routes>
+            {loadError && <div>Error loading google maps API</div>}
+            {!isLoaded && !loadError && <div>Loading google maps API</div>}
+            {isLoaded && <AppRoutes />}
           </div>
         </div>
       </Router>

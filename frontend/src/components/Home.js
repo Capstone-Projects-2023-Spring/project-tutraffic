@@ -1,124 +1,90 @@
-import React, { useState, useEffect } from 'react'
-import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
+import React, { useState } from 'react';
+import { Autocomplete } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
-import { LotData } from './LotData';
-import blueDot from '../images/bluecircle.png';
-import streetIcon from '../images/streetParking.png';
-import lotIcon from '../images/lotParking.png';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import { FaParking, FaLocationArrow } from 'react-icons/fa';
 
 const Home = () => {
+    const [address, setAddress] = useState("");
+    const [autocomplete, setAutocomplete] = useState(null);
     const navigate = useNavigate();
-    const handleMarkerClick = (key) => {
-        navigate(`/parkinglot/${key}`);
-    };
 
-    const containerStyle = {
-        width: '100%',
-        height: '100%',
-        position: 'relative',
-    };
+    const handleSearch = () => {
+        // Use the Geocoder API to get the coordinates of the address
+        const geocoder = new window.google.maps.Geocoder();
+        geocoder.geocode({ address }, (results, status) => {
+            if (status === "OK") {
+                const lat = results[0].geometry.location.lat();
+                const lng = results[0].geometry.location.lng();
 
-    const options = {
-        styles: [
-            {
-                featureType: "poi",
-                elementType: "labels",
-                stylers: [
-                    { visibility: "off" }
-                ]
-            },
-            {
-                "featureType": "landscape",
-                "elementType": "labels",
-                "stylers": [
-                    { visibility: "off" }
-                ]
+                // Save to localStorage
+                localStorage.setItem('latitude', lat);
+                localStorage.setItem('longitude', lng);
+
+                navigate('/map');
             }
-        ],
-        mapTypeControl: false,
-        streetViewControl: false
+
+        });
     };
 
-    const data = LotData();
-    const [center, setCenter] = useState({ lat: 39.981, lng: -75.155 });
+    const handlePlaceChanged = () => {
+        const newAddress = autocomplete.getPlace().formatted_address;
+        setAddress(newAddress);
+    }
 
-    useEffect(() => {
+    const handleInputChange = (event) => {
+        const newAddress = event.target.value;
+        setAddress(newAddress);
+    };
+
+    const handleGetCurrentLocation = () => {
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    setCenter({
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    });
-                    localStorage.setItem('latitude', position.coords.latitude);
-                    localStorage.setItem('longitude', position.coords.longitude);
-                },
-                error => {
-                    console.error(error);
-                }
-            );
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lng = position.coords.longitude;
+
+                // Save to localStorage
+                localStorage.setItem('latitude', lat);
+                localStorage.setItem('longitude', lng);
+
+                // Navigate to /map
+                navigate('/map');
+            });
         } else {
-            console.error('Geolocation not supported by the browser.');
+            alert("Geolocation is not supported by this browser.");
         }
-    }, []);
-
-    const markers = data
-        ? Object.keys(data).map((key) => {
-            const { lat, lng, spots, street } = data[key];
-            if (lat && lng) {
-                return {
-                    position: { lat, lng },
-                    options: {
-                        label: {
-                            text: spots.toString(),
-                            color: 'white',
-                            fontSize: '1.2rem',
-                        },
-                        icon: {
-                            url: street ? streetIcon : lotIcon,
-                        },
-                    },
-                    
-                };
-            } else {
-                // skip this marker if lat && lng not available
-                return null;
-            }
-        }).filter(marker => marker !== null)
-        : [];
-
-
+    }
 
     return (
-        <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_GOOGLEMAP_API_KEY}
-        >
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={center}
-                zoom={17}
-                options={options}
-            >
-                <MarkerF
-                    position={center}
-                    options={{
-                        icon: {
-                            url: blueDot,
-                        },
-                    }}
-                />
-                {markers.map((marker, index) => (
-                    <MarkerF
-                        key={index}
-                        position={marker.position}
-                        onClick={() => handleMarkerClick(Object.keys(data)[index])}
-                        options={marker.options}
-                    />
-                ))}
-            </GoogleMap>
-        </LoadScript>
+        <>
+            <div className="d-flex flex-column align-items-center mt-5" >
+                <FaParking size={40} />
+                <h1>Find Parking Now</h1>
+                <p>at Temple University</p>
+                <Form>
+                    <Autocomplete
+                        onLoad={(autocomplete) => setAutocomplete(autocomplete)}
+                        onPlaceChanged={handlePlaceChanged}
+                    >
+                        <Form.Control
+                            type="text"
+                            placeholder="Enter an address"
+                            value={address}
+                            onChange={handleInputChange}
+                            style={{ width: '20rem', height: '3rem' }}
+                        />
+                    </Autocomplete>
+                    <div className="d-flex justify-content-center mt-2">
+                        <Button variant="warning" onClick={handleSearch}>Search</Button>
+                    </div>
+                    <div className="d-flex justify-content-center mt-2">
+                        <Button variant="outline-secondary" onClick={handleGetCurrentLocation}><FaLocationArrow /> Use Current Location</Button>
+                    </div>
+                </Form>
+            </div>
+        </>
     );
-
-};
+}
 
 export default Home;
