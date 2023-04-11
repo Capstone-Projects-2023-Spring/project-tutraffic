@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { database } from '../firebase';
-import { ref, get } from 'firebase/database';
+import { ref, onValue } from 'firebase/database';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Card, Button } from 'react-bootstrap';
 
@@ -10,13 +10,15 @@ const ParkingLot = () => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const parkingRef = ref(database, `parking/${key}`);
-            const snapshot = await get(parkingRef);
+        const parkingRef = ref(database, `parking/${key}`);
+        const listener = onValue(parkingRef, (snapshot) => {
             setData(snapshot.val());
-        };
+        });
 
-        fetchData();
+        return () => {
+            // detach the listener when the component unmounts
+            listener();
+        };
     }, [key]);
 
     if (!data) {
@@ -48,7 +50,6 @@ const ParkingLot = () => {
                     <iframe
                         title="Map Preview"
                         width="100%"
-                        height="300"
                         src={googleMapsEmbed}
                     ></iframe>
                 </Card.Body>
