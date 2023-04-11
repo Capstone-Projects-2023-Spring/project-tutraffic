@@ -30,6 +30,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flake8
         python -m pip install numpy
+        python -m pip install opencv-python
         python -m pip install -r testing/python/requirements.txt
     - name: Create .json containing secrets.
       env:
