@@ -25,11 +25,23 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Install ubuntu dependencies
+      run: sudo apt-get install build-essential libcap-dev
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         python -m pip install flake8
-        python -m pip install -r RaspberryPi/requirements.txt
+        python -m pip install numpy
+        python -m pip install opencv-python
+        python -m pip install -r testing/python/requirements.txt
+    - name: Create .json containing secrets.
+      env:
+          KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY }}
+      run: |
+          cat <<EOF > tutraffic-firebase-key.json
+          KEY
+          EOF
+      working-directory: ./RaspberryPi
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
