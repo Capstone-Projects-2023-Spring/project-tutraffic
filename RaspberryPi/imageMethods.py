@@ -29,12 +29,12 @@ def avgImages(Images):
     #cv2.destroyWindow("avg")
     return avg_image
 
-def takePictures(cam, roi, numPictures, delayInSeconds):
-    images = []
-    for i in range(numPictures):
-        result, image = cam.read()
-        if result:
-            cropped = cropImage(image, roi)[0]
-            images.append(cropped)
-            time.sleep(delayInSeconds)
-    return images
+#def takePictures(cam, roi, numPictures, delayInSeconds):
+#    images = []
+#    for i in range(numPictures):
+#        result, image = cam.read()
+#        if result:
+#            cropped = cropImage(image, roi)[0]
+#            images.append(cropped)
+#            time.sleep(delayInSeconds)
+#   return images
