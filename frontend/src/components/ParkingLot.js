@@ -2,12 +2,14 @@ import { useState, useEffect } from 'react';
 import { database } from '../firebase';
 import { ref, onValue } from 'firebase/database';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Modal } from 'react-bootstrap';
+import addNotification from 'react-push-notification';
 
 const ParkingLot = () => {
     const navigate = useNavigate();
     const { key } = useParams();
     const [data, setData] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const parkingRef = ref(database, `parking/${key}`);
@@ -21,6 +23,19 @@ const ParkingLot = () => {
         };
     }, [key]);
 
+    useEffect(() => {
+        // check if spots are less than 5 and showModal is true
+        if (data && showModal && data.spots < 5) {
+            // trigger notification
+            addNotification({
+                title: 'TuTraffic',
+                subtitle: 'low spots alert',
+                message: 'Less than 5 spots remaining',
+                native: true
+            });
+        }
+    }, [data, showModal]);
+
     if (!data) {
         return <div>Loading data...</div>;
     }
@@ -28,6 +43,29 @@ const ParkingLot = () => {
     const { name, spots, lat, lng, street, desc, rate } = data;
     const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
     const googleMapsEmbed = `https://www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_GOOGLEMAP_API_KEY}&q=${lat},${lng}`;
+
+    const handleParkClick = () => {
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handleNavigateClick = () => {
+        window.open(googleMapsLink, '_blank');
+    };
+
+    const modalStyle = {
+        color: 'white',
+        height: '75vh',
+        fontSize: '18rem',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: spots < 5 ? 'red' : 'green',
+        flexDirection: 'column',
+    };
 
     return (
         <>
@@ -44,9 +82,9 @@ const ParkingLot = () => {
                     {street && <Card.Text>Street Parking</Card.Text>}
                     <Card.Text>Description: {desc}</Card.Text>
                     <Card.Text>Rate: {rate}</Card.Text>
-                    <Card.Link href={googleMapsLink} target="_blank" rel="noreferrer">
-                        View on Google Maps
-                    </Card.Link>
+                    <Button variant="primary" onClick={handleParkClick}>
+                        Park Here
+                    </Button>
                     <iframe
                         title="Map Preview"
                         width="100%"
@@ -54,6 +92,18 @@ const ParkingLot = () => {
                     ></iframe>
                 </Card.Body>
             </Card>
+            <Modal show={showModal} onHide={handleCloseModal} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>Spots Remaining</Modal.Title>
+                </Modal.Header>
+                <Modal.Body style={modalStyle}>
+                    {spots}
+                    <Button variant="warning" onClick={handleNavigateClick}>
+                        Navigate
+                    </Button>
+                </Modal.Body>
+            </Modal>
+
         </>
     );
 };
