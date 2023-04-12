@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useLoadScript } from '@react-google-maps/api';
+import { Notifications } from 'react-push-notification';
 
 import Navigation from './Navigation';
 import AppRoutes from "./Routes";
@@ -34,6 +35,7 @@ export const App = () => {
     <>
       <Router>
         <div className="App" data-testid="app-component" style={{ height: "100dvh", display: "flex", flexDirection: "column"}}>
+        <Notifications />
           {!isMobile && <Navigation />}
           <div style={{ flexGrow: "1" }}>
             {loadError && <div>Error loading google maps API</div>}
