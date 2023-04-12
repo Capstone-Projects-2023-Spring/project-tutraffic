@@ -13,8 +13,8 @@ def test_takePics():
     print("passed")
 
 def test_crop():
-    origionalimg = cv2.imread('Testimg1donotremove.jpg')
-    origionalimgcropped = cv2.imread('Testimg2donotremove.jpg')
+    origionalimg = cv2.imread('images/Testimg1donotremove.jpg')
+    origionalimgcropped = cv2.imread('images/Testimg2donotremove.jpg')
     notcropped = origionalimg
     assert is_equal(origionalimg, notcropped)
     cropped = imageMethods.cropImage(origionalimg,(90, 111, 436, 327))[0]
@@ -23,8 +23,8 @@ def test_crop():
 
 def test_avgImgs():
     images = []
-    origionalimg = cv2.imread('Testimg1donotremove.jpg')
-    changedImage = cv2.imread('Testimg3donotremove.jpg')
+    origionalimg = cv2.imread('images/Testimg1donotremove.jpg')
+    changedImage = cv2.imread('images/Testimg3donotremove.jpg')
     assert is_similar(origionalimg,changedImage)
     assert not is_equal(origionalimg, changedImage)
     images.append(origionalimg)

@@ -80,7 +80,7 @@ if __name__ == '__main__':
     # ask to crop image
     print("Image chosen crop image to include minimum extraneous data")
     image, roiDisplacement = cropImage(image)
-    
+    print('roi = ', roiDisplacement)
     camSched.add_job(task, 'interval', seconds = 1, args=[cam, roiDisplacement])
     camSched.start()
 
@@ -100,7 +100,7 @@ if __name__ == '__main__':
             inital_msg_time = time.time()
             averaged = avgImages(images)
             
-            #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\Cars-parked-in-parking-lot.jpeg")
+            #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\IMG_1994.jpg")
 
             # run ml model and count number of cars
             start_model_time = time.time()
