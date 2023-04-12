@@ -1,14 +1,17 @@
 import detectCarsStreet
 import sendToServer
 import displayCarBoxesStreet
-from picamera import PiCamera
-from picamera.array import PiRGBArray
-from libcamera import controls
+#from picamera import PiCamera
+#from picamera.array import PiRGBArray
+#from libcamera import controls
 import cv2 as cv
 import numpy as np
 import time
 from operator import itemgetter
 import os
+import datetime
+from scipy.stats import skew
+
 
 
 def detectCarBoxes(image):
@@ -36,6 +39,8 @@ def determineAvgLength(carList):
         h += carList[i][5] 
     return [w / len(carList), h / len(carList)]
 
+
+
 def captureImage():
     '''
     camera = PiCamera()
@@ -45,10 +50,19 @@ def captureImage():
     image = cap.array
     '''
     cap = cv.VideoCapture(0)
+    cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
     
-    ret, frame = cap.read()
-    if ret:
-        cv.imwrite('home/tutrafficpi/Desktop/image2.jpg', frame)
+    frame = cap.read()
+    
+    grey = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+    hist = cv.calcHist([grey], [0], None, [256], [0, 256])
+    imgSkew = skew(hist)
+
+    if imgSkew > 10.0:
+            image = adjust_gamma(image, 0.3)
+
+    cv.imwrite('home/tutrafficpi/Desktop/image2.jpg', frame)
     
     #cv.imshow('image', frame)
     #cv.waitKey(0)
@@ -145,7 +159,7 @@ def determineSpaces(left, right, imDim, carAvgDim):
                 spotsR = spots
                 free += checkSpots(right, spots)
     else:	
-        free += 2 * int(imDim[0] / 1000)
+        free += (2 * int(imDim[0] / carAvgDim[0]))
         
 	#if no cars are parked on one side add the spots for that side of the road
     if left and not right or right and not left:
@@ -167,12 +181,17 @@ def sortList(carLoc, imgHeight):
         right.sort(key = itemgetter(0))
     return left, right
 
+def adjust_gamma(img, gam):
+	inverGam = 1.0 / gam
+	table = np.array([((i / 255.0) ** inverGam) * 255
+		for i in np.arange(0, 256)]).astype("uint8")
+	return cv.LUT(img, table)
 
 def main():
     go = True
     while go == True:
-        image = captureImage()
-        #image = 'RaspberryPi/images/IMG_1411.jpeg'
+        #image = captureImage()
+        image = cv.imread('RaspberryPi/Overexpose.jpeg')
         carLocations, imgDim = detectCarBoxes(image)
         print(carLocations)
         if carLocations:
@@ -186,8 +205,8 @@ def main():
         totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
         print(totalSpaces)
         
-        #displayCarBoxesStreet.detectCars(image)
-        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno")
+        displayCarBoxesStreet.detectCars(image)
+        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
     
 if __name__ == '__main__':
     main()
