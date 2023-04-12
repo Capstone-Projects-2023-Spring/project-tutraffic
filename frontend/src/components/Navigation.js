@@ -8,7 +8,7 @@ import Container from 'react-bootstrap/Container';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from "react-bootstrap/Button";
-import { IoNotificationsOutline, IoSettingsOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
 import './Navigation.css';
 
 const Navigation = () => {
@@ -104,9 +104,6 @@ const Navigation = () => {
               <Button variant="light links" onClick={() => navigate('/favorite')}>Favorites</Button>
               {userEmail ? (
                 <Navbar.Collapse className="justify-content-end">
-                  <DropdownButton variant="light" align="end" title={<IoNotificationsOutline size={30} />} >
-                    <></>
-                  </DropdownButton>
                   <DropdownButton variant="light" align="end" title={<IoSettingsOutline size={30} />} >
                     <Dropdown.ItemText>Signed in as</Dropdown.ItemText>
                     <Dropdown.ItemText className="item-email">{userEmail}</Dropdown.ItemText>

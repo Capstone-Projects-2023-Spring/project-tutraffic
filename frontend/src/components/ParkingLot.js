@@ -40,7 +40,7 @@ const ParkingLot = () => {
         return <div>Loading data...</div>;
     }
 
-    const { name, spots, lat, lng, street, desc, rate } = data;
+    const { name, spots, lat, lng, street, desc, rate, Captured } = data;
     const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
     const googleMapsEmbed = `https://www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_GOOGLEMAP_API_KEY}&q=${lat},${lng}`;
 
@@ -77,19 +77,21 @@ const ParkingLot = () => {
             <Card className="mt-3 mx-5 ">
                 <Card.Body>
                     <Card.Title>{name}</Card.Title>
-                    <Card.Text>Spots: {spots}</Card.Text>
-                    <Card.Text>coordinate: {lat}, {lng}</Card.Text>
-                    {street && <Card.Text>Street Parking</Card.Text>}
+                    <Card.Text>Spots: <span className='fs-4 text-primary'>{spots}</span></Card.Text>
+                    {street && <Card.Text className='text-info'>Street Parking</Card.Text>}
                     <Card.Text>Description: {desc}</Card.Text>
                     <Card.Text>Rate: {rate}</Card.Text>
-                    <Button variant="primary" onClick={handleParkClick}>
+                    <Button variant="outline-success" className='mb-3' onClick={handleParkClick}>
                         Park Here
                     </Button>
+                    <Card.Text className='text-muted'>Last Update: {Captured}</Card.Text>
                     <iframe
                         title="Map Preview"
                         width="100%"
                         src={googleMapsEmbed}
                     ></iframe>
+                    <Card.Text className='text-muted'>Coordinate: {lat}, {lng}</Card.Text>
+                    
                 </Card.Body>
             </Card>
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
