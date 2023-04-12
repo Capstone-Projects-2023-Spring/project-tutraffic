@@ -38,7 +38,7 @@ jobs:
           EOF
       - name: Install Dependencies
         working-directory: ./frontend
-        run: npm install
+        run: npm install --legacy-peer-deps
       - name: Build
         working-directory: ./frontend
         run: npm run build --prod
