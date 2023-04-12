@@ -38,7 +38,7 @@ jobs:
           REACT_APP_FIREBASE_REF_URL="$REF_URL"
           EOF
         working-directory: ./frontend
-      - run: npm ci
+      - run: npm ci --legacy-peer-deps
         working-directory: ./frontend
       - run: npm run build --if-present
         working-directory: ./frontend
