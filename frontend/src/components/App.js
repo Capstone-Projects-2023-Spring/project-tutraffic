@@ -34,9 +34,11 @@ export const App = () => {
   return (
     <>
       <Router>
+
         <div className="App" data-testid="app-component" style={{ height: "100dvh", display: "flex", flexDirection: "column"}}>
         <Notifications />
           {!isMobile && <Navigation />}
+
           <div style={{ flexGrow: "1" }}>
             {loadError && <div>Error loading google maps API</div>}
             {!isLoaded && !loadError && <div>Loading google maps API</div>}
