@@ -83,9 +83,12 @@ def process_request(client_socket: socket, request_code: int):
         case socket_api.Message.REFRESH_IMAGE.value:
             client_socket.send(str(socket_api.Message.TRUE.value).encode())
         case socket_api.Message.REFRESH_IMAGE.value:
-            img = getImage()
-            cv.imwrite(socket_api.IMAGE_PATH, img)
-            client_socket.send(str(socket_api.Message.DONE.value).encode())
+            (success, img) = getImage()
+            if success:
+                cv.imwrite(socket_api.IMAGE_PATH, img)
+                client_socket.send(str(socket_api.Message.TRUE.value).encode())
+            else:
+                client_socket.send(str(socket_api.Message.FALSE.value).encode())
         case socket_api.Message.SET_ROI.value:
             data = client_socket.recv(socket_api.BUF_SIZE)
             string = data.decode()

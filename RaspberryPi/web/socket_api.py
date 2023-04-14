@@ -15,7 +15,6 @@ host = socket.gethostbyname(socket.gethostname())
 
 class Message(Enum):
     """An enum of string messages sent via socket."""
-    DONE = "done"
     TRUE = "true"
     FALSE = "false"
     REFRESH_IMAGE = "refresh_image"
