@@ -81,11 +81,14 @@ def process_request(client_socket: socket, request_code: int):
     global num
     match request_code:
         case socket_api.Message.REFRESH_IMAGE.value:
-            client_socket.send(str(socket_api.Message.TRUE.value).encode())
-        case socket_api.Message.REFRESH_IMAGE.value:
             (success, img) = getImage()
             if success:
                 cv.imwrite(socket_api.IMAGE_PATH, img)
+                client_socket.send(str(socket_api.Message.TRUE.value).encode())
+            else:
+                client_socket.send(str(socket_api.Message.FALSE.value).encode())
+        case socket_api.Message.IS_CAMERA_CONNECTED.value:
+            if is_camera_connected:
                 client_socket.send(str(socket_api.Message.TRUE.value).encode())
             else:
                 client_socket.send(str(socket_api.Message.FALSE.value).encode())
