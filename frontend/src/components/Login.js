@@ -20,7 +20,7 @@ export const Login = () => {
       setTextColor(1);
       setMessage("You are now logged in. You will soon be redirected.");
       setTimeout(() => {
-        navigate('/');
+        navigate('/account/info');
       }, 2000);
     }).catch((error) => { 
       setTextColor(0);

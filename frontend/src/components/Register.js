@@ -42,7 +42,7 @@ export const Register = (props) => {
       setTextColor(1);
       setMessage("Account successfully created. You will soon be redirected.");
       setTimeout(() => {
-        navigate('/');
+        navigate('/account/info');
       }, 2000);
     }).catch((error) => { 
       console.log(error.message);
