@@ -42,20 +42,12 @@ def determineAvgLength(carList):
 
 
 def captureImage():
-    '''
-    camera = PiCamera()
-    cap = PiRGBArray(camera)
-    time.sleep(3)
-    camera.capture(cap, format = 'bgr')
-    image = cap.array
-    '''
+
     cap = cv.VideoCapture(0)
     cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
     
-    frame = cap.read()
-    
-	#check for overexposure
+    ay, frame = cap.read()
     grey = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     hist = cv.calcHist([grey], [0], None, [256], [0, 256])
     imgSkew = skew(hist)
