@@ -1,9 +1,9 @@
 import detectCarsStreet
 import sendToServer
 import displayCarBoxesStreet
-#from picamera import PiCamera
-#from picamera.array import PiRGBArray
-#from libcamera import controls
+from picamera import PiCamera
+from picamera.array import PiRGBArray
+from libcamera import controls
 import cv2 as cv
 import numpy as np
 import time
@@ -53,14 +53,13 @@ def captureImage():
     cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
     cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
     
-    frame = cap.read()
-    
+    ay, frame = cap.read()
     grey = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     hist = cv.calcHist([grey], [0], None, [256], [0, 256])
     imgSkew = skew(hist)
 
     if imgSkew > 10.0:
-            image = adjust_gamma(image, 0.3)
+            frame = adjust_gamma(frame, 0.3)
 
     cv.imwrite('home/tutrafficpi/Desktop/image2.jpg', frame)
     
@@ -190,8 +189,8 @@ def adjust_gamma(img, gam):
 def main():
     go = True
     while go == True:
-        #image = captureImage()
-        image = cv.imread('RaspberryPi/Overexpose.jpeg')
+        image = captureImage()
+        #image = cv.imread('RaspberryPi/Overexpose.jpeg')
         carLocations, imgDim = detectCarBoxes(image)
         print(carLocations)
         if carLocations:
@@ -206,7 +205,7 @@ def main():
         print(totalSpaces)
         
         displayCarBoxesStreet.detectCars(image)
-        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
+        #sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
     
 if __name__ == '__main__':
     main()
