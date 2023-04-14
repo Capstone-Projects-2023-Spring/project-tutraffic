@@ -1,6 +1,7 @@
 import React from 'react'
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
+import { Autocomplete } from '@react-google-maps/api';
 
 import { LotData } from './LotData';
 
@@ -11,6 +12,9 @@ const Map = () => {
   // Retrieve the user's latitude and longitude from local storage
   const latitude = parseFloat(localStorage.getItem('latitude'));
   const longitude = parseFloat(localStorage.getItem('longitude'));
+
+  const [address, setAddress] = useState("");
+  const [autocomplete, setAutocomplete] = useState(null);
 
   const navigate = useNavigate();
   const handleMarkerClick = (key) => {
@@ -69,6 +73,32 @@ const Map = () => {
       return null;
     }
   }).filter(marker => marker !== null) : [];
+
+  const handleSearch = () => {
+    // Use the Geocoder API to get the coordinates of the address
+    const geocoder = new window.google.maps.Geocoder();
+    geocoder.geocode({ address }, (results, status) => {
+        if (status === "OK") {
+            const lat = results[0].geometry.location.lat();
+            const lng = results[0].geometry.location.lng();
+
+            // Save to localStorage
+            localStorage.setItem('latitude', lat);
+            localStorage.setItem('longitude', lng);
+        }
+
+    });
+};
+
+const handlePlaceChanged = () => {
+  const newAddress = autocomplete.getPlace().formatted_address;
+  setAddress(newAddress);
+}
+
+const handleInputChange = (event) => {
+  const newAddress = event.target.value;
+  setAddress(newAddress);
+};
 
   return (
     <GoogleMap
