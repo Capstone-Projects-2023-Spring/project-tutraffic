@@ -1,9 +1,11 @@
 Nav {
+
   background-color: #f8f9fa;
   border-top: 1px solid;
   border-bottom: 1px solid;
   border-color: rgb(220, 220, 220);
 }
+
 
 Nav.mobile {
   font-size: 0.6rem;

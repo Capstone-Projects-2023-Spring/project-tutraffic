@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
+
 import { Home, Map, FileText, Heart, UserPlus, UserCheck } from "react-feather";
+
 import { useNavigate } from "react-router-dom";
 import { auth } from '../firebase';
 import Nav from 'react-bootstrap/Nav';
@@ -9,6 +11,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from "react-bootstrap/Button";
 import { IoSettingsOutline } from "react-icons/io5";
+
 import './Navigation.css';
 
 const Navigation = () => {
@@ -57,6 +60,7 @@ const Navigation = () => {
   return (
     <main className="wrapper">
       {isMobile ? (
+
         <Nav style={{ height: "77px" }}>
           <Navbar className="mobile">
             <Nav className="justify-content-around" style={{ width: "100%" }}>
@@ -92,11 +96,14 @@ const Navigation = () => {
         </Nav>
       ) : (
         <Navbar style={{ padding: "4px" }}>
+
           <Container>
             <Navbar.Collapse id="basic-navbar-nav">
               <Button variant="light brand" onClick={() => navigate('/')}>
                 <Navbar.Brand>
+
                   <img src={process.env.PUBLIC_URL + "/logo.png"} height="28" alt="TuTraffic Logo" />
+
                 </Navbar.Brand>
               </Button>
               <Button variant="light links" onClick={() => navigate('/map')}>Map</Button>
@@ -111,6 +118,7 @@ const Navigation = () => {
                     <Dropdown.Item onClick={() => navigate('/account/info')}>Account Info</Dropdown.Item>
                     <Dropdown.Item onClick={() => navigate('/account/profile')}>User Profile</Dropdown.Item>
                     <Dropdown.Divider />
+
                     <Dropdown.Item onClick={handleSignOut}>Sign out</Dropdown.Item>
                   </DropdownButton>
                 </Navbar.Collapse>

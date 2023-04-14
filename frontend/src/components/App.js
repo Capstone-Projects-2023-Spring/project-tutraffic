@@ -34,6 +34,7 @@ export const App = () => {
   return (
     <>
       <Router>
+
         <div className="App" data-testid="app-component" style={{ height: "100dvh", display: "flex", flexDirection: "column"}}>
         <Notifications />
           {!isMobile && <ConditionalNavr />}
