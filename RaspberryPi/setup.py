@@ -96,7 +96,7 @@ def process_request(client_socket: socket, request_code: int):
             string = data.decode()
             set_roi(literal_eval(string))
         case socket_api.Message.GET_ROI.value:
-            client_socket.send(str(roi).encode())
+            client_socket.send(str(get_roi()).encode())
         case socket_api.Message.SET_MAXPARKINGSPACES.value:
             data = client_socket.recv(socket_api.BUF_SIZE)
             num = data.decode()
