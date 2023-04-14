@@ -5,19 +5,66 @@ from detectCars import detectCars
 from imageMethods import cropImage, avgImages
 from apscheduler.schedulers.background import BackgroundScheduler
 from sendToServer import upload
-
 global images
+global roi
 images = []
 NUMPICTURES = 30
+TIMEBETWEENMESSAGES = 20
+CAMPORT = 0
+roi = None
+cam = None
+camSched = None
+result = False
+maxParkingSpaces = None
 
-def timeToNextMsg(timeBetweenMessages, inital_msg_time):
-    timeToNextMessage = (timeBetweenMessages - (time.time() - inital_msg_time))
+def gracefulExit(signum, frame):
+    print('Program halted early')
+    if cam is not None and cam.isOpened():
+        cam.release()
+    if camSched is not None and camSched.running:
+        camSched.shutdown()
+    exit(0)
+
+def getImage():
+    length = len(images)
+    if length > 0 and images[length] is not None:
+        return True, images[length]
+    else:
+        return False, None
+    
+def get_roi():
+    if roi is not None:
+        return roi
+    else:
+        return (0,0,0,0)
+
+def set_roi(rect):
+    if rect is not None:
+        roi = rect
+        return True
+    else:
+        return False
+
+def is_camera_connected():
+    if cam is not None:
+        return True
+    else:
+        return False
+
+def set_maxparkingspaces(number_of_spaces):
+    maxParkingSpaces = number_of_spaces
+
+def get_maxparkingspaces():
+    return maxParkingSpaces
+
+def timeToNextMsg(inital_msg_time):
+    timeToNextMessage = (TIMEBETWEENMESSAGES - (time.time() - inital_msg_time))
     if timeToNextMessage<0 :
         timeToNextMessage = 0
     print("--- %s seconds till next msg ---" % (timeToNextMessage))
     return timeToNextMessage
 
-def task(*args):
+def imageTakingTask(*args):
     cam = args[0]
     roi = args[1]
     
@@ -32,27 +79,20 @@ def task(*args):
 
 
 if __name__ == '__main__':
-    timeBetweenMessages = 20
+    signal.signal(signal.SIGINT, gracefulExit)
     print("TUTraffic: Press enter to exit image pop-up, all prompts are case sensitive")
 
     #set up camera and camera scheduler
-    cam_port = 0
-    cam = cv.VideoCapture(cam_port)
-    camSched = BackgroundScheduler(daemon=True)
-
-    def gracefulExit(signum, frame):
-        print('Program halted early')
-        if cam.isOpened():
-            cam.release()
-        if camSched.running:
-            camSched.shutdown()
-        exit(0)
     
-    signal.signal(signal.SIGINT, gracefulExit)
+    cam = cv.VideoCapture(CAMPORT)
 
-    if not cam.isOpened():
+    if not is_camera_connected():
         print("No Camera Found")
         exit()
+    
+    
+
+    
     
 
     # reading the input using the camera, result true = succesful
@@ -60,7 +100,6 @@ if __name__ == '__main__':
     imageCheck = "N"
 
     if result:
-
         cv.imshow("First try", image)
         cv.waitKey(0)
         imageCheck = input("Is this Image correct? Y/N ")
@@ -79,9 +118,11 @@ if __name__ == '__main__':
 
     # ask to crop image
     print("Image chosen crop image to include minimum extraneous data")
-    image, roiDisplacement = cropImage(image)
+    image, roi = cropImage(image)
+    print('roi = ', roi)
     
-    camSched.add_job(task, 'interval', seconds = 1, args=[cam, roiDisplacement])
+    camSched = BackgroundScheduler(daemon=True)
+    camSched.add_job(imageTakingTask, 'interval', seconds = 1, args=[cam, roi])
     camSched.start()
 
     lotOrStreet = input(
@@ -100,7 +141,7 @@ if __name__ == '__main__':
             inital_msg_time = time.time()
             averaged = avgImages(images)
             
-            #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\Cars-parked-in-parking-lot.jpeg")
+            #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\IMG_1994.jpg")
 
             # run ml model and count number of cars
             start_model_time = time.time()
@@ -112,7 +153,7 @@ if __name__ == '__main__':
             upload('parking/',{'spots': sendToServer}, 'serc')
             # send above number to server
 
-            time.sleep(timeToNextMsg(timeBetweenMessages, inital_msg_time))
+            time.sleep(timeToNextMsg( inital_msg_time))
 
     elif lotOrStreet == "STREET":
         print("Street code setup goes here")
