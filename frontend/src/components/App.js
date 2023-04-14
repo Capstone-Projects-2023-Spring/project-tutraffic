@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { useLoadScript } from '@react-google-maps/api';
+import { Notifications } from 'react-push-notification';
 
-import Navigation from './Navigation';
+import ConditionalNavr from './ConditionalNavr';
 import AppRoutes from "./Routes";
 
 const libraries = ['places'];
@@ -33,14 +34,16 @@ export const App = () => {
   return (
     <>
       <Router>
+
         <div className="App" data-testid="app-component" style={{ height: "100dvh", display: "flex", flexDirection: "column"}}>
-          {!isMobile && <Navigation />}
+        <Notifications />
+          {!isMobile && <ConditionalNavr />}
           <div style={{ flexGrow: "1" }}>
             {loadError && <div>Error loading google maps API</div>}
             {!isLoaded && !loadError && <div>Loading google maps API</div>}
             {isLoaded && <AppRoutes />}
           </div>
-          {isMobile && <Navigation />}
+          {isMobile && <ConditionalNavr />}
         </div>
       </Router>
     </>

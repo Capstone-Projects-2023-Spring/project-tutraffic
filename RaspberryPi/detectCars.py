@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-
+import time
 def detectCars(image):
 
     config = "yolov3.cfg"
@@ -90,5 +90,14 @@ def detectCars(image):
         w = box[2]
         h = box[3]
         draw_prediction(origionalimage, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
-
+    #scale_percent = 25 # percent of original size
+    #width = int(origionalimage.shape[1] * scale_percent / 100)
+    #height = int(origionalimage.shape[0] * scale_percent / 100)
+    #dim = (width, height)
+    
+    # resize image
+    #resized = cv2.resize(origionalimage, dim, interpolation = cv2.INTER_AREA)
+    #cv2.imshow("output",resized)
+    #cv2.waitKey(0)
+    #cv2.destroyWindow("output")
     return numCars
