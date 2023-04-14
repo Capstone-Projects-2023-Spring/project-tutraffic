@@ -51,7 +51,7 @@ if not socket_api.is_camera_connected():
     st.text("Error: Camera is not connected.")
 else:
     # If camera is connected, show refresh image button.
-    st.button("Refresh Image", on_click=socket_api.refresh_image())
+    st.button("Refresh Image", on_click=socket_api.refresh_image)
 
 # Show previous roi.
 st.text("Previous ROI:")
@@ -64,10 +64,11 @@ if canvas_result.json_data is not None:
         objects[col] = objects[col].astype("str")
     if not objects.empty:
         if objects.shape[0] == 1:
-            tup = tuple(objects[["left", "top", "width", "height"]].iloc[0])
+            df = objects[["left", "top", "width", "height"]].iloc[0]
             st.text("Selected ROI:")
-            st.dataframe(tup)
+            st.dataframe(df)
             if st.button("Submit ROI"):
+                tup = tuple(df)
                 socket_api.set_roi(tup)
                 st.session_state.roi = str(tup)
         else:
