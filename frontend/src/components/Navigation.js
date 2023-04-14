@@ -60,7 +60,7 @@ const Navigation = () => {
         <Nav style={{ height: "77px" }}>
           <Navbar className="mobile">
             <Nav className="justify-content-around" style={{ width: "100%" }}>
-              <Nav.Link onClick={() => navigate('/home')} className="d-flex flex-column align-items-center">
+              <Nav.Link onClick={() => navigate('/')} className="d-flex flex-column align-items-center">
                 <Home />
                 <div>Home</div>
               </Nav.Link>
@@ -94,7 +94,7 @@ const Navigation = () => {
         <Navbar style={{ padding: "4px" }}>
           <Container>
             <Navbar.Collapse id="basic-navbar-nav">
-              <Button variant="light brand" onClick={() => navigate('/home')}>
+              <Button variant="light brand" onClick={() => navigate('/')}>
                 <Navbar.Brand>
                   <img src={process.env.PUBLIC_URL + "/logo.png"} height="28" alt="TuTraffic Logo" />
                 </Navbar.Brand>

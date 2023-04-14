@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import { database } from '../firebase';
 import { ref, onValue } from 'firebase/database';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Card, Button, Modal } from 'react-bootstrap';
+import { Card, Button, Modal, Badge } from 'react-bootstrap';
 import addNotification from 'react-push-notification';
+import { FaMapMarkerAlt, FaCar, FaDollarSign } from 'react-icons/fa';
 
 const ParkingLot = () => {
     const navigate = useNavigate();
@@ -70,39 +71,48 @@ const ParkingLot = () => {
     return (
         <>
             <div className="d-flex justify-content-end">
-                <Button variant="outline-dark mt-3 mx-5" onClick={() => navigate(-1)}>
-                    Back
-                </Button>
+                <Button variant="outline-dark" className="mt-3 mx-5" onClick={() => navigate(-1)}>Back</Button>
             </div>
-            <Card className="mt-3 mx-5 ">
+            <Card className="my-3 mx-auto" style={{ width: '80%' }}>
                 <Card.Body>
-                    <Card.Title>{name}</Card.Title>
-                    <Card.Text>Spots: <span className='fs-4 text-primary'>{spots}</span></Card.Text>
-                    {street && <Card.Text className='text-info'>Street Parking</Card.Text>}
-                    <Card.Text>Description: {desc}</Card.Text>
-                    <Card.Text>Rate: {rate}</Card.Text>
-                    <Button variant="outline-success" className='mb-3' onClick={handleParkClick}>
-                        Park Here
-                    </Button>
-                    <Card.Text className='text-muted'>Last Update: {Captured}</Card.Text>
-                    <iframe
-                        title="Map Preview"
-                        width="100%"
-                        src={googleMapsEmbed}
-                    ></iframe>
-                    <Card.Text className='text-muted'>Coordinate: {lat}, {lng}</Card.Text>
-                    
+                    <Card.Title className="mb-4">{name}</Card.Title>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <FaMapMarkerAlt className="mr-2 text-primary" />
+                            <span className="text-muted">{lat}, {lng}</span>
+                        </div>
+                        <div>
+                            <FaCar className="mr-2 text-primary" />
+                            <span className="text-muted">{spots} spots</span>
+                        </div>
+                    </div>
+                    {street && <Badge pill variant="info" className="my-2">Street Parking</Badge>}
+                    <Card.Text className="my-4">{desc}</Card.Text>
+                    <div className="d-flex justify-content-between align-items-center">
+                        <div>
+                            <FaDollarSign className="mr-2 text-primary" />
+                            <span>{rate}</span>
+                        </div>
+                        <Button variant="success" className="ml-3" onClick={handleParkClick}>Park Here</Button>
+                    </div>
+                    <Card.Text className="my-4 text-muted">Last Update: {Captured}</Card.Text>
+                    <div className="my-4">
+                        <iframe title="Map Preview" width="100%" height="200" src={googleMapsEmbed}></iframe>
+                    </div>
                 </Card.Body>
             </Card>
+
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Spots Remaining</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={modalStyle}>
-                    {spots}
-                    <Button variant="warning" onClick={handleNavigateClick}>
-                        Navigate
-                    </Button>
+                    <div className="d-flex flex-column justify-content-center align-items-center">
+                        <div className={`d-flex justify-content-center align-items-center rounded-circle ${spots < 5 ? 'bg-danger' : 'bg-success'}`} style={{ height: '20rem', width: '20rem', fontSize: '10rem', fontWeight: 'bold' }}>
+                            {spots}
+                        </div>
+                        <Button variant="primary" className="my-4" onClick={handleNavigateClick}>Navigate</Button>
+                    </div>
                 </Modal.Body>
             </Modal>
 
