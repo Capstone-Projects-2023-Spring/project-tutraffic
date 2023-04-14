@@ -78,7 +78,6 @@ def listening():
     connection.close()
 
 def process_request(client_socket: socket, request_code: int):
-    global num
     match request_code:
         case socket_api.Message.REFRESH_IMAGE.value:
             (success, img) = getImage()
@@ -101,9 +100,9 @@ def process_request(client_socket: socket, request_code: int):
         case socket_api.Message.SET_MAXPARKINGSPACES.value:
             data = client_socket.recv(socket_api.BUF_SIZE)
             num = data.decode()
-            print(num)
+            set_maxparkingspaces(num)
         case socket_api.Message.GET_MAXPARKINGSPACES.value:
-            client_socket.send(str(num).encode())
+            client_socket.send(str(get_maxparkingspaces()).encode())
     return True
 
 def timeToNextMsg(inital_msg_time):
