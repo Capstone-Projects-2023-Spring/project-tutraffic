@@ -59,7 +59,7 @@ def set_roi(rect):
 
 
 def get_roi():
-    """Get the region of interest."""
+    """Return the string representing of the region of interest tuple."""
     connection = start_connection()
     connection.send(Message.GET_ROI.value.encode())
     data = connection.recv(BUF_SIZE)
@@ -76,7 +76,7 @@ def set_maxparkingspaces(number):
 
 
 def get_maxparkingspaces() -> int:
-    """Get the maximum number of parking spaces."""
+    """Return the maximum number of parking spaces."""
     connection = start_connection()
     connection.send(Message.GET_MAXPARKINGSPACES.value.encode())
     data = connection.recv(BUF_SIZE)
