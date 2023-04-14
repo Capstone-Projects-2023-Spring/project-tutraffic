@@ -145,7 +145,7 @@ const AccountInfo = () => {
   const logout = async () => {
     try {
       await auth.signOut(); // Sign out the user
-      navigate('/home');
+      navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);
     }
