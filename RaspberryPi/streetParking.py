@@ -20,7 +20,7 @@ def detectCarBoxes(image):
 
 def convertCords(oriCords):
     newCords = []
-    boost = 500
+    boost = 300
     for list in oriCords:
         temp = []
         temp.append([int(list[0]) - boost,
@@ -90,10 +90,10 @@ def checkSpots(original, spaces):
             IoU = intersectArea / float(boxO + boxS - intersectArea)
             #print(IoU)
             if IoU >= 0.5 and IoU <= 1.0:
-                print(spot, orig)
+                print('detect ',spot, orig)
                 total -= 1
     return total
-        
+
 
 #need to check between cars
 #have to deal with edge case of no cars on screen
@@ -103,61 +103,106 @@ def determineSpaces(left, right, imDim, carAvgDim):
     free = 0
     spotsL = []
     spotsR = []
-    print(len(left))
     if len(left) != 0 or len(right) != 0:
         if len(left) != 0:
             template = left[0]
             spots = []
             temp = 0
-            if left[0][0] <= imDim[0] / 2:
-                for i in range(int(imDim[0] / carAvgDim[0])):
-                    spots.append([int(template[0] + (carAvgDim[0] * temp) + 10),
-                                int(template[1]),
-                                int(template[2] + (carAvgDim[0] * temp) + 10),
-                                int(template[3] )])
-                    temp += 1
-                print("left list 1")
-                print(spots)
-                spotsL = spots
-                free += checkSpots(left, spots)
-            else:
-                for i in range(int(imDim[0] / carAvgDim[0])):
-                    spots.append([int(template[0] - (carAvgDim[0] * temp) - 10),
+            #if car is not on one edge of the image
+            #make boxes on left and right of car but dont make box over the first car twice
+            if left[0][0] >= carAvgDim[0] and left[0][0] <= imDim[0] - carAvgDim[0]:
+                bar = [[0]]
+                while bar[0][0] >= 0:
+                    bar = ([[int(template[0] - (carAvgDim[0] * temp) - 10),
                                 int(template[1]),
                                 int(template[2] - (carAvgDim[0] * temp) - 10),
-                                int(template[3] )])
+                                int(template[3] )]])
+                    spots.append(bar[0])
                     temp += 1
-                print("left list 2")
-                print(spots)
-                spotsL = spots
+                    
+                bar = [[imDim[0]]]
+                while bar[0][0] <= imDim[0] - carAvgDim[0]:
+                    bar = ([[int(template[0] + (carAvgDim[0] * temp) + 10),
+                                int(template[1]),
+                                int(template[2] + (carAvgDim[0] * temp) + 10),
+                                int(template[3] )]])
+                    spots.append(bar[0])
+                    temp += 1
+                print("left", left)
                 free += checkSpots(left, spots)
-
+            #else car is on edge and make other spot boxes based on which side the car starts on
+            else:
+                print("left else")
+                if left[0][0] <= imDim[0] / 2:
+                    for i in range(int(imDim[0] / carAvgDim[0])):
+                        spots.append([int(template[0] + (carAvgDim[0] * temp) + 10),
+                                    int(template[1]),
+                                    int(template[2] + (carAvgDim[0] * temp) + 10),
+                                    int(template[3] )])
+                        temp += 1
+                    print("left list 1")
+                    print(spots)
+                    spotsL = spots
+                    free += checkSpots(left, spots)
+                else:
+                    for i in range(int(imDim[0] / carAvgDim[0])):
+                        spots.append([int(template[0] - (carAvgDim[0] * temp) - 10),
+                                    int(template[1]),
+                                    int(template[2] - (carAvgDim[0] * temp) - 10),
+                                    int(template[3] )])
+                        temp += 1
+                    print("left list 2")
+                    print(spots)
+                    spotsL = spots
+                    free += checkSpots(left, spots)
+			
         if len(right) != 0:
             template = right[0]
             spots = []
             temp = 1
-            if right[0][0] <= imDim[0] / 2:
-                for i in range(int(imDim[0] / carAvgDim[0])):
-                    spots.append([int(template[0] + (carAvgDim[0] * temp) + 10),
-                                int(template[1]),
-                                int(template[2] + (carAvgDim[0] * temp) + 10),
-                                int(template[3] )])
-                    temp += 1
-                print("right list 1")
-                print(spots)
-                spotsR = spots
-                free += checkSpots(right, spots)
-            else:
-                for i in range(int(imDim[0] / carAvgDim[0])):
-                    spots.append([int(template[0] - (carAvgDim[0] * temp) - 10),
+            if right[0][0] >= carAvgDim[0] and right[0][0] <= imDim[0] - carAvgDim[0]:
+                bar = [[0]]
+                while bar[0][0] >= 0:
+                    bar = ([[int(template[0] - (carAvgDim[0] * temp) - 10),
                                 int(template[1]),
                                 int(template[2] - (carAvgDim[0] * temp) - 10),
-                                int(template[3] )])
+                                int(template[3] )]])
+                    spots.append(bar[0])
                     temp += 1
-                print("right list 2")
-                print(spots)
-                spotsR = spots
+                    
+                bar = [[imDim[0]]]
+                while bar[0][0] <= imDim[0] - carAvgDim[0]:
+                    bar = ([[int(template[0] + (carAvgDim[0] * temp) + 10),
+                                int(template[1]),
+                                int(template[2] + (carAvgDim[0] * temp) + 10),
+                                int(template[3] )]])
+                    spots.append(bar[0])
+                    temp += 1
+                print("right", right)
                 free += checkSpots(right, spots)
+            else:
+                print("else right")
+                if right[0][0] <= imDim[0] / 2:
+                    for i in range(int(imDim[0] / carAvgDim[0])):
+                        spots.append([int(template[0] + (carAvgDim[0] * temp) + 10),
+                                    int(template[1]),
+                                    int(template[2] + (carAvgDim[0] * temp) + 10),
+                                    int(template[3] )])
+                        temp += 1
+                    print("right list 1")
+                    spotsR = spots
+                    free += checkSpots(right, spots)
+                else:
+                    for i in range(int(imDim[0] / carAvgDim[0])):
+                        spots.append([int(template[0] - (carAvgDim[0] * temp) - 10),
+                                    int(template[1]),
+                                    int(template[2] - (carAvgDim[0] * temp) - 10),
+                                    int(template[3] )])
+                        temp += 1
+                    print("right list 2")
+                    print(spots)
+                    spotsR = spots
+                    free += checkSpots(right, spots)
     else:	
         free += (2 * int(imDim[0] / carAvgDim[0]))
         
@@ -179,6 +224,8 @@ def sortList(carLoc, imgHeight):
                 left.append(carLoc[i])
         left.sort(key = itemgetter(0))
         right.sort(key = itemgetter(0))
+    print('left sorted', left)
+    print('right sorted', right)
     return left, right
 
 def adjust_gamma(img, gam):
@@ -189,9 +236,10 @@ def adjust_gamma(img, gam):
 
 def main():
     go = True
+    
     while go == True:
         #image = captureImage()
-        image = cv.imread('RaspberryPi/Overexpose.jpeg')
+        image = cv.imread('RaspberryPi/images/IMG_1414.jpeg')
         carLocations, imgDim = detectCarBoxes(image)
         print(carLocations)
         if carLocations:
@@ -204,9 +252,25 @@ def main():
             avgCarLength = [0,0]
         totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
         print(totalSpaces)
-        
-        displayCarBoxesStreet.detectCars(image)
-        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
-    
+        go == False
+        #displayCarBoxesStreet.detectCars(image)
+        #sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
+        '''
+    #image = captureImage()
+    image = cv.imread('RaspberryPi/images/IMG_1412.jpeg')
+    carLocations, imgDim = detectCarBoxes(image)
+    print(carLocations)
+    if carLocations:
+        fixedCarLoc = convertCords(carLocations)
+        listLeft, listRight = sortList(fixedCarLoc, imgDim[1])
+        avgCarLength = determineAvgLength(fixedCarLoc)
+    else:
+        listLeft = []
+        listRight = []
+        avgCarLength = [0,0]
+    totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
+    print(totalSpaces)
+    displayCarBoxesStreet.detectCars(image)
+    '''
 if __name__ == '__main__':
     main()
