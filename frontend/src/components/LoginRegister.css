@@ -1,0 +1,17 @@
+.auth-form-container {
+  padding-top: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-item {
+  display: flex; 
+  justify-content: center; 
+  gap: 0.5rem;
+}
+
+.login-btn {
+  display: flex;
+  justify-content: center;
+}
