@@ -58,7 +58,7 @@ const Browse = () => {
       .filter((item) => !isNaN(item.distance))
       .sort((a, b) => a.distance - b.distance);
 
-    return sortedData.map(({ key, name, spots, street, distance }) => (
+    return sortedData.map(({ key, name, spots, street, distance, Captured }) => (
       <div className="row" key={key}>
         <div className="col mb-4">
           <Card>
@@ -85,6 +85,7 @@ const Browse = () => {
               <div className="mt-2 d-flex justify-content-end">
                 <Button onClick={() => handleMarkerClick(key)}>View Detail</Button>
               </div>
+              <Card.Text className='text-muted'>Last Update: {Captured}</Card.Text>
             </Card.Body>
           </Card>
 
