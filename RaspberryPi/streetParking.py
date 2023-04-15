@@ -1,9 +1,9 @@
 import detectCarsStreet
 import sendToServer
 import displayCarBoxesStreet
-from picamera import PiCamera
-from picamera.array import PiRGBArray
-from libcamera import controls
+#from picamera import PiCamera
+#from picamera.array import PiRGBArray
+#from libcamera import controls
 import cv2 as cv
 import numpy as np
 from operator import itemgetter
@@ -192,7 +192,7 @@ def determineSpaces(left, right, imDim, carAvgDim):
         
 	#if no cars are parked on one side add the spots for that side of the road
     if left and not right or right and not left:
-            free += int(imDim[0] / carAvgDim[0])
+            free += int(imDim[0] / 1000)
             
     return free, spotsL, spotsR
 

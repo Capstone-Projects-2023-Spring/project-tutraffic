@@ -5,6 +5,8 @@ from detectCars import detectCars
 from imageMethods import cropImage, avgImages
 from apscheduler.schedulers.background import BackgroundScheduler
 from sendToServer import upload
+import streetParking
+import datetime
 global images
 global roi
 images = []
@@ -150,13 +152,47 @@ if __name__ == '__main__':
 
             sendToServer = maxParkingSpaces - numCarsFound
             print(sendToServer, " num spots avaliable")
-            upload('parking/',{'spots': sendToServer}, 'serc')
+            upload('parking/',{'spots': sendToServer}, 'serc', {'checked': datetime.datetime.now()})
             # send above number to server
 
             time.sleep(timeToNextMsg( inital_msg_time))
 
     elif lotOrStreet == "STREET":
-        print("Street code setup goes here")
+        streetName = input("enter the name of the parking lot: ")
+        print("starting ")
+        
+        while True:
+            while len(images)<NUMPICTURES:
+                print(len(images)," images taken, please wait for ", NUMPICTURES, " images")
+                time.sleep(1)
+
+            inital_msg_time = time.time()
+            #averaged = avgImages(images)
+            
+            #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\IMG_1994.jpg")
+            averaged = cv.imread('RaspberryPi/images/IMG_1411.jpeg')
+
+
+            start_model_time = time.time()
+            print("--- %s seconds to detect ---" % (time.time() - start_model_time))
+
+            carLocations, imgDim = streetParking.detectCarBoxes(averaged)
+            if carLocations:
+                fixedCarLoc = streetParking.convertCords(carLocations)
+                listLeft, listRight = streetParking.sortList(fixedCarLoc, imgDim[1])
+                avgCarLength = streetParking.determineAvgLength(fixedCarLoc)
+            else:
+                listLeft = []
+                listRight = []
+                avgCarLength = [0,0]
+            totalSpaces, lGu, rGu = streetParking.determineSpaces(listLeft, listRight, imgDim, avgCarLength)
+
+            sendToServer = totalSpaces
+            print(sendToServer, " num spots avaliable")
+            #upload('parking/',{'spots': sendToServer}, 'serc', {'checked': datetime.datetime.now()})
+            # send above number to server
+
+            time.sleep(timeToNextMsg( inital_msg_time))
 
     print("program finished!")
     cam.release()
