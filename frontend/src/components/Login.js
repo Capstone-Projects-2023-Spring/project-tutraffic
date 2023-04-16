@@ -1,91 +1,76 @@
 import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import './Login.css';
 import { auth } from '../firebase';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import './LoginRegister.css';
 
 export const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const navigate = useNavigate();
-    const [showErrorModal, setShowErrorModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState("");
+  const [textColor, setTextColor] = useState(0);
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await signInWithEmailAndPassword(auth, email, password);
-            navigate('/home');
-        } catch (error) {
-            console.error('Error signing in with email and password:', error);
-            setShowErrorModal(true);
-            setTimeout(() => {
-                setShowErrorModal(false);
-            }, 2000);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await signInWithEmailAndPassword(auth, email, password).then(() => {
+      setTextColor(1);
+      setMessage("You are now logged in. You will soon be redirected.");
+      setTimeout(() => {
+        navigate('/account/info');
+      }, 2000);
+    }).catch((error) => { 
+      setTextColor(0);
+      console.error('Error signing in with email and password:', error);
+      setMessage("Incorrect email or password.");
+    });
+  };
 
-    const onFormSwitch = () => {
-        navigate('/account/register')
-    }
+  const onFormSwitch = () => {
+    navigate('/account/register')
+  }
 
-    return (
-        <div className="auth-form-container">
-            <Card style={{ width: '30rem' }}>
-                <Card.Body>
-                    <Card.Title className="text-center">Login</Card.Title>
-                    <Form className="login-form" onSubmit={handleSubmit}>
-                        <Form.Group controlId="email">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                type="email"
-                                placeholder="Email@gmail.com"
-                                name="email"
-                            />
-                        </Form.Group>
-                        <Form.Group controlId="password">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                type="password"
-                                placeholder="Password"
-                                name="password"
-                            />
-                        </Form.Group>
-                        <Button className="mt-3" variant="primary" type="submit">
-                            Login
-                        </Button>
-                    </Form>
-                    <Modal show={showErrorModal} onHide={() => setShowErrorModal(false)}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Login Error</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>There was an error Logging to your account. Please try again.</Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() => setShowErrorModal(false)}>
-                                Close
-                            </Button>
-                        </Modal.Footer>
-                    </Modal>
-                    <Button
-                        className="formswitch mt-3"
-                        onClick={onFormSwitch}
-                        variant="outline-secondary"
-                        size="sm"
-                    >
-                        Create Account
-                    </Button>
-                </Card.Body>
-            </Card>
-        </div>
-    );
-
+  return (
+    <div className="auth-form-container">
+      <Card style={{ width: '30rem' }}>
+        <Card.Body>
+          <Card.Title className="text-center mt-3">Welcome</Card.Title>
+          <p className="center-item">Login to TuTraffic</p>
+          <p style={{color: textColor ? "blue" : "red" }}>{message}</p> 
+          <Form className="login-form" onSubmit={handleSubmit}>
+            <Form.Group controlId="email">
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                name="email"
+              />
+            </Form.Group>
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                name="password"
+              />
+            </Form.Group>
+            <div className="login-btn mt-4">
+              <Button variant="primary" type="submit">Login</Button>
+            </div>
+          </Form>
+          <div className="center-item mt-4">
+            <p>Don't have an account?</p>
+            <p style={{fontWeight:"bold", cursor:"pointer", color:"#4170cc"}} onClick={onFormSwitch}>Sign up</p>
+          </div>
+        </Card.Body>
+      </Card>
+    </div>
+  );
 }
 
 export default Login;
