@@ -18,7 +18,7 @@ def detectCarBoxes(image):
 
 def convertCords(oriCords):
     newCords = []
-    boost = 300
+    boost = 200
     for list in oriCords:
         temp = []
         temp.append([int(list[0]) - boost,
@@ -48,17 +48,15 @@ def captureImage():
     image = cap.array
     '''
     cap = cv.VideoCapture(0)
-    cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
-    cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
     
-    frame = cap.read()
+    ye, frame = cap.read()
     
     grey = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     hist = cv.calcHist([grey], [0], None, [256], [0, 256])
     imgSkew = skew(hist)
 
     if imgSkew > 10.0:
-            image = adjust_gamma(image, 0.3)
+            frame = adjust_gamma(frame, 0.3)
 
     cv.imwrite('home/tutrafficpi/Desktop/image2.jpg', frame)
     
@@ -188,11 +186,11 @@ def determineSpaces(left, right, imDim, carAvgDim):
                     spotsR = spots
                     free += checkSpots(right, spots)
     else:	
-        free += (2 * int(imDim[0] / carAvgDim[0]))
+        free += (2 * int(imDim[0] / 80))
         
 	#if no cars are parked on one side add the spots for that side of the road
     if left and not right or right and not left:
-            free += int(imDim[0] / 1000)
+            free += int(imDim[0] / 80)
             
     return free, spotsL, spotsR
 
@@ -234,7 +232,7 @@ def main():
             avgCarLength = [0,0]
         totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
         print(totalSpaces)
-        #displayCarBoxesStreet.detectCars(image)
-        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
+        displayCarBoxesStreet.detectCars(image)
+        #sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
 if __name__ == '__main__':
     main()

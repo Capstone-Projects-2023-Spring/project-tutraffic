@@ -7,6 +7,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from sendToServer import upload
 import streetParking
 import datetime
+import displayCarBoxesStreet
 global images
 global roi
 images = []
@@ -149,10 +150,10 @@ if __name__ == '__main__':
             start_model_time = time.time()
             numCarsFound = detectCars(averaged)
             print("--- %s seconds to detect ---" % (time.time() - start_model_time))
-
+            displayCarBoxesStreet.detectCars(averaged)
             sendToServer = maxParkingSpaces - numCarsFound
             print(sendToServer, " num spots avaliable")
-            upload('parking/',{'spots': sendToServer}, 'serc', {'checked': datetime.datetime.now()})
+            #upload('parking/',{'spots': sendToServer}, 'serc', {'checked': datetime.datetime.now()})
             # send above number to server
 
             time.sleep(timeToNextMsg( inital_msg_time))
@@ -167,10 +168,10 @@ if __name__ == '__main__':
                 time.sleep(1)
 
             inital_msg_time = time.time()
-            #averaged = avgImages(images)
+            averaged = avgImages(images)
             
             #averaged = cv.imread(r"C:\Users\12864\Documents\gitprojs\project-tutraffic\RaspberryPi\IMG_1994.jpg")
-            averaged = cv.imread('RaspberryPi/images/IMG_1411.jpeg')
+            #averaged = cv.imread('RaspberryPi/images/IMG_1411.jpeg')
 
 
             start_model_time = time.time()
@@ -189,6 +190,7 @@ if __name__ == '__main__':
 
             sendToServer = totalSpaces
             print(sendToServer, " num spots avaliable")
+            displayCarBoxesStreet.detectCars(averaged)
             #upload('parking/',{'spots': sendToServer}, 'serc', {'checked': datetime.datetime.now()})
             # send above number to server
 
