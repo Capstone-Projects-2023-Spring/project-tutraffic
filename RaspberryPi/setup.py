@@ -63,6 +63,7 @@ def get_maxparkingspaces():
 
 def listening():
     connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    connection.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     connection.bind((socket_api.host, socket_api.PORT))
     is_listening = True
     while is_listening:
