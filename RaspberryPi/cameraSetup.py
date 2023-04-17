@@ -28,7 +28,7 @@ def main(delay):
         imgSkew = skew(hist)
         
         if imgSkew >= 10:
-            image = adjustBrightness(image, .3)
+            frame = adjustBrightness(frame, .3)
 
 
         cv.imshow("Setup Image", image)
