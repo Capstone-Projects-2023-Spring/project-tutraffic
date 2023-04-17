@@ -31,7 +31,7 @@ def main(delay):
             frame = adjustBrightness(frame, .3)
 
 
-        cv.imshow("Setup Image", image)
+        cv.imshow("Setup Image", frame)
         cv.waitKey(0)
         time.sleep(delay)
 
