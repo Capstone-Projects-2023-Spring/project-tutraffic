@@ -54,13 +54,13 @@ def captureImage():
 
 	#adjust over exposed image
     if imgSkew > 9:
-        image = adjustBrightness(image, .1)
+        frame = adjustBrightness(frame, .1)
     elif imgSkew > 7:
-        image = adjustBrightness(image, .3)
+        frame = adjustBrightness(frame, .3)
     elif imgSkew > 5:
-        image = adjustBrightness(image, .5)
+        frame = adjustBrightness(frame, .5)
     elif imgSkew > 1:
-        image = adjustBrightness(image, .9)
+        frame = adjustBrightness(frame, .9)
         
 
     cv.imwrite('home/tutrafficpi/Desktop/image2.jpg', frame)
