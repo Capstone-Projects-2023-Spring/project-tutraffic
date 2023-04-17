@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, getDoc } from 'firebase/firestore';
 import Nav from 'react-bootstrap/Nav';
 import './UserSettings.css';
 
@@ -28,14 +28,36 @@ const AccountProfile = () => {
     };
   }, []);
   
-  useEffect(() => { // update the car size in Firestore whenever it changes
-    if (user && (carSize === "Small" || carSize === "Average" || carSize === "Large")) {
-      setDoc(doc(db, "users", user.uid), {
+  useEffect(() => { //cleaned up 
+    if (user && (carSize !== 'nothing selected'))  {
+      const userData = {
         CarSize: carSize,
-        lotType: lotType,
-      });
+        lotType: lotType
+      };
+      setDoc(doc(db, "users", user.uid), userData);
     }
   }, [carSize, lotType, user]);
+
+  // fetch the current user's car size and lot type 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          setCarSize(userData.CarSize || 'Average');
+          setLotType(userData.lotType || 'both');
+        }
+      } catch (error) {
+        console.log("Error fetching user data: ", error);
+      }
+    };
+ 
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
 
   if (!user) {
     return (
@@ -63,16 +85,16 @@ const AccountProfile = () => {
         <h2>User Profile</h2>
         <h4>Current Car Size: {carSize}</h4>
         <select value={carSize} onChange={(e) => setCarSize(e.target.value)}>
-          <option value="">Nothing selected</option>
+          <option value="Average">Defualt (Average)</option>
           <option value="Small">Small</option>
           <option value="Average">Average</option>
           <option value="Large">Large</option>
         </select>
         <h4>Current Lot Type: {lotType}</h4>
         <select value={lotType} onChange={(e) => setLotType(e.target.value)}>
-          <option value="">Nothing selected</option>
-          <option value="Parking Lot">Lot</option>
-          <option value="Street">Stree</option>
+          <option value="both">Defualt (Both)</option>
+          <option value="lot">Lot</option>
+          <option value="street">Street</option>
         </select>
         </div>
     </div>
