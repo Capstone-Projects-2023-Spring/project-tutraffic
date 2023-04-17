@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth, db } from '../firebase';
-import { setDoc, doc } from 'firebase/firestore';
+import { setDoc, doc, getDoc } from 'firebase/firestore';
 import Nav from 'react-bootstrap/Nav';
 import './UserSettings.css';
 
@@ -28,14 +28,36 @@ const AccountProfile = () => {
     };
   }, []);
   
-  useEffect(() => { // update the car size in Firestore whenever it changes
-    if (user && (carSize === "Small" || carSize === "Average" || carSize === "Large")) {
-      setDoc(doc(db, "users", user.uid), {
+  useEffect(() => { //cleaned up 
+    if (user && (carSize !== 'nothing selected'))  {
+      const userData = {
         CarSize: carSize,
-        lotType: lotType,
-      });
+        lotType: lotType
+      };
+      setDoc(doc(db, "users", user.uid), userData);
     }
   }, [carSize, lotType, user]);
+
+  // fetch the current user's car size and lot type 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          setCarSize(userData.CarSize || 'Average');
+          setLotType(userData.lotType || 'both');
+        }
+      } catch (error) {
+        console.log("Error fetching user data: ", error);
+      }
+    };
+ 
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
 
   if (!user) {
     return (
