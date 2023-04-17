@@ -28,13 +28,12 @@ $ pip install -r web/requirements.txt
 
 2. Activate the virtual environment prepared during setup.
 ```
-$ cd RaspberryPi
-$ . web/env/bin/activate
+$ . RaspberryPi/web/env/bin/activate
 ```
 
 3. Run the web page for development.
 ```
-$ python3 -m streamlit run web/app.py
+$ python3 -m streamlit run RaspberryPi/web/app.py
 ```
 
 The web page is accessible by browsers at the server's ip address, port 8501.
