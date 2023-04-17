@@ -20,7 +20,7 @@ def main(delay):
         cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
         cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
         
-        frame = cap.read()
+        res, frame = cap.read()
         
         #check for overexposure
         grey = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
