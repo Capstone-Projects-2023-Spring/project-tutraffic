@@ -85,16 +85,16 @@ const AccountProfile = () => {
         <h2>User Profile</h2>
         <h4>Current Car Size: {carSize}</h4>
         <select value={carSize} onChange={(e) => setCarSize(e.target.value)}>
-          <option value="">Nothing selected</option>
+          <option value="Average">Defualt (Average)</option>
           <option value="Small">Small</option>
           <option value="Average">Average</option>
           <option value="Large">Large</option>
         </select>
         <h4>Current Lot Type: {lotType}</h4>
         <select value={lotType} onChange={(e) => setLotType(e.target.value)}>
-          <option value="">Nothing selected</option>
-          <option value="Parking Lot">Lot</option>
-          <option value="Street">Stree</option>
+          <option value="both">Defualt (Both)</option>
+          <option value="lot">Lot</option>
+          <option value="street">Street</option>
         </select>
         </div>
     </div>
