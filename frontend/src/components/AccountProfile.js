@@ -10,7 +10,7 @@ const AccountProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [carSize, setCarSize] = useState('nothing selected'); 
-  const [lotType, setLotType] = useState('nothing selected'); 
+  const [lotType, setLotType] = useState('nothing selected');
 
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const AccountProfile = () => {
   }, []);
   
   useEffect(() => { // update the car size and lot type to firestore when change
-    if (user && (carSize === "Small" || carSize === "Average" || carSize === "Large" || lotType === "street" || lotType === "lot")) {
+    if (user && (carSize !== 'nothing selected'))  {
       const userData = {
         CarSize: carSize,
         lotType: lotType
@@ -46,8 +46,8 @@ const AccountProfile = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const userData = docSnap.data();
-          setCarSize(userData.CarSize || 'nothing selected');
-          setLotType(userData.lotType || 'nothing selected');
+          setCarSize(userData.CarSize || 'Average');
+          setLotType(userData.lotType || 'both');
         }
       } catch (error) {
         console.log("Error fetching user data: ", error);
@@ -85,14 +85,14 @@ const AccountProfile = () => {
         <h2>User Profile</h2>
         <h4>Current Car Size: {carSize}</h4>
         <select value={carSize} onChange={(e) => setCarSize(e.target.value)}>
-          <option value="">Nothing selected</option>
+          <option value="Average">Defualt (Average)</option>
           <option value="Small">Small</option>
           <option value="Average">Average</option>
           <option value="Large">Large</option>
         </select>
         <h4>Current Lot Type: {lotType}</h4>
         <select value={lotType} onChange={(e) => setLotType(e.target.value)}>
-          <option value="">Nothing selected</option>
+          <option value="both">Defualt (Both)</option>
           <option value="lot">Lot</option>
           <option value="street">Street</option>
         </select>
