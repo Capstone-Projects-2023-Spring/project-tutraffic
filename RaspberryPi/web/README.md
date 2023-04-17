@@ -38,7 +38,6 @@ $ python3 -m streamlit run web/app.py
 ```
 
 The web page is accessible by browsers at the server's ip address, port 8501.
-```
 
 ## Resources
 * Pip. Installation. https://pip.pypa.io/en/stable/installation/
