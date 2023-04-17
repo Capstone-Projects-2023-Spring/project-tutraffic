@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Autocomplete } from '@react-google-maps/api';
@@ -20,6 +20,7 @@ const Map = () => {
   
   const [address, setAddress] = useState("");
   const [autocomplete, setAutocomplete] = useState(null);
+  const [windowDimension, setWindowDimension] = useState(null);
   
     // set the map center - but changable
   const [center, setCenter] = useState({ lat: latitude, lng: longitude}); // default center
@@ -30,15 +31,17 @@ const Map = () => {
   };
 
   const containerStyle = {
-    width: '100%',
-    height: '100%',
+    width: '100vw',
+    height: '100vh',
     position: 'relative',
+    overflow: 'hidden'
   };
 
   const mapContainerStyle = {
-    width: '100%',
+    width: '100vw',
     height: 'calc(100% - 56px)',
     position: 'absolute',
+    overflow: 'hidden'
   };
 
   const options = {
@@ -60,6 +63,21 @@ const Map = () => {
   // Retrieve the parking lot data
   const data = LotData(); 
   
+  useEffect(() => {
+    setWindowDimension(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimension(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const isMobile = windowDimension <= 640;
+
   const markers = data ? Object.keys(data).map((key) => {
     const { lat, lng, spots, street } = data[key];
     if (lat && lng) {
@@ -134,47 +152,52 @@ const Map = () => {
     }
   
   return (
-    <div className="d-flex flex-column align-items-center" style={{containerStyle}}>
-        <Form style={{ 
-        position: 'absolute',
-        bottom: "5%",
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: '5',
-        border: '1px solid black',
-        borderRadius: '10px',
-        padding: "20px",
-        backgroundColor: "rgba(128, 128, 128, .3)"
-      }}>
-          <div className="d-flex justify-content-center row">
-            <div className="col-sm-9 justify-content-center" style={{
-            padding: 0,
-            paddingRight: "10px"
-          }}>
-              <Autocomplete
-                onLoad={(autocomplete) => setAutocomplete(autocomplete)}
-                onPlaceChanged={handlePlaceChanged}
-              >
-                <Form.Control
-                  type="text"
-                  placeholder="Enter an address"
-                  value={address}
-                  onChange={handleInputChange}
-                  style={{ height: "3rem", marginBottom: "1rem", width: "100%"}}
-                />
-              </Autocomplete>
-            </div>
-            <div className="d-flex justify-content-center mb-3 col-sm-3">
-              <Button variant="warning" onClick={handleSearch}>Search</Button>
-            </div>
-            </div>
-            <div className="d-flex justify-content-center row">
-              <Button variant="outline-secondary text-black" onClick={handleGetCurrentLocation} >
-                <FaLocationArrow style={{ marginRight: "0.5rem" }} /> Use Current Location
-              </Button>
-            </div>
-          
-        </Form>
+    <div style={{containerStyle}}>
+      <div className="row justify-content-left" style={{ justifyContent: isMobile ? 'center' : '' }}>          <div className="col-lg-4 col-12 justify-content-left justify-content-sm-center m-lg-4 m-2" style={{ 
+              position: "absolute",
+              zIndex: '5',
+              border: '1px solid black',
+              borderRadius: '10px',
+              padding: "15px",
+              backgroundColor: "rgba(128, 128, 128, .3)"
+            }}
+            >
+            <Form>
+              <div className="row justify-content-center">
+                <div className="col-lg-9 col-7 justify-content-center"> 
+                  <Autocomplete
+                    onLoad={(autocomplete) => setAutocomplete(autocomplete)}
+                    onPlaceChanged={handlePlaceChanged}
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter an address"
+                      value={address}
+                      onChange={handleInputChange}
+                      style={{ height: "10%", marginBottom: "3%", width: "100%"}}
+                    />
+                  </Autocomplete>
+                </div>
+
+                <div className="col-lg-3 col-3 justify-content-center mb-3" style={{height: "10%"}}>
+                  <Button variant="warning" onClick={handleSearch} >Search</Button>
+                </div>
+                
+                <div className="col-lg-12 col-2 justify-content-center">
+                  <Button variant="outline-secondary text-black justify-content-center" onClick={handleGetCurrentLocation}>
+                    {isMobile ? (<FaLocationArrow/>) 
+                    : (
+                        <>
+                        <FaLocationArrow style={{ marginRight: "0.5rem" }} />
+                        Use Current Location
+                        </>
+                    )}
+                  </Button>
+                </div>
+              </div>  
+            </Form>
+          </div>
+        </div>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={center}
