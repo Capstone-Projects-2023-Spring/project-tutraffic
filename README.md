@@ -1,4 +1,3 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-f4981d0f882b2a3f0472912d15f9806d57e124e0fc890972558857b51b24a6f9.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=10118243)
 <div align="center">
 
 # TuTraffic
@@ -7,6 +6,7 @@
 [![Documentation Website Link](https://img.shields.io/badge/-Documentation%20Website-brightgreen)](https://capstone-projects-2023-spring.github.io/project-tutraffic/)
 [![TuTraffic App Link](https://img.shields.io/badge/-TuTraffic--App-red)](https://tutrafficdatabase.web.app/)
 
+[![Open in Codespaces](https://github.com/codespaces/badge.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=10118243)
 
 </div>
 
