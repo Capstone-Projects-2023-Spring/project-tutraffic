@@ -1,3 +1,4 @@
 apscheduler
 firebase_admin==6.1.0
 picamera2==0.3.8
+scipy==1.8.1

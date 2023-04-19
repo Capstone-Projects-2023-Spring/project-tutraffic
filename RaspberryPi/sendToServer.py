@@ -3,26 +3,27 @@ from detectLines import *
 import json
 from json import JSONEncoder
 import numpy as np
-import sys
 import random
-from detectLines import detectLines
+import datetime
 
 import firebase_admin
 from firebase_admin import db
 from firebase_admin import credentials
 
-cred = credentials.Certificate("tutraffic-firebase-key.json")
+cred = credentials.Certificate("RaspberryPi/tutraffic-firebase-key.json")
 firebase_admin.initialize_app(cred, {'databaseURL': 'https://tutrafficdatabase-default-rtdb.firebaseio.com'})
 
 
 
 
 # send data # 
-def upload(filepath, spots, child):
+def upload(filepath, spots, child, time):
 	try:
 		ref = db.reference(filepath)
 		spaceRef = ref.child(child)
 		spaceRef.update(spots)
+		spaceRef.update(time)
+
 		return True
 	except Exception as e:
 		print(e)
@@ -48,7 +49,7 @@ def main():
 	# get num of parking spaces first
 
 	# change second var to data collected from ml model
-	upload('parking/',{'spots': 28}, 'serc')
+	upload('parking/',{'spots': 28}, 'warno', {'last updated': str(datetime.datetime.now())})
 
 
 if __name__ == "__main__":
