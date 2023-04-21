@@ -7,6 +7,7 @@ import displayCarBoxesStreet
 import cv2 as cv
 import numpy as np
 from operator import itemgetter
+import os
 import datetime
 from scipy.stats import skew
 
@@ -40,23 +41,28 @@ def determineAvgLength(carList):
 
 
 def captureImage():
-    '''
-    camera = PiCamera()
-    cap = PiRGBArray(camera)
-    time.sleep(3)
-    camera.capture(cap, format = 'bgr')
-    image = cap.array
-    '''
+
     cap = cv.VideoCapture(0)
+    cap.set(cv.CAP_PROP_FRAME_WIDTH, 1280)
+    cap.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
     
-    ye, frame = cap.read()
-    
+
+    ay, frame = cap.read()
     grey = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
     hist = cv.calcHist([grey], [0], None, [256], [0, 256])
     imgSkew = skew(hist)
 
-    if imgSkew > 10.0:
-            frame = adjust_gamma(frame, 0.3)
+
+	#adjust over exposed image
+    if imgSkew > 9:
+        frame = adjustBrightness(frame, .1)
+    elif imgSkew > 7:
+        frame = adjustBrightness(frame, .3)
+    elif imgSkew > 5:
+        frame = adjustBrightness(frame, .5)
+    elif imgSkew > 1:
+        frame = adjustBrightness(frame, .9)
+
 
     cv.imwrite('home/tutrafficpi/Desktop/image2.jpg', frame)
     
@@ -209,7 +215,8 @@ def sortList(carLoc, imgHeight):
 
     return left, right
 
-def adjust_gamma(img, gam):
+
+def adjustBrightness(img, gam):
 	inverGam = 1.0 / gam
 	table = np.array([((i / 255.0) ** inverGam) * 255
 		for i in np.arange(0, 256)]).astype("uint8")
@@ -220,7 +227,9 @@ def main():
     
     while go == True:
         image = captureImage()
-        #image = cv.imread('RaspberryPi/images/IMG_1411.jpeg')
+
+        #image = cv.imread('RaspberryPi/Overexpose.jpeg')
+
         carLocations, imgDim = detectCarBoxes(image)
         if carLocations:
             fixedCarLoc = convertCords(carLocations)
@@ -232,7 +241,7 @@ def main():
             avgCarLength = [0,0]
         totalSpaces, lGu, rGu = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
         print(totalSpaces)
-        displayCarBoxesStreet.detectCars(image)
-        #sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
+        #displayCarBoxesStreet.detectCars(image)
+        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
 if __name__ == '__main__':
     main()
