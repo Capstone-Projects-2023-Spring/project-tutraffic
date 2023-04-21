@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useLoadScript } from '@react-google-maps/api';
 import { Notifications } from 'react-push-notification';
 
-import ConditionalNavr from './ConditionalNavr';
+import Navigation from './Navigation';
 import AppRoutes from "./Routes";
 
 const libraries = ['places'];
@@ -37,13 +37,13 @@ export const App = () => {
 
         <div className="App" data-testid="app-component" style={{ height: "100dvh", display: "flex", flexDirection: "column"}}>
         <Notifications />
-          {!isMobile && <ConditionalNavr />}
+          {!isMobile && <Navigation />}
           <div style={{ flexGrow: "1" }}>
             {loadError && <div>Error loading google maps API</div>}
             {!isLoaded && !loadError && <div>Loading google maps API</div>}
             {isLoaded && <AppRoutes />}
           </div>
-          {isMobile && <ConditionalNavr />}
+          {isMobile && <Navigation />}
         </div>
       </Router>
     </>
