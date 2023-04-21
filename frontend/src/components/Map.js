@@ -15,8 +15,12 @@ const Map = () => {
   const lotIcon = `${process.env.PUBLIC_URL}/images/lotParking.png`;
   
   // Retrieve the user's latitude and longitude from local storage
-  const latitude = parseFloat(localStorage.getItem('latitude'));
-  const longitude = parseFloat(localStorage.getItem('longitude'));
+  let latitude = parseFloat(localStorage.getItem('latitude'));
+  let longitude = parseFloat(localStorage.getItem('longitude'));
+  if (isNaN(latitude) || isNaN(longitude)) {
+    latitude = 39.9819691;
+    longitude = -75.1532035;
+  };
   
   const [address, setAddress] = useState("");
   const [autocomplete, setAutocomplete] = useState(null);
