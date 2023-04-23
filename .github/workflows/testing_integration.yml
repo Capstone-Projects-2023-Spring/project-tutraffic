@@ -1,0 +1,47 @@
+name: Testing Integration
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/testing_integration.yml'
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Create .env containing secrets.
+        env:
+          API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+          AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
+          PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
+          REF_URL: ${{ secrets.REACT_APP_FIREBASE_REF_URL }}
+        run: |
+          cat <<EOF > .env
+          REACT_APP_FIREBASE_API_KEY="$API_KEY"
+          REACT_APP_FIREBASE_AUTH_DOMAIN="$AUTH_DOMAIN"
+          REACT_APP_FIREBASE_PROJECT_ID="$PROJECT_ID"
+          REACT_APP_FIREBASE_REF_URL="$REF_URL"
+          EOF
+        working-directory: ./frontend
+      - name: Create .json containing secrets.
+        env:
+            KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY }}
+        run: |
+            cat <<EOF > tutraffic-firebase-key.json
+            KEY
+            EOF
+        working-directory: ./frontend
+      - name: Run Cypress tests.
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ./frontend
