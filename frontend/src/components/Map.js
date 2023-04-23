@@ -5,10 +5,12 @@ import { Autocomplete } from '@react-google-maps/api';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {FaLocationArrow} from 'react-icons/fa';
+import { auth } from '../firebase';
 
 
 
 import { LotData } from './LotData';
+import { UserLotData } from './UserLotData';
 
 const Map = () => {
   const streetIcon = `${process.env.PUBLIC_URL}/images/streetParking.png`;
@@ -81,8 +83,23 @@ const Map = () => {
   }, []);
 
   const isMobile = windowDimension <= 640;
+  
+  // authenticate user and get lot and car type
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+    });
+    return () => unsubscribe();
+  }, []);
 
-  const markers = data ? Object.keys(data).map((key) => {
+const { userLotType, userCarType } = UserLotData(currentUser?.uid);
+
+
+  const markers = data ? Object.keys(data)
+  .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) //added filter
+  .filter((key) => (userCarType !== null ? data[key].maxsize=== userCarType : true)) //added filter
+  .map((key) => {
     const { lat, lng, spots, street } = data[key];
     if (lat && lng) {
       return {
