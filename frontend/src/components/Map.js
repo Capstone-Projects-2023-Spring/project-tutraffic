@@ -5,10 +5,11 @@ import { Autocomplete } from '@react-google-maps/api';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {FaLocationArrow} from 'react-icons/fa';
-
+import { auth } from '../firebase';
 
 
 import { LotData } from './LotData';
+import { UserLotData } from './UserLotData';
 
 const Map = () => {
   const streetIcon = `${process.env.PUBLIC_URL}/images/streetParking.png`;
@@ -25,7 +26,7 @@ const Map = () => {
   const [address, setAddress] = useState("");
   const [autocomplete, setAutocomplete] = useState(null);
   const [windowDimension, setWindowDimension] = useState(null);
-  
+
     // set the map center - but changable
   const [center, setCenter] = useState({ lat: latitude, lng: longitude}); // default center
   
@@ -82,27 +83,46 @@ const Map = () => {
 
   const isMobile = windowDimension <= 640;
 
-  const markers = data ? Object.keys(data).map((key) => {
-    const { lat, lng, spots, street } = data[key];
-    if (lat && lng) {
-      return {
-        position: { lat, lng },
-        options: {
-          label: {
-            text: spots.toString(),
-            color: 'white',
-            fontSize: '1.2rem',
-          },
-          icon: {
-            url: street ? streetIcon : lotIcon,
-          },
-        },
-      };
-    } else {
-      // skip this marker if lat && lng not available
-      return null;
-    }
-  }).filter(marker => marker !== null) : [];
+  // authenticate user and get lot and car type
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(user => {
+      setCurrentUser(user);
+    });
+  
+    return () => unsubscribe();
+  }, []);
+  const { userLotType, userCarType } = UserLotData(currentUser?.uid);
+
+  const markers = data
+  ? Object.keys(data)
+  .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) //added filter
+  .filter((key) => (userCarType !== null ? data[key].maxsize=== userCarType : true)) //added filter
+    .map((key) => {
+        const { lat, lng, spots, street } = data[key];
+        if (lat && lng) {
+          return {
+            position: { lat, lng },
+            options: {
+              label: {
+                text: spots.toString(),
+                color: "white",
+                fontSize: "1.2rem",
+              },
+              icon: {
+                url: street ? streetIcon : lotIcon,
+              },
+            },
+          };
+        } else {
+          // skip this marker if lat && lng not available
+          return null;
+        }
+      })
+      .filter((marker) => marker !== null)
+  : [];
+
+
   
   const handleSearch = () => {
     // Use the Geocoder API to get the coordinates of the address

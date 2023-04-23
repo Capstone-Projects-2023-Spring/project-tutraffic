@@ -28,8 +28,9 @@ const AccountProfile = () => {
     };
   }, []);
   
-  useEffect(() => { //cleaned up 
-    if (user && (carSize !== 'nothing selected'))  {
+  //added || lotType !== 'nothing selected' so user could just change the lotType of they wanted
+  useEffect(() => { 
+    if (user && (carSize !== 'nothing selected'|| lotType !== 'nothing selected'))  {
       const userData = {
         CarSize: carSize,
         lotType: lotType
