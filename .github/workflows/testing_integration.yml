@@ -49,6 +49,8 @@ jobs:
       - name: Install python dependencies.
         working-directory: ./frontend
         run: python -m pip install -r cypress/python/requirements.txt
+      - name: List frontend files.
+        run: ls frontend
       - name: Run Cypress tests.
         uses: cypress-io/github-action@v5
         with:
