@@ -50,10 +50,12 @@ jobs:
         working-directory: ./frontend
         run: python -m pip install -r cypress/python/requirements.txt
       - name: List frontend files.
-        run: ls frontend
+        run: ls -la frontend
       - name: Run Cypress tests.
         uses: cypress-io/github-action@v5
         with:
           working-directory: ./frontend
           install-command: npm ci --legacy-peer-deps
           browser: chrome
+      - name: List frontend files.
+        run: ls -la frontend
