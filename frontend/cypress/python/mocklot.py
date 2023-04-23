@@ -4,6 +4,7 @@ Pushes mock parking lot data updates to Firebase.
 import argparse
 import datetime
 import firebase_admin
+import sys
 from dotenv import dotenv_values
 from firebase_admin import credentials
 from firebase_admin import db
@@ -76,7 +77,7 @@ def put_mocklot(key, data: dict):
         lot.update(data)
     except Exception as e:
         print(e)
-        exit(1)
+        sys.exit(1)
 
 
 def init_mocklot(key, data: dict):
@@ -104,7 +105,7 @@ def delete_mocklot(key):
         ref.child(key).delete()
     except Exception as e:
         print(e)
-        exit(1)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -122,7 +123,7 @@ if __name__ == "__main__":
     # Check for valid command.
     if args.command not in valid_commands:
         print("Error: invalid command.")
-        exit(1)
+        sys.exit(1)
 
     # Prepare data for upload to Firebase.
     data = dict()
