@@ -10,12 +10,12 @@
 
 beforeEach(() => {
   // Create the mock lot.
-  cy.exec('python3 cypress/python/mocklot.py init')
+  cy.exec('python cypress/python/mocklot.py init')
 })
 
 afterEach(() => {
   // Delete the mock lot.
-  cy.exec('python3 cypress/python/mocklot.py delete')
+  cy.exec('python cypress/python/mocklot.py delete')
 })
 
 it('Finds the navigation to Tuttleman Lot, the nearest parking lot by distance.', () => {

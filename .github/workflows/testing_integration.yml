@@ -45,7 +45,7 @@ jobs:
             cat <<EOF > tutraffic-firebase-key.json
             KEY
             EOF
-        working-directory: ./frontend/cypress/python
+        working-directory: ./frontend
       - name: Install python dependencies.
         working-directory: ./frontend
         run: python -m pip install -r cypress/python/requirements.txt
