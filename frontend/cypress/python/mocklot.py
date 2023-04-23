@@ -55,7 +55,7 @@ LOT_PROP = {
     }
 }
 # Firebase Authentication.
-cred = credentials.Certificate("tutraffic-firebase-key.json")
+cred = credentials.Certificate('tutraffic-firebase-key.json')
 env = dotenv_values(".env")
 firebase_admin.initialize_app(
     cred, {'databaseURL': env['REACT_APP_FIREBASE_REF_URL']})
