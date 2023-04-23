@@ -28,8 +28,12 @@ const AccountProfile = () => {
     };
   }, []);
   
-  useEffect(() => { //cleaned up 
-    if (user && (carSize !== 'nothing selected'))  {
+  /*added || lotType !== 'nothing selected' 
+  user can just change the lotType and it will save
+  prevents error of lotType not saving
+  */
+  useEffect(() => { 
+    if (user && (carSize !== 'nothing selected'|| lotType !== 'nothing selected'))  {
       const userData = {
         CarSize: carSize,
         lotType: lotType
