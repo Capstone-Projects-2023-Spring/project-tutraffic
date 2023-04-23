@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        python-version: ["3.10"]
+        python-version: ["3.11"]
 
     steps:
       - uses: actions/checkout@v3
@@ -49,13 +49,9 @@ jobs:
       - name: Install python dependencies.
         working-directory: ./frontend
         run: python -m pip install -r cypress/python/requirements.txt
-      - name: List frontend files.
-        run: ls -la frontend
       - name: Run Cypress tests.
         uses: cypress-io/github-action@v5
         with:
           working-directory: ./frontend
           install-command: npm ci --legacy-peer-deps
           browser: chrome
-      - name: List frontend files.
-        run: ls -la frontend
