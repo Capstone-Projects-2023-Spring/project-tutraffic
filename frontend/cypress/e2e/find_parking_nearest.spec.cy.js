@@ -10,30 +10,12 @@
 
 beforeEach(() => {
   // Create the mock lot.
-  // Add workaround to get traceback for debugging problem that only occurs in GitHub Action.
-  // Source: https://github.com/cypress-io/cypress/issues/5470#issuecomment-569627930
-    cy.exec('python cypress/python/mocklot.py init', { failOnNonZeroExit: false }).then(result => {
-      if (result.code) {
-        throw new Error(`Execution of "python cypress/python/mocklot.py init" failed
-        Exit code: ${result.code}
-        Stdout:\n${result.stdout}
-        Stderr:\n${result.stderr}`);
-      }
-    })
+  cy.exec('python cypress/python/mocklot.py init')
 })
 
 afterEach(() => {
   // Delete the mock lot.
-  // Add workaround to get traceback for debugging problem that only occurs in GitHub Action.
-  // Source: https://github.com/cypress-io/cypress/issues/5470#issuecomment-569627930
-  cy.exec('python cypress/python/mocklot.py delete', { failOnNonZeroExit: false }).then(result => {
-    if (result.code) {
-      throw new Error(`Execution of "python cypress/python/mocklot.py delete" failed
-      Exit code: ${result.code}
-      Stdout:\n${result.stdout}
-      Stderr:\n${result.stderr}`);
-    }
-  })
+  cy.exec('python cypress/python/mocklot.py delete')
 })
 
 it('Finds the navigation to Tuttleman Lot, the nearest parking lot by distance.', () => {
