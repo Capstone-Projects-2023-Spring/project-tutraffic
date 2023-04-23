@@ -1,6 +1,13 @@
 /**
- * Tests the capability to search for the nearest parking spot.
+ * Test the feature to search for the nearest parking spot.
+ * Expected Result: The client browser calls to open a Google Maps search in a new window,
+ * targeting the mock parking lot as the destination.
+ * Test Components:
+ *   Firebase - Test read-write access to the Firebase 'parking/' document.
+ *   Frontend - Test navigation within the following web app endpoints: root,'/map','/browse',
+ *	 and '/parkinglot/{key}'
  */
+
 beforeEach(() => {
   // Create the mock lot.
   cy.exec('python3 cypress/python/mocklot.py init')
@@ -13,6 +20,7 @@ afterEach(() => {
 
 it('Finds the navigation to Tuttleman Lot, the nearest parking lot by distance.', () => {
   cy.visit('https://tutrafficdatabase.web.app/')
+
   // Input address.
   cy.get('input.form-control.pac-target-input')
     .type('1800 N Broad St, Philadelphia, PA 19121, USA')
@@ -28,12 +36,12 @@ it('Finds the navigation to Tuttleman Lot, the nearest parking lot by distance.'
   cy.location('pathname')
     .should('include', '/browse')
 
-  // Navigate to the parking lot page.
+  // Navigate to the first parking lot item, which should be the nearest item.
   cy.get('button:contains("View Detail")').first().click()
 
   // Verify the parking lot.
   cy.location('pathname')
-    .should('include', '/mocklot')
+    .should('include', '/parkinglot/mocklot')
 
   // Navigate to the third-party navigation page.
   cy.get('button:contains("Park Here")').click()
