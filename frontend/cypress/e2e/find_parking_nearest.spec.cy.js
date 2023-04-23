@@ -29,19 +29,19 @@ it('Finds the navigation to Tuttleman Lot, the nearest parking lot by distance.'
   // Submit address and navigate to the map.
   cy.get('button:contains("Search")').click()
   cy.location('pathname')
-    .should('include', '/map')
+    .should('eq', '/map')
 
   // Navigate to the list of parking lots.
   cy.get('button:contains("Browse")').click()
   cy.location('pathname')
-    .should('include', '/browse')
+    .should('eq', '/browse')
 
   // Navigate to the first parking lot item, which should be the nearest item.
   cy.get('button:contains("View Detail")').first().click()
 
   // Verify the parking lot.
   cy.location('pathname')
-    .should('include', '/parkinglot/mocklot')
+    .should('eq', '/parkinglot/mocklot')
 
   // Navigate to the third-party navigation page.
   cy.get('button:contains("Park Here")').click()
