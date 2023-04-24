@@ -57,9 +57,8 @@ LOT_PROP = {
 }
 # Firebase Authentication.
 try:
-  file = open('fake-key.json')
+  file = open('tutraffic-firebase-key.json')
   data = load(file)
-  print(data)
   cred = credentials.Certificate(data)
 except Exception as e:
   print(e)
