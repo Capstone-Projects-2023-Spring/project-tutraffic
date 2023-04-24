@@ -3,7 +3,7 @@ sidebar_position: 2
 ---
 # Integration tests
 
-Integration tests are written in JavaScript, using the [jest](https://jestjs.io/) testing framework. Back-end components written in Python will be executed using JavaScript wrappers.
+Integration tests are written in JavaScript, using the [Cypress](https://cypress.io/) testing framework. Back-end components written in Python will be executed using terminal commands wrapped in the Cypress exec command.
 
 ## Use Case #1: User wants to find a spot in a general vicinity.
 
@@ -90,5 +90,3 @@ Tested Components:
 * REST API
 
 	The server handles the client's parking-location query.
-
-
