@@ -36,12 +36,9 @@ jobs:
         python -m pip install -r testing/python/requirements.txt
     - name: Create .json containing secrets.
       env:
-          KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY }}
-      run: |
-          cat <<EOF > tutraffic-firebase-key.json
-          KEY
-          EOF
-      working-directory: ./RaspberryPi
+          KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY_64 }}
+      run: echo $KEY | base64 -d > tutraffic-firebase-key.json
+      working-directory: ./frontend
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
