@@ -3,7 +3,9 @@ sidebar_position: 2
 ---
 # Integration tests
 
-Integration tests are written in JavaScript, using the [Cypress](https://cypress.io/) testing framework. Back-end components written in Python will be executed using terminal commands wrapped in the Cypress exec command.
+Integration tests are written in JavaScript, using the [Cypress](https://cypress.io/) testing framework.
+
+Due to tight coupling within the Raspberry Pi back-end system, its operations are mocked with Python scripts. Python scripts are executed using terminal commands wrapped in the Cypress exec command.
 
 ## Use Case #1: User wants to find a spot in a general vicinity.
 
