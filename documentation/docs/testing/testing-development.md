@@ -6,8 +6,8 @@ This document describes how to setup and run the testing environment for the TuT
 
 ### **Software Requirements**
 
-#### **Node Back-end Requirements**
-The node back-end testing environment requires:
+#### **Raspberry Pi Back-end Requirements**
+The raspberry pi back-end testing environment requires:
 1. The [python3](https://www.python.org/downloads/) interpreter.
 2. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is included with the latest version of Python 3.
 3. Additional requirements, including [pytest](https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest), can be installed from the commandline using pip:
@@ -18,11 +18,17 @@ The node back-end testing environment requires:
 The frontend testing environment requires:
 1. The package manager [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) is included with [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/), which is installed as part of the system environment.
 2. The testing framework, including [Jest](https://jestjs.io/) and [react-test-renderer](https://reactjs.org/docs/test-renderer.html), is included in the frontend environment.
+3. If the frontend is not yet installed on the system, install dependencies using the following commands from the project root:
+
+    ```
+    $ cd frontend # From the repository root directory, set the working directory to the front end.
+    $ npm install --legacy-peer-deps
+    ```
 
 
 ## **Writing Tests**
 
-### **Writing Node Back-end Tests**
+### **Writing Raspberry Pi Back-end Tests**
 
 The [pytest](https://docs.pytest.org/en/7.2.x/reference/reference.html#api-reference) module provides functionality that the built-in assert statement does not provide, such as [fixtures](https://docs.pytest.org/en/7.1.x/explanation/fixtures.html#about-fixtures).
 
@@ -91,9 +97,9 @@ it('renders correctly', () => {
 
 ## **Running Tests**
 
-### **Running Node Back-end Tests**
+### **Running Raspberry Pi Back-end Tests**
 
-Run node back-end tests using pytest from the commandline.
+Run raspberry pi back-end tests using pytest from the commandline.
 ```
 $ pytest
 ```
