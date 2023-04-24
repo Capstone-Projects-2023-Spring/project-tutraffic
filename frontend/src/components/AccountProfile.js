@@ -105,7 +105,7 @@ const AccountProfile = () => {
         <select value={priceType} onChange={(e) => setPriceType(e.target.value)}>
         <option value="all">Defualt (All)</option>
           <option value="free">free</option>
-          <option value="notFee">not Free</option>
+          <option value="notFree">not Free</option>
     
         </select>
         

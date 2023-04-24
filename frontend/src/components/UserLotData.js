@@ -5,11 +5,13 @@ import { doc, getDoc } from 'firebase/firestore';
 export const UserLotData = (userId) => {
   const [userLotType, setLotType] = useState(null);
   const [userCarType, setCarType] = useState(null);
+  const [userPriceType, setPriceType] = useState(null);
 
   useEffect(() => {
     if (!userId) {
       setLotType(null);
       setCarType(null);
+      setPriceType(null);
       return;
     }
 
@@ -35,12 +37,19 @@ export const UserLotData = (userId) => {
       } else {
         setCarType(null);
       }
+      if (userData.priceType === 'free') {
+        setPriceType(true);
+      } else if (userData.priceType === 'notFree') {
+        setPriceType(false);
+      } else {
+        setPriceType(null);
+      }
     };
 
     fetchUserData();
-  }, [userId, setLotType, setCarType]);
+  }, [userId, setLotType, setCarType, setPriceType]);
 
-  return { userLotType, userCarType };
+  return { userLotType, userCarType, userPriceType};
 };
 
 
