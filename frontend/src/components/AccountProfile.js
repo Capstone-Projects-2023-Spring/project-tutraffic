@@ -11,6 +11,7 @@ const AccountProfile = () => {
   const [user, setUser] = useState(null);
   const [carSize, setCarSize] = useState('nothing selected'); 
   const [lotType, setLotType] = useState('nothing selected'); 
+  const [priceType, setPriceType] = useState('nothing selected'); 
 
 
   useEffect(() => {
@@ -30,14 +31,16 @@ const AccountProfile = () => {
   
   //added || lotType !== 'nothing selected' so user could just change the lotType of they wanted
   useEffect(() => { 
-    if (user && (carSize !== 'nothing selected'|| lotType !== 'nothing selected'))  {
+    if (user && (carSize !== 'nothing selected'|| lotType !== 'nothing selected'
+    || priceType !== 'nothing selected'))  {
       const userData = {
         CarSize: carSize,
-        lotType: lotType
+        lotType: lotType,
+        priceType: priceType
       };
       setDoc(doc(db, "users", user.uid), userData);
     }
-  }, [carSize, lotType, user]);
+  }, [carSize, lotType, priceType, user]);
 
   // fetch the current user's car size and lot type 
   useEffect(() => {
@@ -49,6 +52,7 @@ const AccountProfile = () => {
           const userData = docSnap.data();
           setCarSize(userData.CarSize || 'Average');
           setLotType(userData.lotType || 'both');
+          setLotType(userData.lotType || 'all');
         }
       } catch (error) {
         console.log("Error fetching user data: ", error);
@@ -97,6 +101,14 @@ const AccountProfile = () => {
           <option value="lot">Lot</option>
           <option value="street">Street</option>
         </select>
+        <h4>Current price Type: {priceType}</h4>
+        <select value={priceType} onChange={(e) => setPriceType(e.target.value)}>
+        <option value="all">Defualt (All)</option>
+          <option value="free">free</option>
+          <option value="notFee">not Free</option>
+    
+        </select>
+        
         </div>
     </div>
   );
