@@ -8,6 +8,7 @@ import sys
 from dotenv import dotenv_values
 from firebase_admin import credentials
 from firebase_admin import db
+from json import load
 
 
 DOCUMENT_PATH = 'parking/'
@@ -55,7 +56,13 @@ LOT_PROP = {
     }
 }
 # Firebase Authentication.
-cred = credentials.Certificate('tutraffic-firebase-key.json')
+try:
+  file = open('tutraffic-firebase-key.json')
+  data = load(file)
+  cred = credentials.Certificate(data)
+except Exception as e:
+  print(e)
+  sys.exit(1)
 env = dotenv_values(".env")
 firebase_admin.initialize_app(
     cred, {'databaseURL': env['REACT_APP_FIREBASE_REF_URL']})
