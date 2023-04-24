@@ -2,6 +2,7 @@ name: Testing Integration
 
 on:
   pull_request:
+    branches: [ "main" ]
     paths:
       - 'frontend/**'
       - '.github/workflows/testing_integration.yml'
