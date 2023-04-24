@@ -97,7 +97,7 @@ const Map = () => {
   const markers = data
   ? Object.keys(data)
   .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) //added filter
-  .filter((key) => (userCarType !== null ? data[key].maxsize=== userCarType : true)) //added filter
+  .filter((key) => (userCarType !== null ? data[key].maxsize >= userCarType : true)) //added filter
     .map((key) => {
         const { lat, lng, spots, street } = data[key];
         if (lat && lng) {
