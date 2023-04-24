@@ -52,7 +52,7 @@ const AccountProfile = () => {
           const userData = docSnap.data();
           setCarSize(userData.CarSize || 'Average');
           setLotType(userData.lotType || 'both');
-          setLotType(userData.lotType || 'all');
+          setPriceType(userData.priceType || 'all');
         }
       } catch (error) {
         console.log("Error fetching user data: ", error);
