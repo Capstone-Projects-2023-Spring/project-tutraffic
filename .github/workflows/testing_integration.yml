@@ -40,11 +40,8 @@ jobs:
         working-directory: ./frontend
       - name: Create .json containing secrets.
         env:
-            KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY }}
-        run: |
-            cat <<EOF > tutraffic-firebase-key.json
-            KEY
-            EOF
+            KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY_64 }}
+        run: echo $KEY | base64 -d > tutraffic-firebase-key.json
         working-directory: ./frontend
       - name: Install python dependencies.
         working-directory: ./frontend
