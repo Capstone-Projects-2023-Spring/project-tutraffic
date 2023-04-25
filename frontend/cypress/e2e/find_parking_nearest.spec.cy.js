@@ -1,11 +1,10 @@
 /**
  * Test the use case to search for the nearest parking spot.
- * Expected Result: The client browser calls to open a Google Maps search in a new window,
- * targeting the mock parking lot as the destination.
+ * Expected Result: The web-app makes a Google Maps search request to the destination.
  * Test Components:
  *   Firebase - Test read-write access to the Firebase 'parking/' document.
  *   Frontend - Test navigation within the following web app endpoints: root,'/map','/browse',
- *	 and '/parkinglot/{key}'
+ *	 and '/parkinglot/{key}'.
  */
 
 before(() => {
