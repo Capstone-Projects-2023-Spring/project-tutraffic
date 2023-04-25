@@ -20,20 +20,7 @@ after(() => {
 it('Searches Google Maps for a parking lot.', () => {
   cy.visit('https://tutrafficdatabase.web.app/')
 
-  // Input address.
-  cy.get('input.form-control.pac-target-input')
-    .type('1800 N Broad St, Philadelphia, PA 19121, USA')
-  cy.should('have.value', '1800 N Broad St, Philadelphia, PA 19121, USA')
-
-  // Submit address and navigate to the map.
-  cy.get('button:contains("Search")').click()
-  cy.location('pathname')
-    .should('eq', '/map')
-
-  // Navigate to the list of parking lots.
-  cy.get('button:contains("Browse")').click()
-  cy.location('pathname')
-    .should('eq', '/browse')
+  cy.visitBrowse()
 
   // Navigate to the first parking lot item, which should be the nearest item.
   cy.get('button:contains("View Detail")').first().click()
