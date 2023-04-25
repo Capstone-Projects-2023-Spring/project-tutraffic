@@ -57,8 +57,7 @@ jobs:
             ~/.cache/Cypress
             node_modules
           key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - name: Install node dependencies.
-        run: npm i cypress dotenv firebase --legacy-peer-deps
+      - run: npm i cypress dotenv firebase --legacy-peer-deps
       - uses: cypress-io/github-action@v5
       - name: Run Cypress tests.
         uses: cypress-io/github-action@v5
