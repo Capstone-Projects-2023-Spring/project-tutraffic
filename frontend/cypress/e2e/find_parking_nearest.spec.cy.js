@@ -1,5 +1,5 @@
 /**
- * Test the feature to search for the nearest parking spot.
+ * Test the use case to search for the nearest parking spot.
  * Expected Result: The client browser calls to open a Google Maps search in a new window,
  * targeting the mock parking lot as the destination.
  * Test Components:
