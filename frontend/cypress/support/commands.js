@@ -20,6 +20,9 @@ Cypress.Commands.add("visitBrowse", () => {
     .should('eq', '/browse')
 })
 
+/**
+ * Login to the test user account.
+ */
 Cypress.Commands.add("userLogin", () => {
     // Input account details.
     cy.get('#email')
