@@ -8,12 +8,12 @@
  *	 and '/parkinglot/{key}'
  */
 
-beforeEach(() => {
+before(() => {
   // Create the mock lot.
   cy.exec('python cypress/python/mocklot.py init')
 })
 
-afterEach(() => {
+after(() => {
   // Delete the mock lot.
   cy.exec('python cypress/python/mocklot.py delete')
 })
