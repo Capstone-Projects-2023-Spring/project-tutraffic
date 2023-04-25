@@ -6,9 +6,6 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/testing_integration.yml'
-defaults:
-  run:
-    working-directory: ./frontend
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
@@ -45,22 +42,18 @@ jobs:
           TEST_USER_EMAIL="$EMAIL"
           TEST_USER_PASSWORD="$PASSWORD"
           EOF
+        working-directory: ./frontend
       - name: Create .json containing secrets.
         env:
             KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY_64 }}
         run: echo $KEY | base64 -d > tutraffic-firebase-key.json
+        working-directory: ./frontend
       - name: Install python dependencies.
+        working-directory: ./frontend
         run: python -m pip install -r cypress/python/requirements.txt
-      - uses: actions/cache@v2
-        with:
-          path: |
-            ~/.cache/Cypress
-            node_modules
-          key: my-cache-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
-      - run: npm i cypress dotenv firebase --legacy-peer-deps
-      - uses: cypress-io/github-action@v5
       - name: Run Cypress tests.
         uses: cypress-io/github-action@v5
         with:
-          install: false
+          working-directory: ./frontend
+          install-command: npm ci --legacy-peer-deps
           browser: chrome
