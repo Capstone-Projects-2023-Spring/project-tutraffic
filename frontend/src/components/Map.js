@@ -46,9 +46,16 @@ const Map = () => {
     overflow: 'hidden'
   };
 
-  const mapContainerStyle = {
+  const desktopContainerStyle = {
     width: '100vw',
     height: 'calc(100% - 104px)',
+    position: 'absolute',
+    overflow: 'hidden'
+  };
+
+  const mobileContainerStyle = {
+    width: '100vw',
+    height: 'calc(100% - 125px)',
     position: 'absolute',
     overflow: 'hidden'
   };
@@ -212,57 +219,95 @@ const Map = () => {
   return (
     <div style={{containerStyle}}>
       {isMobile ? (
-        <></>
+        <>
+          <Navbar style={{height:"48px"}}>
+            <Container className="justify-content-center">
+              <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
+                <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter an address, city, or ZIP code"
+                    value={address}
+                    onChange={handleInputChange}
+                    style={{height: "40px", width:"275px"}}
+                  />
+                </Autocomplete>
+                <Button variant="primary" onClick={handleSearch}>Search</Button>
+              </Form>
+            </Container>
+          </Navbar>
+          <GoogleMap
+            mapContainerStyle={mobileContainerStyle}
+            center={center}
+            zoom={17}
+            options={options}
+            style={{
+              zIndex: '0',
+            }}
+          >
+            <MarkerF position={center} />
+            {markers.map((marker, index) => (
+              <MarkerF
+                key={index}
+                position={marker.position}
+                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                options={marker.options}
+              />
+            ))}
+          </GoogleMap>
+        </>
       ) : (
-        <Navbar style={{height:"48px"}}>
-          <Container>
-            <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
-              <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter an address, city, or ZIP code"
-                  value={address}
-                  onChange={handleInputChange}
-                  style={{ height: "40px", width:"300px"}}
-                />
-              </Autocomplete>
-              <Button variant="primary" onClick={handleSearch}>Search</Button>
-            </Form>
-            <Navbar.Collapse className="justify-content-end" style={{display:"flex", gap:"10px"}}>
-              <DropdownButton className="filter-btn" variant="light" id="dropdown-basic-button" title={lotType}>
-                <Dropdown.Item onClick={() => setLotType("Parking Lot")}>Parking Lot</Dropdown.Item>
-                <Dropdown.Item onClick={() => setLotType("Street Parking")}>Street Parking</Dropdown.Item>
-                <Dropdown.Item onClick={() => setLotType("All Parking")}>All Parking</Dropdown.Item>
-              </DropdownButton>
-              <DropdownButton style={{}} className="filter-btn" variant="light" id="dropdown-basic-button"  title={priceType}>
-                <Dropdown.Item onClick={() => setPriceType("Free")}>Free</Dropdown.Item>
-                <Dropdown.Item onClick={() => setPriceType("Paid")}>Paid</Dropdown.Item>
-                <Dropdown.Item onClick={() => setPriceType("Any Pricing")}>Any Pricing</Dropdown.Item>
-              </DropdownButton>
-              <Button variant="secondary" onClick={() => window.location.reload(false)}>Apply</Button>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
+        <>
+          <Navbar style={{height:"48px"}}>
+            <Container>
+              <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
+                <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter an address, city, or ZIP code"
+                    value={address}
+                    onChange={handleInputChange}
+                    style={{height: "40px", width:"300px"}}
+                  />
+                </Autocomplete>
+                <Button variant="primary" onClick={handleSearch}>Search</Button>
+              </Form>
+              <Navbar.Collapse className="justify-content-end" style={{display:"flex", gap:"10px"}}>
+                <DropdownButton className="filter-btn" variant="light" id="dropdown-basic-button" title={lotType}>
+                  <Dropdown.Item onClick={() => setLotType("Parking Lot")}>Parking Lot</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setLotType("Street Parking")}>Street Parking</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setLotType("All Parking")}>All Parking</Dropdown.Item>
+                </DropdownButton>
+                <DropdownButton style={{}} className="filter-btn" variant="light" id="dropdown-basic-button"  title={priceType}>
+                  <Dropdown.Item onClick={() => setPriceType("Free")}>Free</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setPriceType("Paid")}>Paid</Dropdown.Item>
+                  <Dropdown.Item onClick={() => setPriceType("Any Pricing")}>Any Pricing</Dropdown.Item>
+                </DropdownButton>
+                <Button variant="secondary" onClick={() => window.location.reload(false)}>Apply</Button>
+              </Navbar.Collapse>
+            </Container>
+          </Navbar>
+          <GoogleMap
+            mapContainerStyle={desktopContainerStyle}
+            center={center}
+            zoom={17}
+            options={options}
+            style={{
+              zIndex: '0',
+            }}
+          >
+            <MarkerF position={center} />
+            {markers.map((marker, index) => (
+              <MarkerF
+                key={index}
+                position={marker.position}
+                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                options={marker.options}
+              />
+            ))}
+          </GoogleMap>
+        </>
       )}
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={center}
-        zoom={17}
-        options={options}
-        style={{
-          zIndex: '0',
-        }}
-      >
-        <MarkerF position={center} />
-        {markers.map((marker, index) => (
-          <MarkerF
-            key={index}
-            position={marker.position}
-            onClick={() => handleMarkerClick(Object.keys(data)[index])}
-            options={marker.options}
-          />
-        ))}
-      </GoogleMap>
     </div>
   );
 };
