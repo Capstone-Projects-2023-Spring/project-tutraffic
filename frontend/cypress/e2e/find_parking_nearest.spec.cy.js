@@ -17,7 +17,7 @@ after(() => {
   cy.exec('python cypress/python/mocklot.py delete')
 })
 
-it('Finds the navigation to Tuttleman Lot, the nearest parking lot by distance.', () => {
+it('Searches Google Maps for a parking lot.', () => {
   cy.visit('https://tutrafficdatabase.web.app/')
 
   // Input address.
