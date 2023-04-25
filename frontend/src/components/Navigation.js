@@ -111,7 +111,7 @@ const Navigation = () => {
               <Button variant="light links" onClick={() => navigate('/favorite')}>Favorites</Button>
               {userEmail ? (
                 <Navbar.Collapse className="justify-content-end">
-                  <DropdownButton variant="light" align="end" title={<IoSettingsOutline size={30} />} >
+                  <DropdownButton variant="light" align="end" id="setting-icon" title={<IoSettingsOutline size={30} />} >
                     <Dropdown.ItemText>Signed in as</Dropdown.ItemText>
                     <Dropdown.ItemText className="item-email">{userEmail}</Dropdown.ItemText>
                     <Dropdown.Divider />

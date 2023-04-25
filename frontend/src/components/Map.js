@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Autocomplete } from '@react-google-maps/api';
+import { onAuthStateChanged } from 'firebase/auth';
+import { setDoc, doc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import {FaLocationArrow} from 'react-icons/fa';
-import { auth } from '../firebase';
-
+import Navbar from 'react-bootstrap/Navbar';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Container from 'react-bootstrap/Container';
 
 import { LotData } from './LotData';
 import { UserLotData } from './UserLotData';
@@ -27,7 +31,7 @@ const Map = () => {
   const [autocomplete, setAutocomplete] = useState(null);
   const [windowDimension, setWindowDimension] = useState(null);
 
-    // set the map center - but changable
+  // set the map center - but changable
   const [center, setCenter] = useState({ lat: latitude, lng: longitude}); // default center
   
   const navigate = useNavigate();
@@ -44,7 +48,7 @@ const Map = () => {
 
   const mapContainerStyle = {
     width: '100vw',
-    height: 'calc(100% - 56px)',
+    height: 'calc(100% - 104px)',
     position: 'absolute',
     overflow: 'hidden'
   };
@@ -83,7 +87,7 @@ const Map = () => {
 
   const isMobile = windowDimension <= 640;
 
-  // authenticate user and get lot and car type
+  // Authenticate user
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -92,38 +96,33 @@ const Map = () => {
   
     return () => unsubscribe();
   }, []);
-  const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
 
-  const markers = data
-  ? Object.keys(data)
- .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) 
+  const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
+  const markers = data ? Object.keys(data)
+  .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) 
   .filter((key) => (userCarType !== null ? data[key].maxsize >= userCarType : true)) 
   .filter((key) => (userPriceType !== null ? data[key].free === userPriceType : true)) 
-    .map((key) => {
-        const { lat, lng, spots, street } = data[key];
-        if (lat && lng) {
-          return {
-            position: { lat, lng },
-            options: {
-              label: {
-                text: spots.toString(),
-                color: "white",
-                fontSize: "1.2rem",
-              },
-              icon: {
-                url: street ? streetIcon : lotIcon,
-              },
-            },
-          };
-        } else {
-          // skip this marker if lat && lng not available
-          return null;
-        }
-      })
-      .filter((marker) => marker !== null)
-  : [];
-
-
+  .map((key) => {
+    const { lat, lng, spots, street } = data[key];
+    if (lat && lng) {
+      return {
+        position: { lat, lng },
+        options: {
+          label: {
+            text: spots.toString(),
+            color: "white",
+            fontSize: "1.2rem",
+          },
+          icon: {
+            url: street ? streetIcon : lotIcon,
+          },
+        },
+      };
+    } else {
+      // skip this marker if lat && lng not available
+      return null;
+    }
+  }).filter((marker) => marker !== null) : [];
   
   const handleSearch = () => {
     // Use the Geocoder API to get the coordinates of the address
@@ -143,7 +142,6 @@ const Map = () => {
         localStorage.setItem('latitude', lat);
         localStorage.setItem('longitude', lng);
       }
-      
     });
   };
   
@@ -156,73 +154,96 @@ const Map = () => {
     const newAddress = event.target.value;
     setAddress(newAddress);
   };
+    
+  const [user, setUser] = useState(null);
+  const [carSize, setCarSize] = useState(''); 
+  const [lotType, setLotType] = useState('Parking'); 
+  const [priceType, setPriceType] = useState('Pricing'); 
+ 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      } else {
+        setUser(null);
+      }
+    });
 
-   const handleGetCurrentLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                setCenter({
-                  lat,
-                  lng,
-                })
-                // Save to localStorage
-                localStorage.setItem('latitude', lat);
-                localStorage.setItem('longitude', lng);
-            });
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
+    // Clean up the listener on component unmount
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+  
+  // This changes the data in firestore 
+  useEffect(() => { 
+    if (user && (carSize !== '' || lotType !== 'Parking' || priceType !== 'Pricing')) {
+      const userData = {
+        CarSize: carSize,
+        lotType: lotType,
+        priceType: priceType
+      };
+      setDoc(doc(db, "users", user.uid), userData);
     }
+  }, [carSize, lotType, priceType, user]);
+
+  // fetch the current user's car size and lot type 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const docRef = doc(db, "users", user.uid);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const userData = docSnap.data();
+          setCarSize(userData.CarSize || 'Small');
+          setLotType(userData.lotType || 'All Parking');
+          setPriceType(userData.priceType || 'Any Pricing');
+        }
+      } catch (error) {
+        console.log("Error fetching user data: ", error);
+      }
+    };
+ 
+    if (user) {
+      fetchUserData();
+    }
+  }, [user]);
   
   return (
     <div style={{containerStyle}}>
-      <div className="row justify-content-left" style={{ justifyContent: isMobile ? 'center' : '' }}>          <div className="col-lg-4 col-12 justify-content-left justify-content-sm-center m-lg-4 m-2" style={{ 
-              position: "absolute",
-              zIndex: '5',
-              border: '1px solid black',
-              borderRadius: '10px',
-              padding: "15px",
-              backgroundColor: "rgba(128, 128, 128, .3)"
-            }}
-            >
-            <Form>
-              <div className="row justify-content-center">
-                <div className="col-lg-9 col-7 justify-content-center"> 
-                  <Autocomplete
-                    onLoad={(autocomplete) => setAutocomplete(autocomplete)}
-                    onPlaceChanged={handlePlaceChanged}
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter an address"
-                      value={address}
-                      onChange={handleInputChange}
-                      style={{ height: "10%", marginBottom: "3%", width: "100%"}}
-                    />
-                  </Autocomplete>
-                </div>
-
-                <div className="col-lg-3 col-3 justify-content-center mb-3" style={{height: "10%"}}>
-                  <Button variant="warning" onClick={handleSearch} >Search</Button>
-                </div>
-                
-                <div className="col-lg-12 col-2 justify-content-center">
-                  <Button variant="outline-secondary text-black justify-content-center" onClick={handleGetCurrentLocation}>
-                    {isMobile ? (<FaLocationArrow/>) 
-                    : (
-                        <>
-                        <FaLocationArrow style={{ marginRight: "0.5rem" }} />
-                        Use Current Location
-                        </>
-                    )}
-                  </Button>
-                </div>
-              </div>  
+      {isMobile ? (
+        <></>
+      ) : (
+        <Navbar style={{height:"48px"}}>
+          <Container>
+            <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
+              <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter an address, city, or ZIP code"
+                  value={address}
+                  onChange={handleInputChange}
+                  style={{ height: "40px", width:"300px"}}
+                />
+              </Autocomplete>
+              <Button variant="primary" onClick={handleSearch}>Search</Button>
             </Form>
-          </div>
-        </div>
+            <Navbar.Collapse className="justify-content-end" style={{display:"flex", gap:"10px"}}>
+              <DropdownButton className="filter-btn" variant="light" id="dropdown-basic-button" title={lotType}>
+                <Dropdown.Item onClick={() => setLotType("Parking Lot")}>Parking Lot</Dropdown.Item>
+                <Dropdown.Item onClick={() => setLotType("Street Parking")}>Street Parking</Dropdown.Item>
+                <Dropdown.Item onClick={() => setLotType("All Parking")}>All Parking</Dropdown.Item>
+              </DropdownButton>
+              <DropdownButton style={{}} className="filter-btn" variant="light" id="dropdown-basic-button"  title={priceType}>
+                <Dropdown.Item onClick={() => setPriceType("Free")}>Free</Dropdown.Item>
+                <Dropdown.Item onClick={() => setPriceType("Paid")}>Paid</Dropdown.Item>
+                <Dropdown.Item onClick={() => setPriceType("Any Pricing")}>Any Pricing</Dropdown.Item>
+              </DropdownButton>
+              <Button variant="secondary" onClick={() => window.location.reload(false)}>Apply</Button>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+      )}
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         center={center}
@@ -246,5 +267,5 @@ const Map = () => {
   );
 };
     
-    export default Map;
+export default Map;
     
