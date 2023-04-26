@@ -8,49 +8,59 @@ from dotenv import dotenv_values
 from firebase_admin import credentials
 from firebase_admin import db
 
-
+valid_commands = ['init', 'put', 'delete']
 DOCUMENT_PATH = 'parking/'
 # Mock parking lot.
 LOT_PROP = {
     'name': {
         'type': str,
-        'default': 'mocklot'
+        'default': 'mocklot',
+        'required': True,
     },
     'desc': {
         'type': str,
-        'default': 'Mock parking lot. For testing only. Address: 1800 N. Broad St, Philadelphia, PA 19121'
+        'default': 'Mock parking lot. For testing only. Address: 1800 N. Broad St, Philadelphia, PA 19121',
+        'required': False,
     },
     'lat': {
         'type': float,
-        'default': 39.9813333
+        'default': 39.9813333,
+        'required': False,
     },
     'lng': {
         'type': float,
-        'default': -75.1580556
+        'default': -75.1580556,
+        'required': False,
     },
     'rate': {
         'type': str,
-        'default': 'free'
+        'default': 'free',
+        'required': False,
     },
     'free': {
         'type': bool,
-        'default': True
+        'default': True,
+        'required': False,
     },
     'street': {
         'type': bool,
-        'default': False
+        'default': False,
+        'required': False,
     },
     'maxsize': {
         'type': int,
-        'default': 20
+        'default': 20,
+        'required': False,
     },
     'spots': {
         'type': int,
-        'default': 7
+        'default': 7,
+        'required': False,
     },
     'Captured': {
         'type': datetime.datetime.fromisoformat,
-        'default': datetime.datetime(2000, 1, 1)
+        'default': datetime.datetime(2000, 1, 1),
+        'required': False,
     }
 }
 # Firebase Authentication.
@@ -109,7 +119,6 @@ def delete_mocklot(key):
 
 if __name__ == "__main__":
     """Parse commandline arguments, then call the desired function."""
-    valid_commands = ['init', 'put', 'delete']
     # Parse commandline arguments.
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -130,9 +139,12 @@ if __name__ == "__main__":
         value = getattr(args, prop, None)
         if value is not None:
             data.update({prop: value})
+        elif LOT_PROP[prop]['required']:
+            print("Error: missing argument --" + prop)
+            exit(1)
 
     # Copy name to key.
-    key = data.get('name', LOT_PROP['name']['default'])
+    key = data['name']
 
     # Execute matched command.
     match args.command:

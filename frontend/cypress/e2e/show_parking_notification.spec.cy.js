@@ -27,21 +27,21 @@ Cypress.Commands.add("triggerNotifications", () => {
 
   // Decrement spots from 4 to 0, then reset to 6.
   for (let i = 4; i >= 0; i--) {
-    cy.exec('python cypress/python/mocklot.py put --spots ' + i)
+    cy.exec('python cypress/python/mocklot.py put --name mocklot --spots ' + i)
   }
-  cy.exec('python cypress/python/mocklot.py put --spots 6')
+  cy.exec('python cypress/python/mocklot.py put --name mocklot --spots 6')
 })
 
 after(() => {
   // Delete the mock lot.
-  cy.exec('python cypress/python/mocklot.py delete')
+  cy.exec('python cypress/python/mocklot.py delete --name mocklot')
 })
 
 describe('Browser notifications', () => {
 
   beforeEach(() => {
     // Reset the mock lot.
-    cy.exec('python cypress/python/mocklot.py init --spots 4')
+    cy.exec('python cypress/python/mocklot.py init --name mocklot --spots 4')
   })
 
   it('Is supported by the test browser', () => {
