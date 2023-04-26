@@ -36,6 +36,10 @@ LOT_PROP = {
         'type': str,
         'default': 'free'
     },
+    'free': {
+        'type': bool,
+        'default': True
+    },
     'street': {
         'type': bool,
         'default': False
