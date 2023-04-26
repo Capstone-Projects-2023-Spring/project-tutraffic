@@ -128,7 +128,7 @@ if __name__ == "__main__":
     data = dict()
     for prop in LOT_PROP:
         value = getattr(args, prop, None)
-        if value:
+        if value is not None:
             data.update({prop: value})
 
     # Extract the key from data or set it to the default value.
