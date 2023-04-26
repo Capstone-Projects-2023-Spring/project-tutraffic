@@ -1,9 +1,9 @@
 import { testEmail, testPassword } from './firebase';
 
 /**
- * Input a default address, then visit the '/browse' page.
+ * Input a default address, then visit the '/map' page.
  */
-Cypress.Commands.add("visitBrowse", () => {
+Cypress.Commands.add("queryAddress", () => {
   // Input address.
   cy.get('input.form-control.pac-target-input')
   .type('1800 N Broad St, Philadelphia, PA 19121, USA')
@@ -13,11 +13,6 @@ Cypress.Commands.add("visitBrowse", () => {
   cy.get('button:contains("Search")').click()
   cy.location('pathname')
     .should('eq', '/map')
-
-  // Navigate to the list of parking lots.
-  cy.get('button:contains("Browse")').click()
-  cy.location('pathname')
-    .should('eq', '/browse')
 })
 
 /**

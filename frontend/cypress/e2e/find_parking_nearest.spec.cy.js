@@ -19,7 +19,10 @@ after(() => {
 
 it('Searches Google Maps for a parking lot.', () => {
   cy.visit('https://tutrafficdatabase.web.app/')
-  cy.visitBrowse()
+  cy.queryAddress()
+  cy.get('button:contains("Browse")').click()
+  cy.location('pathname')
+    .should('eq', '/browse')
 
   // Navigate to the first parking lot item, which should be the nearest item.
   cy.get('button:contains("View Detail")').first()

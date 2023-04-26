@@ -17,7 +17,10 @@
  * number of parking spots several times.
  */
 Cypress.Commands.add("triggerNotifications", () => {
-  cy.visitBrowse()
+  cy.queryAddress()
+  cy.get('button:contains("Browse")').click()
+  cy.location('pathname')
+    .should('eq', '/browse')
   cy.get('button:contains("View Detail")').first()
     .click()
   cy.location('pathname')
@@ -58,7 +61,10 @@ describe('Browser notifications', () => {
         cy.stub(win, 'Notification').as('Notification')
       }
     })
-    cy.visitBrowse()
+    cy.queryAddress()
+    cy.get('button:contains("Browse")').click()
+    cy.location('pathname')
+      .should('eq', '/browse')
     cy.get('button:contains("View Detail")').first()
       .click()
     cy.location('pathname')
