@@ -12,10 +12,6 @@ from firebase_admin import db
 DOCUMENT_PATH = 'parking/'
 # Mock parking lot.
 LOT_PROP = {
-    'key': {
-        'type': str,
-        'default': 'mocklot'
-    },
     'name': {
         'type': str,
         'default': 'Mock Lot'
@@ -135,8 +131,8 @@ if __name__ == "__main__":
         if value is not None:
             data.update({prop: value})
 
-    # Extract the key from data or set it to the default value.
-    key = data.pop('key', LOT_PROP['key']['default'])
+    # Copy name to key.
+    key = data.get('name', LOT_PROP['name']['default'])
 
     # Execute matched command.
     match args.command:
