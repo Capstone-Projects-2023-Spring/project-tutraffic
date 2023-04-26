@@ -14,7 +14,7 @@ DOCUMENT_PATH = 'parking/'
 LOT_PROP = {
     'name': {
         'type': str,
-        'default': 'Mock Lot'
+        'default': 'mocklot'
     },
     'desc': {
         'type': str,
