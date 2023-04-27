@@ -16,7 +16,7 @@ import { UserLotData } from './UserLotData';
 const Map = () => {
   const streetIcon = `${process.env.PUBLIC_URL}/images/streetParking.png`;
   const lotIcon = `${process.env.PUBLIC_URL}/images/lotParking.png`;
-  
+
   // Retrieve the user's latitude and longitude from local storage
   let latitude = parseFloat(localStorage.getItem('latitude'));
   let longitude = parseFloat(localStorage.getItem('longitude'));
@@ -24,14 +24,14 @@ const Map = () => {
     latitude = 39.9819691;
     longitude = -75.1532035;
   };
-  
+
   const [address, setAddress] = useState("");
   const [autocomplete, setAutocomplete] = useState(null);
   const [windowDimension, setWindowDimension] = useState(null);
 
   // set the map center - but changable
-  const [center, setCenter] = useState({ lat: latitude, lng: longitude}); // default center
-  
+  const [center, setCenter] = useState({ lat: latitude, lng: longitude }); // default center
+
   const navigate = useNavigate();
   const handleMarkerClick = (key) => {
     navigate(`/parkinglot/${key}`);
@@ -73,10 +73,10 @@ const Map = () => {
     streetViewControl: false,
     fullscreenControl: false
   };
-  
+
   // Retrieve the parking lot data
-  const data = LotData(); 
-  
+  const data = LotData();
+
   useEffect(() => {
     setWindowDimension(window.innerWidth);
   }, []);
@@ -98,37 +98,37 @@ const Map = () => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
     });
-  
+
     return () => unsubscribe();
   }, []);
 
   const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
   const markers = data ? Object.keys(data)
-  .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) 
-  .filter((key) => (userCarType !== null ? data[key].maxsize >= userCarType : true)) 
-  .filter((key) => (userPriceType !== null ? data[key].free === userPriceType : true)) 
-  .map((key) => {
-    const { lat, lng, spots, street } = data[key];
-    if (lat && lng) {
-      return {
-        position: { lat, lng },
-        options: {
-          label: {
-            text: spots.toString(),
-            color: "white",
-            fontSize: "1.2rem",
+    .filter((key) => (userLotType !== null ? data[key].street === userLotType : true))
+    .filter((key) => (userCarType !== null ? data[key].maxsize >= userCarType : true))
+    .filter((key) => (userPriceType !== null ? data[key].free === userPriceType : true))
+    .map((key) => {
+      const { lat, lng, spots, street } = data[key];
+      if (lat && lng) {
+        return {
+          position: { lat, lng },
+          options: {
+            label: {
+              text: spots.toString(),
+              color: "white",
+              fontSize: "1.2rem",
+            },
+            icon: {
+              url: street ? streetIcon : lotIcon,
+            },
           },
-          icon: {
-            url: street ? streetIcon : lotIcon,
-          },
-        },
-      };
-    } else {
-      // skip this marker if lat && lng not available
-      return null;
-    }
-  }).filter((marker) => marker !== null) : [];
-  
+        };
+      } else {
+        // skip this marker if lat && lng not available
+        return null;
+      }
+    }).filter((marker) => marker !== null) : [];
+
   const handleSearch = () => {
     // Use the Geocoder API to get the coordinates of the address
     const geocoder = new window.google.maps.Geocoder();
@@ -136,7 +136,7 @@ const Map = () => {
       if (status === "OK") {
         const lat = results[0].geometry.location.lat();
         const lng = results[0].geometry.location.lng();
-        
+
         // center map at new location
         setCenter({
           lat,
@@ -149,50 +149,50 @@ const Map = () => {
       }
     });
   };
-  
+
   const handlePlaceChanged = () => {
     const newAddress = autocomplete.getPlace().formatted_address;
     setAddress(newAddress);
   }
-  
+
   const handleInputChange = (event) => {
     const newAddress = event.target.value;
     setAddress(newAddress);
   };
 
   const handleGetCurrentLocation = () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(position => {
-      const lat = position.coords.latitude;
-      const lng = position.coords.longitude;
-      setCenter({lat,lng,})
-      localStorage.setItem('latitude', lat);
-      localStorage.setItem('longitude', lng);
-    });
-  } else {
-    alert("Geolocation is not supported by this browser.");
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        setCenter({ lat, lng, })
+        localStorage.setItem('latitude', lat);
+        localStorage.setItem('longitude', lng);
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
   }
-}
-  
+
   return (
-    <div style={{containerStyle}}>
+    <div style={{ containerStyle }}>
       {isMobile ? (
         <>
-          <Navbar style={{height:"48px"}}>
+          <Navbar style={{ height: "48px" }}>
             <Container className="justify-content-center">
-              <Form style={{display:"flex", gap:"4px"}}>
+              <Form style={{ display: "flex", gap: "4px" }}>
                 <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
                   <Form.Control
                     type="text"
                     placeholder="Enter an address, city, or ZIP code"
                     value={address}
                     onChange={handleInputChange}
-                    style={{height: "40px", width:"275px"}}
+                    style={{ height: "40px", width: "275px" }}
                   />
                 </Autocomplete>
-                <div className="mobile-btn-ctn" style={{display:"flex", gap:"4px"}}>
-                  <Button className="mobile-search-btns" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22}/></Button>
-                  <Button className="mobile-search-btns" variant="light"title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={23}/></Button>
+                <div className="mobile-btn-ctn" style={{ display: "flex", gap: "4px" }}>
+                  <Button className="mobile-search-btns" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22} /></Button>
+                  <Button className="mobile-search-btns" variant="light" title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={23} /></Button>
                 </div>
               </Form>
             </Container>
@@ -220,20 +220,20 @@ const Map = () => {
         </>
       ) : (
         <>
-          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
-            <div className="search-container" > 
-              <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <div className="search-container" >
+              <Form style={{ display: "flex", gap: "10px", marginRight: "10px" }}>
                 <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
                   <Form.Control
                     type="text"
                     placeholder="Enter an address, city, or ZIP code"
                     value={address}
                     onChange={handleInputChange}
-                    style={{height: "40px", width:"350px", borderRadius: "0.75rem"}}
+                    style={{ height: "40px", width: "350px", borderRadius: "0.75rem" }}
                   />
                 </Autocomplete>
-                <Button className="search-btn" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22}/></Button>
-                <Button className="current-location-btn" variant="light" title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={25}/></Button>
+                <Button className="search-btn" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22} /></Button>
+                <Button className="current-location-btn" variant="light" title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={25} /></Button>
               </Form>
             </div>
           </div>
@@ -257,11 +257,20 @@ const Map = () => {
               />
             ))}
           </GoogleMap>
+          <div style={{ position: "absolute", bottom: "120px", right: "10px", backgroundColor: "white", padding: "10px", borderRadius: "5px", boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.3)" }}>
+            <div style={{ display: "flex", alignItems: "center", marginBottom: "5px" }}>
+              <img src={streetIcon} alt="Street Parking Icon" style={{ width: "30px", marginRight: "5px" }} />
+              <div>Street Parking</div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <img src={lotIcon} alt="Off-Street Parking Icon" style={{ width: "30px", marginRight: "5px" }} />
+              <div>Off-Street Parking</div>
+            </div>
+          </div>
         </>
       )}
     </div>
   );
 };
-    
+
 export default Map;
-    
