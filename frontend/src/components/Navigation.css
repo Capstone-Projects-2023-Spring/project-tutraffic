@@ -1,11 +1,8 @@
 Nav {
-
   background-color: #f8f9fa;
-  border-top: 1px solid;
   border-bottom: 1px solid;
   border-color: rgb(220, 220, 220);
 }
-
 
 Nav.mobile {
   font-size: 0.6rem;
@@ -16,6 +13,8 @@ Nav.mobile {
   width: 100vw;
   height: 77px;
   background-color: #f8f9fa;
+  border-top: 1px solid;
+  border-color: rgb(220, 220, 220);
 }
 
 .brand {
@@ -28,7 +27,7 @@ Nav.mobile {
   color: #808080;
 }
 
-.dropdown-toggle:after {
+#setting-icon.dropdown-toggle:after {
   content: none
 }
 
@@ -38,4 +37,49 @@ Nav.mobile {
   text-overflow: ellipsis;
   max-width: 14rem;
   font-weight: 600;
+}
+
+.filter-btn {
+  border: 1px solid;
+  border-color: #ced4da;
+  border-radius: 0.5rem;
+}
+
+.search-container {
+  margin-top: 50px;
+  position: absolute;
+  z-index: 5;
+}
+
+.search-btn {
+  position: absolute;
+  margin-top: 1px;
+  margin-left: 307px;
+  border-radius: 0.75rem;
+  height: 38px;
+  width: 42px;
+  padding: 5px;
+  border: 0px solid;
+}
+
+.current-location-btn {
+  padding: 6px;
+  z-index: 5;
+  border-color: #ced4da;
+  border-radius: 0.75rem;
+  background: white;
+  margin-left: -5px;
+}
+
+.mobile-search-btns {
+  padding: 0px;
+  width: 45px;
+  border: 1px solid;
+  border-color: #ced4da;
+}
+
+.mobile-btn-ctn {
+  display: flex;
+  border-radius: 0.5rem;
+  height: 40px;
 }

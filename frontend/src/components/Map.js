@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Autocomplete } from '@react-google-maps/api';
+import { auth } from '../firebase';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import {FaLocationArrow} from 'react-icons/fa';
-import { auth } from '../firebase';
-
+import Navbar from 'react-bootstrap/Navbar';
+import Container from 'react-bootstrap/Container';
+import { IoSearch } from 'react-icons/io5';
+import { IoLocate } from 'react-icons/io5';
 
 import { LotData } from './LotData';
 import { UserLotData } from './UserLotData';
@@ -27,7 +29,7 @@ const Map = () => {
   const [autocomplete, setAutocomplete] = useState(null);
   const [windowDimension, setWindowDimension] = useState(null);
 
-    // set the map center - but changable
+  // set the map center - but changable
   const [center, setCenter] = useState({ lat: latitude, lng: longitude}); // default center
   
   const navigate = useNavigate();
@@ -42,9 +44,16 @@ const Map = () => {
     overflow: 'hidden'
   };
 
-  const mapContainerStyle = {
+  const desktopContainerStyle = {
     width: '100vw',
-    height: 'calc(100% - 56px)',
+    height: 'calc(100% - 55px)',
+    position: 'absolute',
+    overflow: 'hidden'
+  };
+
+  const mobileContainerStyle = {
+    width: '100vw',
+    height: 'calc(100% - 125px)',
     position: 'absolute',
     overflow: 'hidden'
   };
@@ -83,7 +92,7 @@ const Map = () => {
 
   const isMobile = windowDimension <= 640;
 
-  // authenticate user and get lot and car type
+  // Authenticate user
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -92,38 +101,33 @@ const Map = () => {
   
     return () => unsubscribe();
   }, []);
-  const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
 
-  const markers = data
-  ? Object.keys(data)
- .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) 
+  const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
+  const markers = data ? Object.keys(data)
+  .filter((key) => (userLotType !== null ? data[key].street === userLotType : true)) 
   .filter((key) => (userCarType !== null ? data[key].maxsize >= userCarType : true)) 
   .filter((key) => (userPriceType !== null ? data[key].free === userPriceType : true)) 
-    .map((key) => {
-        const { lat, lng, spots, street } = data[key];
-        if (lat && lng) {
-          return {
-            position: { lat, lng },
-            options: {
-              label: {
-                text: spots.toString(),
-                color: "white",
-                fontSize: "1.2rem",
-              },
-              icon: {
-                url: street ? streetIcon : lotIcon,
-              },
-            },
-          };
-        } else {
-          // skip this marker if lat && lng not available
-          return null;
-        }
-      })
-      .filter((marker) => marker !== null)
-  : [];
-
-
+  .map((key) => {
+    const { lat, lng, spots, street } = data[key];
+    if (lat && lng) {
+      return {
+        position: { lat, lng },
+        options: {
+          label: {
+            text: spots.toString(),
+            color: "white",
+            fontSize: "1.2rem",
+          },
+          icon: {
+            url: street ? streetIcon : lotIcon,
+          },
+        },
+      };
+    } else {
+      // skip this marker if lat && lng not available
+      return null;
+    }
+  }).filter((marker) => marker !== null) : [];
   
   const handleSearch = () => {
     // Use the Geocoder API to get the coordinates of the address
@@ -143,7 +147,6 @@ const Map = () => {
         localStorage.setItem('latitude', lat);
         localStorage.setItem('longitude', lng);
       }
-      
     });
   };
   
@@ -157,94 +160,108 @@ const Map = () => {
     setAddress(newAddress);
   };
 
-   const handleGetCurrentLocation = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lng = position.coords.longitude;
-
-                setCenter({
-                  lat,
-                  lng,
-                })
-                // Save to localStorage
-                localStorage.setItem('latitude', lat);
-                localStorage.setItem('longitude', lng);
-            });
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    }
+  const handleGetCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      setCenter({lat,lng,})
+      localStorage.setItem('latitude', lat);
+      localStorage.setItem('longitude', lng);
+    });
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
   
   return (
     <div style={{containerStyle}}>
-      <div className="row justify-content-left" style={{ justifyContent: isMobile ? 'center' : '' }}>          <div className="col-lg-4 col-12 justify-content-left justify-content-sm-center m-lg-4 m-2" style={{ 
-              position: "absolute",
-              zIndex: '5',
-              border: '1px solid black',
-              borderRadius: '10px',
-              padding: "15px",
-              backgroundColor: "rgba(128, 128, 128, .3)"
-            }}
-            >
-            <Form>
-              <div className="row justify-content-center">
-                <div className="col-lg-9 col-7 justify-content-center"> 
-                  <Autocomplete
-                    onLoad={(autocomplete) => setAutocomplete(autocomplete)}
-                    onPlaceChanged={handlePlaceChanged}
-                  >
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter an address"
-                      value={address}
-                      onChange={handleInputChange}
-                      style={{ height: "10%", marginBottom: "3%", width: "100%"}}
-                    />
-                  </Autocomplete>
+      {isMobile ? (
+        <>
+          <Navbar style={{height:"48px"}}>
+            <Container className="justify-content-center">
+              <Form style={{display:"flex", gap:"4px"}}>
+                <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter an address, city, or ZIP code"
+                    value={address}
+                    onChange={handleInputChange}
+                    style={{height: "40px", width:"275px"}}
+                  />
+                </Autocomplete>
+                <div className="mobile-btn-ctn" style={{display:"flex", gap:"4px"}}>
+                  <Button className="mobile-search-btns" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22}/></Button>
+                  <Button className="mobile-search-btns" variant="light"title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={23}/></Button>
                 </div>
+              </Form>
+            </Container>
+          </Navbar>
 
-                <div className="col-lg-3 col-3 justify-content-center mb-3" style={{height: "10%"}}>
-                  <Button variant="warning" onClick={handleSearch} >Search</Button>
-                </div>
-                
-                <div className="col-lg-12 col-2 justify-content-center">
-                  <Button variant="outline-secondary text-black justify-content-center" onClick={handleGetCurrentLocation}>
-                    {isMobile ? (<FaLocationArrow/>) 
-                    : (
-                        <>
-                        <FaLocationArrow style={{ marginRight: "0.5rem" }} />
-                        Use Current Location
-                        </>
-                    )}
-                  </Button>
-                </div>
-              </div>  
-            </Form>
+          <GoogleMap
+            mapContainerStyle={mobileContainerStyle}
+            center={center}
+            zoom={17}
+            options={options}
+            style={{
+              zIndex: '0',
+            }}
+          >
+            <MarkerF position={center} />
+            {markers.map((marker, index) => (
+              <MarkerF
+                key={index}
+                position={marker.position}
+                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                options={marker.options}
+              />
+            ))}
+          </GoogleMap>
+        </>
+      ) : (
+        <>
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+            <div className="search-container" > 
+              <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
+                <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
+                  <Form.Control
+                    type="text"
+                    placeholder="Enter an address, city, or ZIP code"
+                    value={address}
+                    onChange={handleInputChange}
+                    style={{height: "40px", width:"350px", borderRadius: "0.75rem"}}
+                  />
+                </Autocomplete>
+                <Button className="search-btn" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22}/></Button>
+                <Button className="current-location-btn" variant="light" title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={25}/></Button>
+              </Form>
+            </div>
           </div>
-        </div>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        center={center}
-        zoom={17}
-        options={options}
-        style={{
-          zIndex: '0',
-        }}
-      >
-        <MarkerF position={center} />
-        {markers.map((marker, index) => (
-          <MarkerF
-            key={index}
-            position={marker.position}
-            onClick={() => handleMarkerClick(Object.keys(data)[index])}
-            options={marker.options}
-          />
-        ))}
-      </GoogleMap>
+
+          <GoogleMap
+            mapContainerStyle={desktopContainerStyle}
+            center={center}
+            zoom={17}
+            options={options}
+            style={{
+              zIndex: '0',
+            }}
+          >
+            <MarkerF position={center} />
+            {markers.map((marker, index) => (
+              <MarkerF
+                key={index}
+                position={marker.position}
+                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                options={marker.options}
+              />
+            ))}
+          </GoogleMap>
+        </>
+      )}
     </div>
   );
 };
     
-    export default Map;
+export default Map;
     

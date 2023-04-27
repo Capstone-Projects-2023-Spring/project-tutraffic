@@ -51,8 +51,3 @@ export const UserLotData = (userId) => {
 
   return { userLotType, userCarType, userPriceType};
 };
-
-
-
-  
-  
