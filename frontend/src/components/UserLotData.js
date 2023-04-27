@@ -20,9 +20,9 @@ export const UserLotData = (userId) => {
       const snapshot = await getDoc(userDoc);
       const userData = snapshot.exists() ? snapshot.data() : null;
 
-      if (userData.lotType === 'Street Parking') {
+      if (userData.lotType === 'street') {
         setLotType(true);
-      } else if (userData.lotType === 'Parking Lot') {
+      } else if (userData.lotType === 'lot') {
         setLotType(false);
       } else {
         setLotType(null);
@@ -37,9 +37,9 @@ export const UserLotData = (userId) => {
       } else {
         setCarType(null);
       }
-      if (userData.priceType === 'Free') {
+      if (userData.priceType === 'free') {
         setPriceType(true);
-      } else if (userData.priceType === 'Paid') {
+      } else if (userData.priceType === 'notFree') {
         setPriceType(false);
       } else {
         setPriceType(null);
@@ -51,4 +51,3 @@ export const UserLotData = (userId) => {
 
   return { userLotType, userCarType, userPriceType};
 };
-  

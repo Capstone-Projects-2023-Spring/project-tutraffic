@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { GoogleMap, MarkerF } from '@react-google-maps/api';
 import { useNavigate } from 'react-router-dom';
 import { Autocomplete } from '@react-google-maps/api';
-import { onAuthStateChanged } from 'firebase/auth';
-import { setDoc, doc, getDoc } from 'firebase/firestore';
-import { auth, db } from '../firebase';
+import { auth } from '../firebase';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Navbar from 'react-bootstrap/Navbar';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Container from 'react-bootstrap/Container';
+import { IoSearch } from 'react-icons/io5';
+import { IoLocate } from 'react-icons/io5';
 
 import { LotData } from './LotData';
 import { UserLotData } from './UserLotData';
@@ -48,7 +46,7 @@ const Map = () => {
 
   const desktopContainerStyle = {
     width: '100vw',
-    height: 'calc(100% - 104px)',
+    height: 'calc(100% - 55px)',
     position: 'absolute',
     overflow: 'hidden'
   };
@@ -161,60 +159,20 @@ const Map = () => {
     const newAddress = event.target.value;
     setAddress(newAddress);
   };
-    
-  const [user, setUser] = useState(null);
-  const [carSize, setCarSize] = useState(''); 
-  const [lotType, setLotType] = useState('Parking'); 
-  const [priceType, setPriceType] = useState('Pricing'); 
- 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-      }
+
+  const handleGetCurrentLocation = () => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(position => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      setCenter({lat,lng,})
+      localStorage.setItem('latitude', lat);
+      localStorage.setItem('longitude', lng);
     });
-
-    // Clean up the listener on component unmount
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-  
-  // This changes the data in firestore 
-  useEffect(() => { 
-    if (user && (carSize !== '' || lotType !== 'Parking' || priceType !== 'Pricing')) {
-      const userData = {
-        CarSize: carSize,
-        lotType: lotType,
-        priceType: priceType
-      };
-      setDoc(doc(db, "users", user.uid), userData);
-    }
-  }, [carSize, lotType, priceType, user]);
-
-  // fetch the current user's car size and lot type 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          const userData = docSnap.data();
-          setCarSize(userData.CarSize || 'Small');
-          setLotType(userData.lotType || 'All Parking');
-          setPriceType(userData.priceType || 'Any Pricing');
-        }
-      } catch (error) {
-        console.log("Error fetching user data: ", error);
-      }
-    };
- 
-    if (user) {
-      fetchUserData();
-    }
-  }, [user]);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
   
   return (
     <div style={{containerStyle}}>
@@ -222,7 +180,7 @@ const Map = () => {
         <>
           <Navbar style={{height:"48px"}}>
             <Container className="justify-content-center">
-              <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
+              <Form style={{display:"flex", gap:"4px"}}>
                 <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
                   <Form.Control
                     type="text"
@@ -232,10 +190,14 @@ const Map = () => {
                     style={{height: "40px", width:"275px"}}
                   />
                 </Autocomplete>
-                <Button variant="primary" onClick={handleSearch}>Search</Button>
+                <div className="mobile-btn-ctn" style={{display:"flex", gap:"4px"}}>
+                  <Button className="mobile-search-btns" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22}/></Button>
+                  <Button className="mobile-search-btns" variant="light"title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={23}/></Button>
+                </div>
               </Form>
             </Container>
           </Navbar>
+
           <GoogleMap
             mapContainerStyle={mobileContainerStyle}
             center={center}
@@ -258,8 +220,8 @@ const Map = () => {
         </>
       ) : (
         <>
-          <Navbar style={{height:"48px"}}>
-            <Container>
+          <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
+            <div className="search-container" > 
               <Form style={{display:"flex", gap:"10px", marginRight:"10px"}}>
                 <Autocomplete onLoad={(autocomplete) => setAutocomplete(autocomplete)} onPlaceChanged={handlePlaceChanged}>
                   <Form.Control
@@ -267,26 +229,15 @@ const Map = () => {
                     placeholder="Enter an address, city, or ZIP code"
                     value={address}
                     onChange={handleInputChange}
-                    style={{height: "40px", width:"300px"}}
+                    style={{height: "40px", width:"350px", borderRadius: "0.75rem"}}
                   />
                 </Autocomplete>
-                <Button variant="primary" onClick={handleSearch}>Search</Button>
+                <Button className="search-btn" variant="light" title="Search" onClick={handleSearch}><IoSearch size={22}/></Button>
+                <Button className="current-location-btn" variant="light" title="Show your location" onClick={handleGetCurrentLocation}><IoLocate size={25}/></Button>
               </Form>
-              <Navbar.Collapse className="justify-content-end" style={{display:"flex", gap:"10px"}}>
-                <DropdownButton className="filter-btn" variant="light" id="dropdown-basic-button" title={lotType}>
-                  <Dropdown.Item onClick={() => setLotType("Parking Lot")}>Parking Lot</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setLotType("Street Parking")}>Street Parking</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setLotType("All Parking")}>All Parking</Dropdown.Item>
-                </DropdownButton>
-                <DropdownButton style={{}} className="filter-btn" variant="light" id="dropdown-basic-button"  title={priceType}>
-                  <Dropdown.Item onClick={() => setPriceType("Free")}>Free</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setPriceType("Paid")}>Paid</Dropdown.Item>
-                  <Dropdown.Item onClick={() => setPriceType("Any Pricing")}>Any Pricing</Dropdown.Item>
-                </DropdownButton>
-                <Button variant="secondary" onClick={() => window.location.reload(false)}>Apply</Button>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
+            </div>
+          </div>
+
           <GoogleMap
             mapContainerStyle={desktopContainerStyle}
             center={center}
