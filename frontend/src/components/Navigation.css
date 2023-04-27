@@ -44,3 +44,42 @@ Nav.mobile {
   border-color: #ced4da;
   border-radius: 0.5rem;
 }
+
+.search-container {
+  margin-top: 50px;
+  position: absolute;
+  z-index: 5;
+}
+
+.search-btn {
+  position: absolute;
+  margin-top: 1px;
+  margin-left: 307px;
+  border-radius: 0.75rem;
+  height: 38px;
+  width: 42px;
+  padding: 5px;
+  border: 0px solid;
+}
+
+.current-location-btn {
+  padding: 6px;
+  z-index: 5;
+  border-color: #ced4da;
+  border-radius: 0.75rem;
+  background: white;
+  margin-left: -5px;
+}
+
+.mobile-search-btns {
+  padding: 0px;
+  width: 45px;
+  border: 1px solid;
+  border-color: #ced4da;
+}
+
+.mobile-btn-ctn {
+  display: flex;
+  border-radius: 0.5rem;
+  height: 40px;
+}
