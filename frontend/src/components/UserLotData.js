@@ -3,29 +3,35 @@ import { db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 export const UserLotData = (userId) => {
-  const [userLotType, setLotType] = useState('defualt');
-  const [userCarType, setCarType] = useState('defualt');
-  const [userPriceType, setPriceType] = useState('defualt');
+  const [userLotType, setLotType] = useState('all');
+  const [userCarType, setCarType] = useState(0);
+  const [userPriceType, setPriceType] = useState('all');
 
   useEffect(() => {
     if (!userId) {
-      setLotType('defualt');
-      setCarType('defualt');
-      setPriceType('defualt');
+      setLotType('all');
+      setCarType(0);
+      setPriceType('all');
       return;
     }
 
     const fetchUserData = async () => {
       const userDoc = doc(db, 'users', userId);
       const snapshot = await getDoc(userDoc);
-      const userData = snapshot.exists() ? snapshot.data() : null;
+      if (!snapshot.exists()) {
+        setLotType('all');
+        setCarType(0);
+        setPriceType('all');
+        return;
+      }
+      const userData = snapshot.data()
 
       if (userData.lotType === 'street') {
         setLotType(true);
       } else if (userData.lotType === 'lot') {
         setLotType(false);
       } else {
-        setLotType('defualt');
+        setLotType('all');
       }
 
       if (userData.CarSize === 'Small') {
@@ -35,14 +41,15 @@ export const UserLotData = (userId) => {
       } else if (userData.CarSize === 'Large') {
         setCarType(5);
       } else {
-        setCarType('defualt');
+        setCarType(0);
       }
+
       if (userData.priceType === 'free') {
         setPriceType(true);
       } else if (userData.priceType === 'notFree') {
         setPriceType(false);
       } else {
-        setPriceType('defualt');
+        setPriceType('all');
       }
     };
 
