@@ -50,7 +50,7 @@ const AccountProfile = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const userData = docSnap.data();
-          setCarSize(userData.CarSize || 'Average');
+          setCarSize(userData.CarSize || 'Small');
           setLotType(userData.lotType || 'both');
           setPriceType(userData.priceType || 'all');
         }
@@ -90,23 +90,20 @@ const AccountProfile = () => {
         <h2>User Profile</h2>
         <h4>Current Car Size: {carSize}</h4>
         <select value={carSize} onChange={(e) => setCarSize(e.target.value)}>
-          <option value="Average">Defualt (Average)</option>
-          <option value="Small">Small</option>
-          <option value="Average">Average</option>
-          <option value="Large">Large</option>
+          <option value="Compact+">All Parking</option>
+          <option value="Average">Exclude Compact Spaces</option>
+          <option value="Large">Truck or Large Vehicle</option>
         </select>
         <h4>Current Lot Type: {lotType}</h4>
         <select value={lotType} onChange={(e) => setLotType(e.target.value)}>
-          <option value="both">Defualt (Both)</option>
-          <option value="lot">Lot</option>
-          <option value="street">Street</option>
+          <option value="both">All Parking</option>
+          <option value="lot">Lot or Garage</option>
+          <option value="street">Street Parking</option>
         </select>
         <h4>Current price Type: {priceType}</h4>
         <select value={priceType} onChange={(e) => setPriceType(e.target.value)}>
-        <option value="all">Defualt (All)</option>
-          <option value="free">free</option>
-          <option value="notFree">not Free</option>
-    
+        <option value="all">All Parking</option>
+          <option value="free">Only Free Parking</option>
         </select>
         
         </div>

@@ -3,15 +3,15 @@ import { db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 export const UserLotData = (userId) => {
-  const [userLotType, setLotType] = useState(null);
-  const [userCarType, setCarType] = useState(null);
-  const [userPriceType, setPriceType] = useState(null);
+  const [userLotType, setLotType] = useState('defualt');
+  const [userCarType, setCarType] = useState('defualt');
+  const [userPriceType, setPriceType] = useState('defualt');
 
   useEffect(() => {
     if (!userId) {
-      setLotType(null);
-      setCarType(null);
-      setPriceType(null);
+      setLotType('defualt');
+      setCarType('defualt');
+      setPriceType('defualt');
       return;
     }
 
@@ -25,7 +25,7 @@ export const UserLotData = (userId) => {
       } else if (userData.lotType === 'lot') {
         setLotType(false);
       } else {
-        setLotType(null);
+        setLotType('defualt');
       }
 
       if (userData.CarSize === 'Small') {
@@ -35,14 +35,14 @@ export const UserLotData = (userId) => {
       } else if (userData.CarSize === 'Large') {
         setCarType(5);
       } else {
-        setCarType(null);
+        setCarType('defualt');
       }
       if (userData.priceType === 'free') {
         setPriceType(true);
       } else if (userData.priceType === 'notFree') {
         setPriceType(false);
       } else {
-        setPriceType(null);
+        setPriceType('defualt');
       }
     };
 
