@@ -19,9 +19,10 @@
 }
 
 .settings {
-  margin-left:10%;
-  margin-right: 10%;
+  margin-left:8%;
+  margin-right: 8%;
   padding-top: 2%;
+  margin-bottom: 40px;
 }
   
 .section {
@@ -44,4 +45,52 @@
   justify-content: flex-end;
   gap: 5px;
 }
-  
+
+.user-banner {
+  background: rgb(200, 200, 200);
+  height: 120px;
+  border-top-left-radius: 0.8rem;
+  border-top-right-radius: 0.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-border {
+  background: white;
+  height: 150px;
+  width: 150px;
+  border-radius: 50%;
+  z-index: 5;
+  position: absolute;
+  margin-top: 60px;
+}
+
+.user-icon {
+  height: 136px;
+  margin-left: 7px;
+  margin-top: 7px;
+}
+
+.profile-settings {
+  padding-top: 60px;
+  padding-bottom: 40px;
+  border: 2px solid;
+  border-color: rgb(200, 200, 200);
+  border-bottom-left-radius: 0.4rem;
+  border-bottom-right-radius: 0.4rem;
+}
+
+.user-opts {
+  font-size: 14px;
+  font-weight: bold;
+  border-bottom: 1px solid;
+  border-color: gray;
+  margin: 15px 2% 6px 2%;
+}
+
+.dropdown-btns {
+  height: 28px;
+  border-radius: 0.5rem;
+  margin-left: 2%;
+}
