@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LotData } from './LotData';
-import { UserLotData } from './UserLotData';
 import { calculateDistance } from './utils';
 import { FaHeart } from 'react-icons/fa';
 import { db, auth } from '../firebase';
@@ -45,7 +44,7 @@ const Browse = () => {
     }, 1000);
   };
 
-  const { userLotType, userCarType, userPriceType } = UserLotData(user?.uid);
+
   const renderData = () => {
     if (!data) {
       return <p>Loading...</p>;
@@ -56,11 +55,7 @@ const Browse = () => {
         const distance = calculateDistance(latitude, longitude, data[key].lat, data[key].lng);
         return { key, distance, ...data[key] };
       })
-      .filter((item) => (!isNaN(item.distance)
-        && (userLotType === 'all' || userLotType === item.street)
-        && (item.maxsize >= userCarType)
-        && (item.free || (item.free !== userPriceType))
-      ))
+      .filter((item) => !isNaN(item.distance))
       .sort((a, b) => a.distance - b.distance);
 
     return sortedData.map(({ key, name, spots, street, distance, Captured }) => (
