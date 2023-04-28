@@ -104,9 +104,9 @@ const Map = () => {
 
   const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
   const markers = data ? Object.keys(data)
-    .filter((key) => (userLotType !== 'defualt' ? data[key].street === userLotType : true))
-    .filter((key) => (userCarType !== 'defualt' ? data[key].maxsize >= userCarType : true))
-    .filter((key) => (userPriceType !== 'defualt' ? data[key].free === userPriceType : true))
+    .filter((key) => (userLotType !== 'all' ? data[key].street === userLotType : true))
+    .filter((key) => (data[key].maxsize >= userCarType))
+    .filter((key) => (data[key].free || data[key].free === userPriceType))
     .map((key) => {
       const { lat, lng, spots, street } = data[key];
       if (lat && lng) {
