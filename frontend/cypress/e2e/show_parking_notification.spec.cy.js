@@ -36,7 +36,6 @@ Cypress.Commands.add("triggerNotifications", () => {
 })
 
 after(() => {
-  // Delete the mock lot.
   cy.exec('python cypress/python/mocklot.py delete mocklot')
 })
 

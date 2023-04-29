@@ -9,16 +9,12 @@
 import { createAccount, deleteAccount } from '../support/firebase';
 
 before(() => {
-  // Create the test account.
   createAccount()
-  // Create the mock lot, gauranteeing at least one lot.
   cy.exec('python cypress/python/mocklot.py init mocklot')
 })
 
 after(() => {
-  // Delete the test account.
   deleteAccount()
-  // Delete the mock lot.
   cy.exec('python cypress/python/mocklot.py delete mocklot')
 })
 
