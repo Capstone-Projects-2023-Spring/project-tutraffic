@@ -5,6 +5,7 @@ on:
     branches: [ "main" ]
     paths:
       - 'frontend/**'
+      - 'testing/cypress/**'
       - '.github/workflows/testing_integration.yml'
 jobs:
   cypress-run:
@@ -42,18 +43,17 @@ jobs:
           TEST_USER_EMAIL="$EMAIL"
           TEST_USER_PASSWORD="$PASSWORD"
           EOF
-        working-directory: ./frontend
+        working-directory: ./testing
       - name: Create .json containing secrets.
         env:
             KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY_64 }}
         run: echo $KEY | base64 -d > tutraffic-firebase-key.json
-        working-directory: ./frontend
+        working-directory: ./testing
       - name: Install python dependencies.
-        working-directory: ./frontend
-        run: python -m pip install -r cypress/python/requirements.txt
+        working-directory: ./testing
+        run: python -m pip install -r testing/cypress/python/requirements.txt
       - name: Run Cypress tests.
         uses: cypress-io/github-action@v5
         with:
-          working-directory: ./frontend
-          install-command: npm ci --legacy-peer-deps
+          working-directory: ./testing
           browser: chrome
