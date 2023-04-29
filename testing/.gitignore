@@ -1,0 +1,8 @@
+# Misc
+.env
+tutraffic-firebase-key.json
+
+# Generated Files
+/node_modules
+/cypress/screenshots
+/cypress/videos

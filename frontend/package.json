@@ -32,8 +32,7 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "plugin:cypress/recommended"
+      "react-app/jest"
     ]
   },
   "browserslist": {
@@ -49,8 +48,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^12.10.0",
-    "eslint-plugin-cypress": "^2.13.2",
     "gh-pages": "^5.0.0",
     "jest": "^27.5.1",
     "react-test-renderer": "^18.2.0"
