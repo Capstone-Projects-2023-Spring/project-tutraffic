@@ -19,7 +19,7 @@ LOT_PROP = {
     },
     'desc': {
         'type': str,
-        'default': 'Mock parking lot. For testing only. Address: 1800 N. Broad St, Philadelphia, PA 19121',
+        'default': 'Mock parking location. For testing only.',
         'required': False,
     },
     'lat': {
