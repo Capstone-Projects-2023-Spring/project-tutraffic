@@ -20,11 +20,6 @@ after(() => {
 
 it('Logs in to the test user, then adds a favorite parking spot.', () => {
   cy.visit('https://tutrafficdatabase.web.app/')
-
-  cy.get('button:contains("Login")')
-    .click()
-  cy.location('pathname')
-    .should('eq', '/account/login')
   cy.userLogin()
   cy.get('button:contains("Browse")')
     .click()
