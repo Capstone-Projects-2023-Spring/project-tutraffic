@@ -59,7 +59,7 @@ const Browse = () => {
       .filter((item) => (!isNaN(item.distance)
         && (userLotType === 'all' || userLotType === item.street)
         && (item.maxsize >= userCarType)
-        && (item.free || (item.free !== userPriceType))
+        && (item.free || userPriceType !== true)
       ))
       .sort((a, b) => a.distance - b.distance);
 
