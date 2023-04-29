@@ -19,6 +19,7 @@ Cypress.Commands.add("queryAddress", () => {
  * Input test user account details, then visit the 'account/info' page.
  */
 Cypress.Commands.add("userLogin", () => {
+  cy.visit('https://tutrafficdatabase.web.app')
   // Navigate to login page.
   cy.get('button:contains("Login")')
       .click()

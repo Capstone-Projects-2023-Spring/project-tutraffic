@@ -8,9 +8,26 @@
  */
 import { createAccount, deleteAccount } from '../support/firebase';
 
+/**
+ * Navigate to the favorites page then view the details of a favorite parking lot.
+ */
+Cypress.Commands.add('viewFavorite', () => {
+  cy.get('button:contains("Favorites")')
+    .click()
+  cy.location('pathname')
+    .should('eq', '/favorite')
+  cy.get('button:contains("View Detail")')
+    .click()
+})
+
 before(() => {
   createAccount()
   cy.exec('python cypress/python/mocklot.py init mocklot')
+})
+
+beforeEach(() => {
+  cy.userLogin()
+  cy.visit('https://tutrafficdatabase.web.app/browse')
 })
 
 after(() => {
@@ -18,14 +35,7 @@ after(() => {
   cy.exec('python cypress/python/mocklot.py delete mocklot')
 })
 
-it('Logs in to the test user, then adds a favorite parking spot.', () => {
-  cy.visit('https://tutrafficdatabase.web.app/')
-  cy.userLogin()
-  cy.get('button:contains("Browse")')
-    .click()
-  cy.location('pathname')
-    .should('eq', '/browse')
-
+it('Logs in to the test user, adds a favorite parking spot, then views it.', () => {
   cy.get('button:contains("Add to Favorite")').first()
     .click()
   cy.get('button:contains("View Detail")').first()
@@ -33,15 +43,20 @@ it('Logs in to the test user, then adds a favorite parking spot.', () => {
 
   cy.location('pathname')
     .then((pathname) => {
-      cy.get('button:contains("Favorites")')
-        .click()
-      cy.location('pathname')
-        .should('eq', '/favorite')
-      cy.get('button:contains("View Detail")')
-        .click()
       // Verify that the pathnames match.
+      cy.viewFavorite()
       cy.location('pathname')
         .should('eq', pathname)
+
+      // Create a new session with the same user.
+      cy.session('favorite', () => {
+        cy.userLogin()
+  
+        // Verify that the pathnames match.
+        cy.viewFavorite()
+        cy.location('pathname')
+        .should('eq', pathname)
+      })
     })
 })
 

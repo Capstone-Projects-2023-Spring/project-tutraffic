@@ -28,8 +28,10 @@ Cypress.Commands.add("queryMapThenBrowse", () => {
     cy.get(':nth-child(2) > .nav-link').click()
     cy.location('pathname')
       .should('eq', '/account/profile')
+    // Set lot type using drop-down selection.
     cy.get('.profile-settings > :nth-child(4)')
       .select(lotType)
+    // Set price type using drop-down selection.
     cy.get('.profile-settings > :nth-child(6)')
       .select(priceType)
   })
@@ -60,7 +62,6 @@ after(() => {
  */
 describe('Lot Type Filter', () => {
   it('Logs in to the user, sets lot type to street, then finds only street parking.', () => {
-    cy.visit('https://tutrafficdatabase.web.app/')
     cy.userLogin()
 
     cy.updateSetting('Street Parking', 'All Parking')
@@ -74,7 +75,6 @@ describe('Lot Type Filter', () => {
   })
 
   it('Logs in to the user, sets lot type to lot, then finds only parking lots.', () => {
-    cy.visit('https://tutrafficdatabase.web.app/')
     cy.userLogin()
 
     cy.updateSetting('Lot or Garage', 'All Parking')
@@ -98,7 +98,6 @@ describe('Lot Type Filter', () => {
  */
 describe('Free Parking Filter', () => {
   it('Logs in to the user, sets price to free, then finds free parking.', () => {
-    cy.visit('https://tutrafficdatabase.web.app/')
     cy.userLogin()
 
     cy.updateSetting('All Parking', 'Only Free Parking')
@@ -108,7 +107,7 @@ describe('Free Parking Filter', () => {
     cy.contains('mockpaidlot').should('not.exist')
     cy.contains('mockpaidst').should('not.exist')
     cy.contains('mockfreelot')
-    cy.contains('mockfreest')
+    cy.contains('mockfreest') // This specific assert sometimes fail.
   })
 })
 
@@ -122,10 +121,11 @@ describe('Free Parking Filter', () => {
  *   '/account/info', 'account/profile', '/browse', and '/map'.
  */
 describe('Composition of applied filters', () => {
-  it('Logs in to the user, sets filters to free parking lots, and finds a free parking lot.', () => {
-    cy.visit('https://tutrafficdatabase.web.app/')
+  beforeEach(() => {
     cy.userLogin()
+  })
 
+  it('Logs in to the user, sets filters to free parking lots, and finds a free parking lot.', () => {
     cy.updateSetting('Lot or Garage', 'Only Free Parking')
     cy.queryMapThenBrowse()
 
@@ -137,9 +137,6 @@ describe('Composition of applied filters', () => {
   })
 
   it('Logs in to the user, sets filters to free street parking, and finds free street parking.', () => {
-    cy.visit('https://tutrafficdatabase.web.app/')
-    cy.userLogin()
-
     cy.updateSetting('Street Parking', 'Only Free Parking')
     cy.queryMapThenBrowse()
 
