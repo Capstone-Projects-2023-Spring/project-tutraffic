@@ -112,6 +112,7 @@ const Map = () => {
       const { lat, lng, spots, street } = data[key];
       if (lat && lng) {
         return {
+          key: key,
           position: { lat, lng },
           options: {
             label: {
@@ -213,7 +214,7 @@ const Map = () => {
               <MarkerF
                 key={index}
                 position={marker.position}
-                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                onClick={() => handleMarkerClick(marker.key)}
                 options={marker.options}
               />
             ))}
@@ -253,7 +254,7 @@ const Map = () => {
               <MarkerF
                 key={index}
                 position={marker.position}
-                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                onClick={() => handleMarkerClick(marker.key)}
                 options={marker.options}
               />
             ))}
