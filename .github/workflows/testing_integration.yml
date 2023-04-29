@@ -55,5 +55,4 @@ jobs:
         uses: cypress-io/github-action@v5
         with:
           working-directory: ./testing
-          record: false
-          browser: chrome
+          command: npx cypress run --browser chrome --config video=false
