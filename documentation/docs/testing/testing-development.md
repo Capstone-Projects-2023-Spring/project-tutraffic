@@ -9,7 +9,7 @@ This document describes how to setup and run the testing environment for the TuT
 #### **Raspberry Pi Back-end Requirements**
 The raspberry pi back-end testing environment requires:
 1. [Python3.10](https://www.python.org/downloads/).
-2. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is included with the latest version of Python 3.
+2. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is typically included with Python 3.
 3. Additional requirements, including [pytest](https://docs.pytest.org/en/7.2.x/getting-started.html#install-pytest), can be installed from the commandline using pip:
 
 	```$ pip install -r testing/python/requirements.txt```
@@ -27,14 +27,22 @@ The frontend testing environment requires:
 
 #### **Integration Test Requirements**
 The integration testing environment requires:
-1. All frontend dependencies (see [section](#front-end-requirements)).
+1. The package manager [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) is included with [Node.js](https://nodejs.dev/en/learn/how-to-install-nodejs/), which is installed as part of the system environment.
     * For Linux: the Cypress testing framework requires [additional dependencies](https://docs.cypress.io/guides/getting-started/installing-cypress#Linux-Prerequisites). Only Ubuntu, Debian, and CentOS dependencies are documented.
+
+    Install the testing package using the following commands:
+
+    ```
+    $ cd testing # From the repository root directory, set the working directory to testing.
+    $ npm install
+    ```
+
 3. [Python3.10](https://www.python.org/downloads/).
-4. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is included with the latest version of Python 3.
+4. The package manager [pip](https://pip.pypa.io/en/stable/installation/) is typically included with Python 3.
 5. Additional software requirements, including [firebase-admin](https://pypi.org/project/firebase-admin/), can be installed from the commandline using pip:
 
-    ```$ pip install -r cypress/python/requirements.txt```
-6. Two **secret** files are required to run the tests: `frontend/tutraffic-firebase-key.json` for Google Firebase configuration and `frontend/.env` for React configuration. Request these keys from your administrator(s).
+    ```$ pip install -r testing/cypress/python/requirements.txt```
+6. Two **secret** files are required to run the tests: `testing/tutraffic-firebase-key.json` for Google Firebase configuration and `testing/.env` for React configuration. Request these keys from your administrator(s).
 
 
 ## **Writing Tests**
@@ -109,11 +117,11 @@ it('renders correctly', () => {
 ### **Writing Integration Tests**
 
 Integration tests use the [Cypress](cypress.io) testing framework.
-Put tests in the `frontend/cypress/e2e` directory, with the extension .spec.cys.js.
+Put tests in the `testing/cypress/e2e` directory, with the extension .spec.cys.js.
 
 ```
 // Example test script location.
-frontend/cypress/e2e/example.spec.cy.js
+testing/cypress/e2e/example.spec.cy.js
 ```
 
 Python scripts can be called from a terminal using the `exec` command provided by Cypress cy. The script should terminate with an exit-code.
@@ -160,7 +168,7 @@ $ npm test -- --watchAll=false --updateSnapshot
 
 1. From the root directory, change working directory to the front end.
 
-    ```$ cd frontend```
+    ```$ cd testing```
 2. Below are two commands that can be used to run Cypress tests.
     * The following command, by default, runs all tests headlessly.
         
