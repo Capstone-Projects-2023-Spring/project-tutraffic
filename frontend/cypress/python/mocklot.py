@@ -10,57 +10,48 @@ from firebase_admin import db
 
 valid_commands = ['init', 'put', 'delete']
 DOCUMENT_PATH = 'parking/'
-# Mock parking lot.
+# Mock parking lot properties.
 LOT_PROP = {
     'name': {
         'type': str,
-        'default': 'mocklot',
-        'required': True,
     },
     'desc': {
         'type': str,
         'default': 'Mock parking location. For testing only.',
-        'required': False,
     },
     'lat': {
         'type': float,
         'default': 39.9813333,
-        'required': False,
     },
     'lng': {
         'type': float,
         'default': -75.1580556,
-        'required': False,
     },
     'rate': {
         'type': str,
         'default': 'free',
-        'required': False,
     },
     'free': {
-        'type': bool,
+        'type': int,
+        'bool': True,
         'default': True,
-        'required': False,
     },
     'street': {
-        'type': bool,
-        'default': False,
-        'required': False,
+        'type': int,
+        'bool': True,
+        'default': True,
     },
     'maxsize': {
         'type': int,
         'default': 20,
-        'required': False,
     },
     'spots': {
         'type': int,
         'default': 7,
-        'required': False,
     },
     'Captured': {
         'type': datetime.datetime.fromisoformat,
         'default': datetime.datetime(2000, 1, 1),
-        'required': False,
     }
 }
 # Firebase Authentication.
@@ -121,12 +112,13 @@ if __name__ == "__main__":
     """Parse commandline arguments, then call the desired function."""
     # Parse commandline arguments.
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        'command', help='Valid commands:' + str(valid_commands))
+    parser.add_argument('command', help='Valid commands:' + str(valid_commands))
+    parser.add_argument('key', help='Parking lot path name.')
     for prop in LOT_PROP:
-        parser.add_argument('--' + prop, dest=prop,
-                            type=LOT_PROP[prop]['type'])
+        parser.add_argument('--' + prop, dest=prop, type=LOT_PROP[prop]['type'])
     args = parser.parse_args()
+    if args.name is None:
+      args.name = args.key
 
     # Check for valid command.
     if args.command not in valid_commands:
@@ -138,19 +130,15 @@ if __name__ == "__main__":
     for prop in LOT_PROP:
         value = getattr(args, prop, None)
         if value is not None:
+            if 'bool' in LOT_PROP[prop]:
+                value = bool(value)
             data.update({prop: value})
-        elif LOT_PROP[prop]['required']:
-            print("Error: missing argument --" + prop)
-            exit(1)
-
-    # Copy name to key.
-    key = data['name']
 
     # Execute matched command.
     match args.command:
         case "put":
-            put_mocklot(key, data)
+            put_mocklot(args.key, data)
         case "init":
-            init_mocklot(key, data)
+            init_mocklot(args.key, data)
         case "delete":
-            delete_mocklot(key)
+            delete_mocklot(args.key)

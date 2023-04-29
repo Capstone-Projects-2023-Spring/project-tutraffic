@@ -12,14 +12,14 @@ before(() => {
   // Create the test account.
   createAccount()
   // Create the mock lot, gauranteeing at least one lot.
-  cy.exec('python cypress/python/mocklot.py init --name mocklot')
+  cy.exec('python cypress/python/mocklot.py init mocklot')
 })
 
 after(() => {
   // Delete the test account.
   deleteAccount()
   // Delete the mock lot.
-  cy.exec('python cypress/python/mocklot.py delete --name mocklot')
+  cy.exec('python cypress/python/mocklot.py delete mocklot')
 })
 
 it('Logs in to the test user, then adds a favorite parking spot.', () => {

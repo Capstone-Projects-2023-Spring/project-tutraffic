@@ -9,12 +9,12 @@
 
 before(() => {
   // Create the mock lot.
-  cy.exec('python cypress/python/mocklot.py init --name mocklot')
+  cy.exec('python cypress/python/mocklot.py init mocklot')
 })
 
 after(() => {
   // Delete the mock lot.
-  cy.exec('python cypress/python/mocklot.py delete --name mocklot')
+  cy.exec('python cypress/python/mocklot.py delete mocklot')
 })
 
 it('Searches Google Maps for a parking lot.', () => {
