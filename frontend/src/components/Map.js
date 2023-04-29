@@ -105,12 +105,13 @@ const Map = () => {
   const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
   const markers = data ? Object.keys(data)
     .filter((key) => (userLotType !== 'all' ? data[key].street === userLotType : true))
-    .filter((key) => (data[key].maxsize >= userCarType))
-    .filter((key) => (data[key].free || data[key].free === userPriceType))
+    .filter((key) => (userCarType !== 0 ? data[key].maxsize >= userCarType : true))
+    .filter((key) => (userPriceType !== 'all' ? data[key].free || data[key].free === userPriceType : true))
     .map((key) => {
       const { lat, lng, spots, street } = data[key];
       if (lat && lng) {
         return {
+          key: key,
           position: { lat, lng },
           options: {
             label: {
@@ -212,7 +213,7 @@ const Map = () => {
               <MarkerF
                 key={index}
                 position={marker.position}
-                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                onClick={() => handleMarkerClick(marker.key)}
                 options={marker.options}
               />
             ))}
@@ -252,7 +253,7 @@ const Map = () => {
               <MarkerF
                 key={index}
                 position={marker.position}
-                onClick={() => handleMarkerClick(Object.keys(data)[index])}
+                onClick={() => handleMarkerClick(marker.key)}
                 options={marker.options}
               />
             ))}
