@@ -48,6 +48,9 @@ const Navigation = () => {
     };
   }, []);
 
+  /**
+   * Signs out the user and navigates to the home page.
+   */
   const handleSignOut = async () => {
     try {
       await auth.signOut(); // Sign out the user

@@ -9,6 +9,10 @@ const Favorite = () => {
     const [favorites, setFavorites] = useState([]);
     const [user, setUser] = useState(null);
 
+    /**
+     * Navigates to the parking lot page with the given key when the marker is clicked.
+     * @param {string} key - The unique identifier of the parking lot.
+     */
     const handleMarkerClick = (key) => {
         navigate(`/parkinglot/${key}`);
     };
@@ -37,7 +41,10 @@ const Favorite = () => {
         fetchFavorites();
     }, [user]);
 
-    // remove from favorites
+    /**
+     * Deletes the favorite with the specified id from the user's favorites and the Firestore database.
+     * @param {string} id - The ID of the favorite to delete.
+     */
     const handleDelete = async (id) => {
         const newFavorites = favorites.filter((fav) => fav !== id);
         setFavorites(newFavorites);

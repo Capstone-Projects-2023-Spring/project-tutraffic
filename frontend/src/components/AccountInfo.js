@@ -21,7 +21,7 @@ const AccountInfo = () => {
   const [deleteForm, setDeleteForm] = useState(false);
   const [message, setMessage] = useState("");
   const [textColor, setTextColor] = useState(0);
-  
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -45,6 +45,10 @@ const AccountInfo = () => {
     );
   }
 
+  /**
+   * This function handles updating the user's email address.
+   * @param {Object} e - Form submission event object
+   */
   const changeEmail = async (e) => {
     e.preventDefault();
     setTextColor(0);
@@ -57,14 +61,14 @@ const AccountInfo = () => {
         setMessage("Please enter a valid email address.");
         return;
       } else {
-        updateEmail(user, newEmail).then(() =>{
+        updateEmail(user, newEmail).then(() => {
           setTextColor(1);
           console.log("Email updated");
           setMessage("Email has been successfully updated!");
-          setTimeout(() => {closeModal()}, 2000);
+          setTimeout(() => { closeModal() }, 2000);
         });
       }
-    }).catch((error) => { 
+    }).catch((error) => {
       console.log(error.message);
       if (error.code === 'auth/wrong-password') {
         setMessage("Incorrect password.");
@@ -74,6 +78,10 @@ const AccountInfo = () => {
     });
   }
 
+  /**
+   * This function handles updating the user's password.
+   * @param {Object} e - Form submission event object
+   */
   const changePassword = async (e) => {
     e.preventDefault();
     setTextColor(0);
@@ -91,14 +99,14 @@ const AccountInfo = () => {
             setTextColor(1);
             console.log("Password updated");
             setMessage("Password has been successfully updated!");
-            setTimeout(() => {closeModal()}, 2000);
-          }).catch((error) => { 
+            setTimeout(() => { closeModal() }, 2000);
+          }).catch((error) => {
             console.log(error.message);
             if (error.code === 'auth/weak-password') {
               setMessage("Password must be at least 6 characters long.");
             }
           });
-        } 
+        }
         else if (confirmPassword === "") {
           console.log("'Confirm Password' field is empty");
           setMessage("Please confirm your password.");
@@ -107,7 +115,7 @@ const AccountInfo = () => {
           setMessage("Passwords must match.");
         }
       }
-    }).catch((error) => { 
+    }).catch((error) => {
       console.log(error.message);
       if (error.code === 'auth/wrong-password') {
         setMessage("Incorrect password.");
@@ -117,6 +125,10 @@ const AccountInfo = () => {
     });
   };
 
+  /**
+   * This function handles deleting the user's account.
+   * @param {Object} e - Form submission event object
+   */
   const deleteAccount = async (e) => {
     e.preventDefault();
     setTextColor(0);
@@ -132,7 +144,7 @@ const AccountInfo = () => {
         deleteUser(user);
       }, 2000);
       console.log("User successfully deleted from Firebase");
-    }).catch((error) => { 
+    }).catch((error) => {
       console.log(error.message);
       if (error.code === 'auth/wrong-password') {
         setMessage("Incorrect password.");
@@ -142,6 +154,9 @@ const AccountInfo = () => {
     });
   }
 
+  /**
+   * This function handles logging the user out of their account.
+   */
   const logout = async () => {
     try {
       await auth.signOut(); // Sign out the user
@@ -151,7 +166,9 @@ const AccountInfo = () => {
     }
   };
 
-  // Resets all values when clicking outside a modal or clicking the "close" button
+  /**
+   * This function resets all form fields and flags when the modal is closed.
+   */
   const closeModal = () => {
     setMessage("");
     setNewEmail("");
@@ -173,12 +190,12 @@ const AccountInfo = () => {
             <Nav.Link className="highlighted-btn" onClick={() => navigate("/account/info")}>Account Information</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link style={{color: "black"}} onClick={() => navigate("/account/profile")}>User Profile</Nav.Link>
+            <Nav.Link style={{ color: "black" }} onClick={() => navigate("/account/profile")}>User Profile</Nav.Link>
           </Nav.Item>
         </Nav>
 
         <div className="header-title">
-          <div style={{color: "rgb(100,100,100)", paddingBottom: "4px"}}>PERSONAL DETAILS</div>
+          <div style={{ color: "rgb(100,100,100)", paddingBottom: "4px" }}>PERSONAL DETAILS</div>
         </div>
 
         <div className="section">
@@ -194,7 +211,7 @@ const AccountInfo = () => {
               </Modal.Header>
               <Form onSubmit={changeEmail}>
                 <Modal.Body>
-                  <p style={{color: textColor ? "blue" : "red" }}>{message}</p>
+                  <p style={{ color: textColor ? "blue" : "red" }}>{message}</p>
                   <Form.Group controlId="current-password">
                     <Form.Label>Current Password</Form.Label>
                     <Form.Control
@@ -205,7 +222,7 @@ const AccountInfo = () => {
                     />
                   </Form.Group>
                   <Form.Group controlId="new-email">
-                  <Form.Label>New Email</Form.Label>
+                    <Form.Label>New Email</Form.Label>
                     <Form.Control
                       value={newEmail}
                       onChange={(e) => setNewEmail(e.target.value)}
@@ -240,7 +257,7 @@ const AccountInfo = () => {
               </Modal.Header>
               <Form onSubmit={changePassword}>
                 <Modal.Body>
-                  <p style={{color: textColor ? "blue" : "red" }}>{message}</p>
+                  <p style={{ color: textColor ? "blue" : "red" }}>{message}</p>
                   <Form.Group controlId="current-password">
                     <Form.Label>Current Password</Form.Label>
                     <Form.Control
@@ -251,7 +268,7 @@ const AccountInfo = () => {
                     />
                   </Form.Group>
                   <Form.Group controlId="new-password">
-                  <Form.Label>New Password</Form.Label>
+                    <Form.Label>New Password</Form.Label>
                     <Form.Control
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
@@ -260,7 +277,7 @@ const AccountInfo = () => {
                     />
                   </Form.Group>
                   <Form.Group controlId="confirm-password">
-                  <Form.Label>Confirm Password</Form.Label>
+                    <Form.Label>Confirm Password</Form.Label>
                     <Form.Control
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -283,42 +300,42 @@ const AccountInfo = () => {
         </div>
 
         <div className="header-title">
-          <div style={{color: "rgb(100,100,100)", paddingBottom: "4px"}}>MANAGE ACCOUNT</div>
+          <div style={{ color: "rgb(100,100,100)", paddingBottom: "4px" }}>MANAGE ACCOUNT</div>
         </div>
         <div className="manage-btn">
           <Button variant="danger" onClick={() => setDeleteForm(true)}>DELETE ACCOUNT</Button>
           <Modal show={deleteForm} onHide={closeModal}>
-              <Modal.Header closeButton>
-                <Modal.Title>Delete Your Account</Modal.Title>
-              </Modal.Header>
-              <Form onSubmit={deleteAccount}>
-                <Modal.Body>
-                  <p style={{color: "red"}}>
-                    WARNING: You are about to delete your account. Once you confirm your
-                    password you will no longer be able to access your account or recover it.
-                  </p>
-                  <p style={{color: textColor ? "blue" : "red" }}>{message}</p>
+            <Modal.Header closeButton>
+              <Modal.Title>Delete Your Account</Modal.Title>
+            </Modal.Header>
+            <Form onSubmit={deleteAccount}>
+              <Modal.Body>
+                <p style={{ color: "red" }}>
+                  WARNING: You are about to delete your account. Once you confirm your
+                  password you will no longer be able to access your account or recover it.
+                </p>
+                <p style={{ color: textColor ? "blue" : "red" }}>{message}</p>
 
-                  <Form.Group controlId="confirm-password">
+                <Form.Group controlId="confirm-password">
                   <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      type="password"
-                      name="confirmPassword"
-                    />
-                  </Form.Group>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" type="reset" onClick={closeModal}>
-                    Close
-                  </Button>
-                  <Button variant="danger" type="submit">
-                    DELETE
-                  </Button>
-                </Modal.Footer>
-              </Form>
-            </Modal>
+                  <Form.Control
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    type="password"
+                    name="confirmPassword"
+                  />
+                </Form.Group>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" type="reset" onClick={closeModal}>
+                  Close
+                </Button>
+                <Button variant="danger" type="submit">
+                  DELETE
+                </Button>
+              </Modal.Footer>
+            </Form>
+          </Modal>
 
           <Button variant="secondary" onClick={logout}>LOGOUT</Button>
         </div>

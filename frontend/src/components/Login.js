@@ -14,6 +14,10 @@ export const Login = () => {
   const [textColor, setTextColor] = useState(0);
   const navigate = useNavigate();
 
+  /**
+   * Handle submission of login form
+   * @param {Object} e - Form submission event object
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     await signInWithEmailAndPassword(auth, email, password).then(() => {
@@ -22,13 +26,16 @@ export const Login = () => {
       setTimeout(() => {
         navigate('/account/info');
       }, 2000);
-    }).catch((error) => { 
+    }).catch((error) => {
       setTextColor(0);
       console.error('Error signing in with email and password:', error);
       setMessage("Incorrect email or password.");
     });
   };
 
+  /** 
+   * Navigate to registration form
+   */
   const onFormSwitch = () => {
     navigate('/account/register')
   }
@@ -39,7 +46,7 @@ export const Login = () => {
         <Card.Body>
           <Card.Title className="text-center mt-3">Welcome</Card.Title>
           <p className="center-item">Login to TuTraffic</p>
-          <p style={{color: textColor ? "blue" : "red" }}>{message}</p> 
+          <p style={{ color: textColor ? "blue" : "red" }}>{message}</p>
           <Form className="login-form" onSubmit={handleSubmit}>
             <Form.Group controlId="email">
               <Form.Label>Email Address</Form.Label>
@@ -65,7 +72,7 @@ export const Login = () => {
           </Form>
           <div className="center-item mt-4">
             <p>Don't have an account?</p>
-            <p style={{fontWeight:"bold", cursor:"pointer", color:"#4170cc"}} onClick={onFormSwitch}>Sign up</p>
+            <p style={{ fontWeight: "bold", cursor: "pointer", color: "#4170cc" }} onClick={onFormSwitch}>Sign up</p>
           </div>
         </Card.Body>
       </Card>

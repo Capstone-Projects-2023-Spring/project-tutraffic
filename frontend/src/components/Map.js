@@ -33,6 +33,11 @@ const Map = () => {
   const [center, setCenter] = useState({ lat: latitude, lng: longitude }); // default center
 
   const navigate = useNavigate();
+
+  /**
+   * Handle clicking on a marker
+   * @param {string} key - The key of the marker that was clicked
+   */
   const handleMarkerClick = (key) => {
     navigate(`/parkinglot/${key}`);
   };
@@ -105,8 +110,8 @@ const Map = () => {
   const { userLotType, userCarType, userPriceType } = UserLotData(currentUser?.uid);
   const markers = data ? Object.keys(data)
     .filter((key) => ((userLotType === 'all' || userLotType === data[key].street)
-        && (data[key].maxsize >= userCarType)
-        && (data[key].free || userPriceType !== true)
+      && (data[key].maxsize >= userCarType)
+      && (data[key].free || userPriceType !== true)
     ))
     .map((key) => {
       const { lat, lng, spots, street } = data[key];
@@ -131,6 +136,10 @@ const Map = () => {
       }
     }).filter((marker) => marker !== null) : [];
 
+  /**
+   * Handles search by using the Geocoder API to get the coordinates of the address.
+   * Centers the map at the new location and saves the coordinates to localStorage.
+   */
   const handleSearch = () => {
     // Use the Geocoder API to get the coordinates of the address
     const geocoder = new window.google.maps.Geocoder();
@@ -152,16 +161,27 @@ const Map = () => {
     });
   };
 
+  /**
+   * Handles place change event by updating the address state with the new address.
+   */
   const handlePlaceChanged = () => {
     const newAddress = autocomplete.getPlace().formatted_address;
     setAddress(newAddress);
   }
 
+  /**
+   * Handles input change event by updating the address state with the new input value.
+   * @param {object} event - The input change event object.
+   */
   const handleInputChange = (event) => {
     const newAddress = event.target.value;
     setAddress(newAddress);
   };
 
+  /**
+   * Handles getting the current location of the user by using the Geolocation API.
+   * Centers the map at the current location and saves the coordinates to localStorage.
+   */
   const handleGetCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
