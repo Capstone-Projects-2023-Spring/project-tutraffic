@@ -1,0 +1,58 @@
+name: Testing Integration
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'frontend/**'
+      - 'testing/cypress/**'
+      - '.github/workflows/testing_integration.yml'
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        python-version: ["3.11"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Create .env containing secrets.
+        env:
+          API_KEY: ${{ secrets.REACT_APP_FIREBASE_API_KEY }}
+          AUTH_DOMAIN: ${{ secrets.REACT_APP_FIREBASE_AUTH_DOMAIN }}
+          PROJECT_ID: ${{ secrets.REACT_APP_FIREBASE_PROJECT_ID }}
+          REF_URL: ${{ secrets.REACT_APP_FIREBASE_REF_URL }}
+          EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+        run: |
+          cat <<EOF > .env
+          REACT_APP_FIREBASE_API_KEY="$API_KEY"
+          REACT_APP_FIREBASE_AUTH_DOMAIN="$AUTH_DOMAIN"
+          REACT_APP_FIREBASE_PROJECT_ID="$PROJECT_ID"
+          REACT_APP_FIREBASE_REF_URL="$REF_URL"
+          TEST_USER_EMAIL="$EMAIL"
+          TEST_USER_PASSWORD="$PASSWORD"
+          EOF
+        working-directory: ./testing
+      - name: Create .json containing secrets.
+        env:
+            KEY: ${{ secrets.TUTRAFFIC_FIREBASE_KEY_64 }}
+        run: echo $KEY | base64 -d > tutraffic-firebase-key.json
+        working-directory: ./testing
+      - name: Install python dependencies.
+        run: python -m pip install -r testing/cypress/python/requirements.txt
+      - name: Run Cypress tests.
+        uses: cypress-io/github-action@v5
+        with:
+          working-directory: ./testing
+          command: npx cypress run --browser chrome --config video=false
