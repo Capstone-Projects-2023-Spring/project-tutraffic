@@ -65,6 +65,7 @@ def captureImage():
 
 def checkSpots(original, spaces, numSpaces):
     total = numSpaces
+    find = []
     print("total:   ", len(original))
     for spot in spaces:
         for orig in original:
@@ -78,30 +79,31 @@ def checkSpots(original, spaces, numSpaces):
             intersectArea = abs(xS - xO) * abs(yS - yO)
 
             #area of boxes
-            boxO = abs((orig[2] - orig[0] + 1)) * abs((orig[3]) - orig[1] + 1)
-            boxS = abs(spot[2] - spot[0] + 1) * abs((spot[3]) - spot[1] + 1)
+            boxO = abs((orig[2] - orig[0] )) * abs((orig[3]) - orig[1] )
+            boxS = abs(spot[2] - spot[0]  ) * abs((spot[3]) - spot[1] )
 
             IoU = intersectArea / float(boxO + boxS - intersectArea)
             #print(IoU)
-            if IoU >= 0.92 and IoU <= 1.0:
-                print('detect ',spot, orig)
+            if IoU >= 0.82 and IoU <= 1.0:
+                print('detect ',spot, orig, IoU)
+                find.append(spot)
                 total -= 1
-    return total
+    return total, find
 
 
 def makeSpacesRight(template, imDim, carAvgDim):
     temp = 0.0
     spots = []
     bar = [[0]]
-    buffx = 50
-    buffy = 20
+    buffx = 170
+    buffy = 10
     while bar[-1][0] <= imDim[0]: 
         bar = ([[int(template[0] + (carAvgDim[0] + buffx) * temp),
-                    int(template[1] - buffy * temp),
+                    int(template[1] - buffy * temp ),
                     int(template[2] + (carAvgDim[0] + buffx) * temp),
-                    int(template[3] ) + (buffy / 2) * temp]])
+                    int(template[3] ) + buffy * temp * .6]])
         spots.append(bar[0])
-        temp += 0.17
+        temp += 0.2
     #print("spots right:   ", spots)
     return spots
 
@@ -109,15 +111,15 @@ def makeSpacesLeft(template,imDim, carAvgDim):
     temp = 0.0    
     spots = []
     bar = [[imDim[0]]]
-    buffx = 50
-    buffy = 20
+    buffx = 170
+    buffy = 10
     while bar[-1][0] >= 0:
         bar = ([[int(template[0] - (carAvgDim[0] + buffx) * temp),
-                    int(template[1] - buffy * temp),
+                    int(template[1] - buffy * temp ),
                     int(template[2] - (carAvgDim[0] + buffx) * temp),
-                    int(template[3] ) + (buffy / 2) * temp]])
+                    int(template[3] ) + buffy * temp * .6]])
         spots.append(bar[0])
-        temp += 0.17
+        temp += 0.2
     #print("spots left:   ", spots)
     return spots
 
@@ -126,6 +128,7 @@ def determineSpaces(left, right, imDim, carAvgDim):
     print('left: ', len(left), '  right: ', len(right) )
     spotsT = []
     spotsB = []
+    wats = []
     free = 0
     numSpaces = 5
     if len(left) != 0 or len(right) != 0:
@@ -134,7 +137,9 @@ def determineSpaces(left, right, imDim, carAvgDim):
             if left[0][0] >= carAvgDim[0] and left[0][0] <= imDim[0] - carAvgDim[0]:
                 spotsL = makeSpacesLeft(left[0], imDim, carAvgDim)
                 spotsR = makeSpacesRight(left[0], imDim, carAvgDim)
-                free += checkSpots(left, spotsL + spotsR[1:], numSpaces)
+                free1, found = checkSpots(left, spotsL + spotsR[1:], numSpaces)
+                free += free1
+                wats += found
                 spotsT = spotsL + spotsR[1:]
 
             #fist car is on left or right edge
@@ -142,12 +147,16 @@ def determineSpaces(left, right, imDim, carAvgDim):
                 #left edge
                 if left[0][0] <= imDim[0] / 2:
                     spots = makeSpacesRight(left[0], imDim, carAvgDim)
-                    free += checkSpots(left, spots, numSpaces)
+                    free1, found = checkSpots(left, spots, numSpaces)
+                    free += free1
+                    wats += found
                     spotsT = spots
                 #right edge
                 else:
                     spots = makeSpacesLeft(left[0], imDim, carAvgDim)
-                    free += checkSpots(left, spots, numSpaces)
+                    free1, found = checkSpots(left, spots, numSpaces)
+                    free += free1
+                    wats += found
                     spotsT = spots
 			
         if len(right) != 0:
@@ -155,16 +164,22 @@ def determineSpaces(left, right, imDim, carAvgDim):
             if right[0][0] >= carAvgDim[0] and right[0][0] <= imDim[0] - carAvgDim[0]:
                 spotsL = makeSpacesLeft(right[0], imDim, carAvgDim)
                 spotsR = makeSpacesRight(right[0], imDim, carAvgDim)
-                free += checkSpots(right, spotsL + spotsR[1:], numSpaces)
+                free1, found = checkSpots(right, spotsL + spotsR[1:], numSpaces)
+                free += free1
+                wats += found
                 spotsB = spotsL + spotsR[1:]
             else:
                 if right[0][0] <= imDim[0] / 2:
                     spots = makeSpacesRight(right[0], imDim, carAvgDim)
-                    free += checkSpots(right, spots, numSpaces)
+                    free1, found = checkSpots(right, spots, numSpaces)
+                    free += free1
+                    wats += found
                     spotsB = spots
                 else:
                     spots = makeSpacesLeft(right[0], imDim, carAvgDim)
-                    free += checkSpots(left, spots, numSpaces)
+                    free1, found = checkSpots(right, spots, numSpaces)
+                    free += free1
+                    wats += found
                     spotsB = spots
     else:	
         free += (2 * int(imDim[0] / 900))
@@ -172,7 +187,7 @@ def determineSpaces(left, right, imDim, carAvgDim):
 	#if no cars are parked on one side add the spots for that side of the road
     if left and not right or right and not left:
             free += int(imDim[0] / 900)
-    return free, spotsB + spotsT
+    return free, spotsT + spotsB
 
 def sortList(carLoc, imgHeight):
     left = []
@@ -200,7 +215,7 @@ def main():
     while go == True:
         #image = captureImage()
 
-        image = cv.imread('RaspberryPi/images/IMG_2010.jpeg')
+        image = cv.imread('RaspberryPi/images/IMG_2006.jpeg')
 
         carLocations, imgDim = detectCarBoxes(image)
         if carLocations:
