@@ -5,7 +5,14 @@ import cv2 as cv
 def test_detectCarBoxes():
     img = cv.imread('RaspberryPi/images/IMG_2006.jpeg')
     detectedCars = streetParking.detectCarBoxes(img)
+    assert len(detectedCars[0]) == 7
     assert len(detectedCars[0][0]) == 4
+    
+    img2 = streetParking.captureImage()
+    detectedCars = streetParking.detectCarBoxes(img2)
+    assert len(detectedCars) == 2
+    assert len(detectedCars[0]) == 0
+
    
 def test_convertCords():
     newCords = [[100, 100, 300, 300], [200, 450, 600, 800]]
