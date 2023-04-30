@@ -9,7 +9,7 @@ This document contains information parsed from the testing workflows for the lat
 | Node | v18.16.0
 | React | v18.2.0
 
-| File | Test | Passing | Failed | Duration (s)
+| File | Tests | Passing | Failed | Duration (s)
 |---|--:|--:|--:|---:
 | App.test.js  | 1 | 1 | 0 | 23.048
 | Total | 1 | 1 | 0 | 23.048
@@ -44,13 +44,13 @@ This document contains information parsed from the testing workflows for the lat
 | Node | v18.16.0
 | Browser | Chrome 112 (headless)
                                                                                                     
-| File | Test | Passing | Failed | Duration (s)
+| File | Tests | Passing | Failed | Duration (s)
 |---|--:|--:|--:|---:
 | add_favorite_parking.spec.cy.js  | 1 | 1 | 0 | 15
 | find_parking_nearest.spec.cy.js   | 1 | 1 | 0 | 8
-| find_parking_nearest_with_filters.spec.cy.js | 5 | 5 | 0 | 46
+| find_parking_nearest_with_filters.spec.cy.js | 5 | 4 | 1 | 46
 | show_parking_notification.spec.cy.js  | 4 | 4 | 0 | 25
-| total | 11 | 11 | 0 | 95
+| total | 11 | 10 | 1 | 95
 
 | File | Test | Passed | Duration (s)
 |---|:--|:-:|--:
