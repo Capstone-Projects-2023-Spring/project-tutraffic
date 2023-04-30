@@ -213,7 +213,7 @@ def main():
     go = True
     
     while go == True:
-        #image = captureImage()
+        image = captureImage()
 
         image = cv.imread('RaspberryPi/images/IMG_2006.jpeg')
 
@@ -229,8 +229,8 @@ def main():
             avgCarLength = [0,0]
         totalSpaces, predBox = determineSpaces(listLeft, listRight, imgDim, avgCarLength)
         print(totalSpaces)
-        displayCarBoxesStreet.detectCars(image, predBox)
-        #sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
-        go = False
+        #displayCarBoxesStreet.detectCars(image, predBox)
+        sendToServer.upload("parking/", {'spaces': totalSpaces},"warno", {'last updated': datetime.datetime.now()})
+        #go = False
 if __name__ == '__main__':
     main()
