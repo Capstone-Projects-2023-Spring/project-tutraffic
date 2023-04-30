@@ -45,14 +45,23 @@ const ParkingLot = () => {
     const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
     const googleMapsEmbed = `https://www.google.com/maps/embed/v1/place?key=${process.env.REACT_APP_GOOGLEMAP_API_KEY}&q=${lat},${lng}`;
 
+    /**
+     * Shows the modal when the user clicks on the "Park Here" button.
+     */
     const handleParkClick = () => {
         setShowModal(true);
     };
 
+    /**
+     * Hides the modal when the user clicks on the close button.
+     */
     const handleCloseModal = () => {
         setShowModal(false);
     };
 
+    /**
+     * Opens the Google Maps link in a new tab when the user clicks on the "Navigate" button.
+     */
     const handleNavigateClick = () => {
         window.open(googleMapsLink, '_blank');
     };

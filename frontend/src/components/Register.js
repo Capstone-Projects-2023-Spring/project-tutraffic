@@ -15,6 +15,10 @@ export const Register = (props) => {
   const [textColor, setTextColor] = useState(0);
   const navigate = useNavigate();
 
+  /**
+   * Handle submission of Register form
+   * @param {Object} e - Form submission event object
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     setTextColor(0);
@@ -59,6 +63,9 @@ export const Register = (props) => {
     });
   };
 
+  /**
+   * This function navigates to the account login page.
+   */
   const onFormSwitch = () => {
     navigate('/account/login')
   }

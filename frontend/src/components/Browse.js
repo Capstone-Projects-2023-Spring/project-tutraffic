@@ -33,7 +33,10 @@ const Browse = () => {
     return () => unsubscribe();
   }, []);
 
-  // add to favorites
+  /**
+   * Adds a new favorite to the user's list of favorites and updates the user's favorites collection in Firestore.
+   * @param {string} id - The ID of the favorite to add
+   */
   const handleFavorite = async (id) => {
     setFavorites([...favorites, id]);
     await setDoc(doc(db, "users", user.uid, "favorites", id), {

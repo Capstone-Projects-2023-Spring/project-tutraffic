@@ -92,7 +92,7 @@ it('Logs in to the user, sets price to free, then finds free parking.', () => {
   cy.contains('mockpaidlot').should('not.exist')
   cy.contains('mockpaidst').should('not.exist')
   cy.contains('mockfreelot')
-  cy.contains('mockfreest')
+  cy.contains('mockfreest') // This specific assertion is flaky.
 })
 
 it('Logs in to the user, sets filters to free parking lots, then finds a free parking lot.', () => {

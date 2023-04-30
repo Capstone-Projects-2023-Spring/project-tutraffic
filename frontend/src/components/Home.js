@@ -10,6 +10,9 @@ const Home = () => {
     const [autocomplete, setAutocomplete] = useState(null);
     const navigate = useNavigate();
 
+    /**
+     * This function uses the Geocoder API to get the coordinates of the provided address, saves them to localStorage, and navigates the user to the map page.
+     */
     const handleSearch = () => {
         // Use the Geocoder API to get the coordinates of the address
         const geocoder = new window.google.maps.Geocoder();
@@ -28,16 +31,27 @@ const Home = () => {
         });
     };
 
+
+    /**
+     * This function is called when the autocomplete search bar's selected place changes. It updates the state's address with the new address.
+     */
     const handlePlaceChanged = () => {
         const newAddress = autocomplete.getPlace().formatted_address;
         setAddress(newAddress);
     }
 
+    /**
+     * This function is called when the user types a new address in the search bar. It updates the state's address with the new address.
+     * @param {object} event - The input change event.
+     */
     const handleInputChange = (event) => {
         const newAddress = event.target.value;
         setAddress(newAddress);
     };
 
+    /**
+     * This function gets the user's current location, saves it to localStorage, and navigates the user to the map page.
+     */
     const handleGetCurrentLocation = () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {

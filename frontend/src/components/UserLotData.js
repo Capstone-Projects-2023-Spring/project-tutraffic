@@ -15,6 +15,9 @@ export const UserLotData = (userId) => {
       return;
     }
 
+    /**
+     * Fetches user data from Firestore and updates the state of lotType, carType, and priceType accordingly.
+     */
     const fetchUserData = async () => {
       const userDoc = doc(db, 'users', userId);
       const snapshot = await getDoc(userDoc);
