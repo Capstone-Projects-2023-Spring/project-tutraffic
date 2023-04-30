@@ -353,3 +353,78 @@ Tests the removal of a node from the server. First, a request is made to remove 
 
 	Case 3: The node exists on the server, but the credentials are invalid.
 	Expected Result: The connection succeeds.
+
+#### **test_detectCarBoxes()**
+Tests car detection for streetParking. First, a test image is loaded with openCV. The test image is then run through our car detection. Finally, the test ensures the correct number of cars is detected and formatted properly.
+
+	Case 1: There are cars in the image.
+	Expected Result: The number of detected cars equals the number of cars in the image.
+
+	Case 2: There are no cars in the image.
+	Expected Result: No cars should be detected. 
+
+#### **test_convertCords()**
+Test coordinate conversion for detected cars. The test takes in the location of a detected car and converts its list for spot comparison
+
+	Case 1: The original length four list should be converted into a length six list. 
+	Expected Result: The new list should have the X/Y min and max values as well as the length and width of the car.
+
+#### **test_convertCords()**
+Test coordinate conversion for detected cars. The test takes in the location of a detected car and converts its list for spot comparison
+
+	Case 1: The original length four list should be converted into a length six list. 
+	Expected Result: The new list should have the X/Y min and max values as well as the length and width of the car.
+
+#### **test_detAvgLen()**
+Test should average out the length and width of cars in the captured image. 
+
+	Case 1: Multiple cars are within the image 
+	Expected Result: The output should be the average dimensions of all the cars within the image.
+
+#### **test_checkSpot()**
+Tests the overlap between the detected cars and potential parking spots to check for available spaces. First, a car box and potential parking spot are made. Second, the two boxes are compared to determine if there overlap passes a threshold.
+
+	Case 1: The overlap is past the threshold. 
+	Expected Result: The total number a potential spots on the street is decreased by one.
+
+	Case 2: The overlap is not past the threshold.
+	Expected Result: There is no decrease in the number of potential spots.
+
+#### **test_makeSpacesRight()**
+Tests the creation of potential spots going from left to right.
+
+	Case 1: There are spaces to the right of the first detected car on either side of the street. 
+	Expected Result: Test spots are created to the right of the first car on the side of the street.
+
+#### **test_makeSpacesLeft()**
+Tests the creation of potential spots going from right to left.
+
+	Case 1: There are spaces to the left of the first detected car on either side of the street. 
+	Expected Result: Test spots are created to the left of the first car on the side of the street.
+
+#### **test_determineSpaces()**
+Tests the detection of the total number of available parking spaces in the image. First, the test creates the predicted spots based on the locations of the car's present. Second, the predicted spots are compared to the actual car locations. Finally, the total number of spots is determined.
+
+	Case 1: There are cars present.
+	Expected Result: The number of cars present should decrease the total number of parking spots. 
+
+	Case 2: There are no cars present. 
+	Expected Result: The total numbers of spaces should not decrease at all.
+
+#### **test_sortList()**
+Tests the splitting up of cars based on which side of the street they are park. The test uses the Y coordinates of each car to see which side of the street the car is located on. 
+
+	Case 1: There are cars on both sides of the street.
+	Expected Result: There should be two list returned with cars in both lists.
+
+	Case 2: There are cars on only the top half of the image.
+	Expected Result: There should be cars inside the top list, and the bottom list is empty.
+
+	Case 3: There are cars on only the bottom half of the image.
+	Expected Result: There should be cars inside the bottom list, and the top list is empty.
+
+#### **test_adjustBrightness()**
+Tests the exposure change on overexposed images. 
+
+	Case 1: The image is overexposed.
+	Expected Result: Returns the same image with a lower exposure.
