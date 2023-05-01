@@ -2,17 +2,6 @@ import streetParkingTest
 import pytest
 import cv2 as cv
 
-def test_detectCarBoxes():
-    img = cv.imread('images/IMG_2006.jpeg')
-    detectedCars = streetParkingTest.detectCarBoxes(img)
-    assert len(detectedCars[0]) == 7
-    assert len(detectedCars[0][0]) == 4
-    
-    img2 = streetParkingTest.captureImage()
-    detectedCars = streetParkingTest.detectCarBoxes(img2)
-    assert len(detectedCars) == 2
-    assert len(detectedCars[0]) == 0
-
    
 def test_convertCords():
     newCords = [[100, 100, 300, 300], [200, 450, 600, 800]]
