@@ -28,8 +28,7 @@ This document contains information parsed from the testing workflows for the lat
 | File | Tests | Passing | Failed | Duration (s)
 |---|--:|--:|--:|---:
 | test_ImageMethods.py | 3 | 3 | 0 |
-| test_ImageMethods.py | 7 | 7 | 0 |
-| test_streetParking.py
+| test_streetParking.py | 7 | 7 | 0 |
 | Total | 10 | 10 | 0 | 2.35
 
 | File | Test | Passed
