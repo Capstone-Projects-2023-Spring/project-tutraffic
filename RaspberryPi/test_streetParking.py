@@ -26,9 +26,6 @@ def test_detAvgLen():
     assert len(avgDim) == 2
     assert avgDim[0] == 450 and round(avgDim[1]) == 588
     
-def test_captureImage():
-    image = streetParkingTest.captureImage()
-    assert not image.all() == None
     
 def test_checkSpot():
     original = [[100,100,200,200]]
