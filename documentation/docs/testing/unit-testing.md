@@ -364,13 +364,7 @@ Tests car detection for streetParking. First, a test image is loaded with openCV
 	Expected Result: No cars should be detected. 
 
 #### **test_convertCords()**
-Test coordinate conversion for detected cars. The test takes in the location of a detected car and converts its list for spot comparison
-
-	Case 1: The original length four list should be converted into a length six list. 
-	Expected Result: The new list should have the X/Y min and max values as well as the length and width of the car.
-
-#### **test_convertCords()**
-Test coordinate conversion for detected cars. The test takes in the location of a detected car and converts its list for spot comparison
+Test coordinate conversion for detected cars. The test takes in the location of a detected car and converts its list for spot comparison.
 
 	Case 1: The original length four list should be converted into a length six list. 
 	Expected Result: The new list should have the X/Y min and max values as well as the length and width of the car.
