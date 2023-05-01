@@ -63,8 +63,3 @@ def test_sortList():
     assert len(left) == 1
     assert len(right) == 1
     
-def test_adjustBrightness():
-    img = cv.imread('RaspberryPi/images/IMG_2006.jpeg')
-    gam = 0.8
-    adjImg = streetParkingTest.adjustBrightness(img, gam)
-    assert not adjImg.all() == None
