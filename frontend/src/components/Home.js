@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { FaParking, FaLocationArrow } from 'react-icons/fa';
+import { IoLogoGithub, IoReaderSharp, IoMailSharp } from "react-icons/io5";
 
 const Home = () => {
     const [address, setAddress] = useState("");
@@ -108,13 +109,22 @@ const Home = () => {
             </div>
             <div className="container mt-4">
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-md-6" style={{ display: "flex", flexDirection: "column", marginBottom: "20px"  }}>
                         <h2>About Us</h2>
-                        <p>...</p>
+                        <div style={{ display: "flex" }}>
+                            <div style={{ marginRight: "20px"}}>
+                                <IoLogoGithub size={28}/>
+                                <a style={{ color: "black" }} href="https://github.com/Capstone-Projects-2023-Spring/project-tutraffic">GitHub</a>
+                            </div>
+                            <div>
+                                <IoReaderSharp size={28}/>
+                                <a style={{ color: "black" }} href="https://capstone-projects-2023-spring.github.io/project-tutraffic/">Documentation</a>
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-6" style={{ display: "flex", flexDirection: "column", marginBottom: "20px" }}>
                         <h2>Contact Us</h2>
-                        <p>Email: info@tutraffic.com</p>
+                        <div> <IoMailSharp size={28}/> info@tutraffic.com </div>
                     </div>
                 </div>
             </div>
