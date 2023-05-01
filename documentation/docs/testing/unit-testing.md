@@ -354,15 +354,6 @@ Tests the removal of a node from the server. First, a request is made to remove 
 	Case 3: The node exists on the server, but the credentials are invalid.
 	Expected Result: The connection succeeds.
 
-#### **test_detectCarBoxes()**
-Tests car detection for streetParking. First, a test image is loaded with openCV. The test image is then run through our car detection. Finally, the test ensures the correct number of cars is detected and formatted properly.
-
-	Case 1: There are cars in the image.
-	Expected Result: The number of detected cars equals the number of cars in the image.
-
-	Case 2: There are no cars in the image.
-	Expected Result: No cars should be detected. 
-
 #### **test_convertCords()**
 Test coordinate conversion for detected cars. The test takes in the location of a detected car and converts its list for spot comparison.
 
