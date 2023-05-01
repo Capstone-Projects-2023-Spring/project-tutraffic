@@ -3,7 +3,7 @@ import pytest
 import cv2 as cv
 
 def test_detectCarBoxes():
-    img = cv.imread('RaspberryPi/images/IMG_2006.jpeg')
+    img = cv.imread('project-tutraffic/RaspberryPi/images/IMG_2006.jpeg')
     detectedCars = streetParkingTest.detectCarBoxes(img)
     assert len(detectedCars[0]) == 7
     assert len(detectedCars[0][0]) == 4
