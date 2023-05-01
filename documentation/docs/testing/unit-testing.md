@@ -416,9 +416,3 @@ Tests the splitting up of cars based on which side of the street they are park. 
 
 	Case 3: There are cars on only the bottom half of the image.
 	Expected Result: There should be cars inside the bottom list, and the top list is empty.
-
-#### **test_adjustBrightness()**
-Tests the exposure change on overexposed images. 
-
-	Case 1: The image is overexposed.
-	Expected Result: Returns the same image with a lower exposure.
