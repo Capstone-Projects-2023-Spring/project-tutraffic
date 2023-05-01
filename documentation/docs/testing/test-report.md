@@ -27,14 +27,23 @@ This document contains information parsed from the testing workflows for the lat
 
 | File | Tests | Passing | Failed | Duration (s)
 |---|--:|--:|--:|---:
-| test_ImageMethods.py | 3 | 3 | 0 | 1.90
-| Total | 3 | 3 | 0 | 1.90
+| test_ImageMethods.py | 3 | 3 | 0 |
+| test_ImageMethods.py | 7 | 7 | 0 |
+| test_streetParking.py
+| Total | 10 | 10 | 0 | 2.35
 
 | File | Test | Passed
 |---|---|:-:|
 | test_ImageMethods.py | test_takePics | ✓
 || test_crop | ✓
 || test_avgImgs | ✓
+| test_streetParking.py | test_convertCords | ✓
+|| test_detAvgLen | ✓
+|| test_checkSpot | ✓
+|| test_makeSpacesRight | ✓
+|| test_makeSpacesLeft | ✓
+|| test_determineSpaces | ✓
+|| test_sortList | ✓
 
 ## Integration Test Result
 
