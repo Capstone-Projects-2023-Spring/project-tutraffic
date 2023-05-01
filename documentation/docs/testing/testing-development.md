@@ -116,7 +116,7 @@ it('renders correctly', () => {
 
 ### **Writing Integration Tests**
 
-Integration tests use the [Cypress](cypress.io) testing framework.
+Integration tests use the [Cypress](https://cypress.io) testing framework.
 Put tests in the `testing/cypress/e2e` directory, with the extension .spec.cys.js.
 
 ```
