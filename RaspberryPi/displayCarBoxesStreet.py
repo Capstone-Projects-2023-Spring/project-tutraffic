@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def detectCars(image1):
+def detectCars(image1, predBox):
     
     image = image1
     config = "RaspberryPi/yolov3.cfg"
@@ -31,6 +31,16 @@ def detectCars(image1):
         label = str(classes[class_id])
 
         color = COLORS[class_id]
+
+        cv2.rectangle(img, (x,y), (x_plus_w,y_plus_h), color, 2)
+
+        cv2.putText(img, label, (x-10,y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+        
+    def draw_predictionPre(img, class_id, confidence, x, y, x_plus_w, y_plus_h):
+
+        label = str(class_id)
+
+        color = 2
 
         cv2.rectangle(img, (x,y), (x_plus_w,y_plus_h), color, 2)
 
@@ -97,6 +107,9 @@ def detectCars(image1):
         w = box[2]
         h = box[3]
         draw_prediction(origionalimage, class_ids[i], confidences[i], round(x), round(y), round(x+w), round(y+h))
+    
+    for box in predBox:
+        draw_predictionPre(origionalimage, 'Prebox', 'adwa', round(box[0]), round(box[1]), round(box[2]), round(box[3]))
 
     cv2.imshow("object detection", origionalimage)
     cv2.waitKey()
